@@ -20,7 +20,7 @@ If you like this project, support it by starring it ⭐.
 
 You can also donate if you have the means. Thank you very much! 💖
 
-<a href="https://www.buymeacoffee.com/fbf-prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+<a href="https://buymeacoffee.com/fbf.prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Version control
 
