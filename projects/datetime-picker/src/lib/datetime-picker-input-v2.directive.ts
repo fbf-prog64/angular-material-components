@@ -51,11 +51,11 @@ export const NGX_MAT_DATETIME_PICKER_VALIDATORS: any = {
   ],
   host: {
     class: 'ngx-mat-datetime-picker-input',
-    '[attr.aria-haspopup]': '_datepicker ? "dialog" : null',
-    '[attr.aria-owns]': '(_datepicker?.opened && _datepicker.id) || null',
+    '[attr.aria-haspopup]': 'ngxMatDatetimePicker ? "dialog" : null',
+    '[attr.aria-owns]': '(ngxMatDatetimePicker?.opened && ngxMatDatetimePicker.id) || null',
     '[attr.min]': 'min ? _dateAdapter.toIso8601(min) : null',
     '[attr.max]': 'max ? _dateAdapter.toIso8601(max) : null',
-    '[attr.data-mat-calendar]': '_datepicker ? _datepicker.id : null',
+    '[attr.data-mat-calendar]': 'ngxMatDatetimePicker ? ngxMatDatetimePicker.id : null',
     '[disabled]': 'disabled',
     '(input)': '_onInput($event.target.value)',
     '(change)': '_onChange()',
@@ -73,8 +73,9 @@ export class NgxMatDatetimePickerInputV2<D>
     Validator,
     NgxMatDatepickerControl<D>
 {
+  readonly _dateAdapter = inject(DateAdapter<D>, { optional: true });
+
   private readonly _elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
-  private readonly _dateAdapter = inject(DateAdapter<D>, { optional: true });
   private readonly _dateFormats = inject(MAT_DATE_FORMATS, { optional: true });
   private readonly _formField = inject(MatFormField, { optional: true });
 

@@ -91,6 +91,9 @@ export class NgxMatColorPickerContentComponent {
   providers: [ColorAdapter, NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER],
 })
 export class NgxMatColorPickerComponent implements OnDestroy {
+
+  @Input() id: string = `ngx-mat-color-picker-${Math.floor(Math.random() * 1000000)}`;
+
   private _scrollStrategy: () => ScrollStrategy;
 
   /** Emits when the datepicker has been opened. */
