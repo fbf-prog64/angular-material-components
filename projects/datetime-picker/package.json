@@ -5,12 +5,12 @@
   "author": "HO Hong Quan",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GNURub/angular-material-components.git"
+    "url": "https://github.com/fbf-prog64/angular-material-components.git"
   },
   "bugs": {
-    "url": "https://github.com/GNURub/angular-material-components/issues"
+    "url": "https://github.com/fbf-prog64/angular-material-components/issues"
   },
-  "homepage": "https://github.com/GNURub/angular-material-components",
+  "homepage": "https://github.com/fbf-prog64/angular-material-components",
   "keywords": [
     "angular",
     "angular2",

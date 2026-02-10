@@ -2,15 +2,15 @@
   "name": "@ngxmc/amc",
   "version": "20.1.0",
   "description": "Angular Material Datetime Picker",
-  "author": "HO Hong Quan",
+  "author": "Felipe B.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GNURub/angular-material-components.git"
+    "url": "git+https://github.com/fbf-prog64/angular-material-components.git"
   },
   "bugs": {
-    "url": "https://github.com/GNURub/angular-material-components/issues"
+    "url": "https://github.com/fbf-prog64/angular-material-components/issues"
   },
-  "homepage": "https://github.com/GNURub/angular-material-components",
+  "homepage": "https://github.com/fbf-prog64/angular-material-components",
   "keywords": [
     "angular",
     "angular2",
@@ -22,6 +22,8 @@
     "angular 17",
     "angular 18",
     "angular 19",
+    "angular 20",
+    "angular 21",
     "angular-material",
     "angular material datetime picker",
     "angular material time picker",
@@ -39,7 +41,7 @@
     "start": "ng serve",
     "build": "ng build -c=production",
     "build:gh-pages": "ng build -c=production --base-href /angular-material-components/",
-    "deploy:gh-pages": "npm run build:gh-pages && npx angular-cli-ghpages --dir=dist/angular-material-components/browser --repo=git@github.com:GNURub/angular-material-components.git",
+    "deploy:gh-pages": "npm run build:gh-pages && npx angular-cli-ghpages --dir=dist/angular-material-components/browser --repo=git@github.com:fbf-prog64/angular-material-components.git",
     "prettier:fix": "prettier --write projects/**/*.ts",
     "prepare": "npm run prettier:fix",
     "build:datetime-picker": "ng build NgxMatDatetimePicker",
@@ -52,7 +54,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "codecov": "codecov",
-    "build:ci": "ng build -c=production --output-path docs --base-href https://gnurub.github.io/angular-material-components/"
+    "build:ci": "ng build -c=production --output-path docs --base-href https://fbf-prog64.github.io/angular-material-components/"
   },
   "private": false,
   "dependencies": {

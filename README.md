@@ -7,7 +7,7 @@
 
 ## 🚀 Live Demo
 
-**[Ver Demo en GitHub Pages](https://gnurub.github.io/angular-material-components/)**
+**[Ver Demo en GitHub Pages](https://fbf-prog64.github.io/angular-material-components/)**
 
 ## Description
 
@@ -16,14 +16,14 @@ Color picker...).
 
 Please do not hesitate to contact us if you have any question or suggestion.
 
-Feel free to open the [issues](https://github.com/GNURub/angular-material-components/issues) or
+Feel free to open the [issues](https://github.com/fbf-prog64/angular-material-components/issues) or
 provide a PR.
 
 If you like this project, support angular-material-components by starring⭐.
 
 And thank you so much for your coffee ❤️
 
-<a href="https://www.buymeacoffee.com/gnurub" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+<a href="https://www.buymeacoffee.com/fbf-prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## DEMO Angular Material Components
 
@@ -112,7 +112,7 @@ manually:
 
 - Pushes to `main` branch automatically trigger deployment
 - GitHub Actions workflow builds and deploys to `gh-pages` branch
-- Site is available at: https://gnurub.github.io/angular-material-components/
+- Site is available at: https://fbf-prog64.github.io/angular-material-components/
 
 ### Manual Deployment
 
