@@ -31,10 +31,10 @@ export class NgxMatColorpickerToggleIcon {}
     // Always set the tabindex to -1 so that it doesn't overlap with any custom tabindex the
     // consumer may have provided, while still being able to receive focus.
     '[attr.tabindex]': '-1',
-    '[class.ngx-mat-color-toggle-active]': 'picker && picker.opened',
-    '[class.mat-accent]': 'picker && picker.color === "accent"',
-    '[class.mat-warn]': 'picker && picker.color === "warn"',
-    '(focus)': '_button.focus()',
+    '[class.ngx-mat-color-toggle-active]': 'picker && picker()?.opened',
+    '[class.mat-accent]': 'picker && picker()?.color === "accent"',
+    '[class.mat-warn]': 'picker && picker()?.color === "warn"',
+    '(focus)': '_button()?.focus()',
   },
   exportAs: 'ngxMatColorPickerToggle',
   encapsulation: ViewEncapsulation.None,
