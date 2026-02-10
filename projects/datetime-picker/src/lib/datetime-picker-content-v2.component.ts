@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -99,7 +99,7 @@ export interface NgxMatDatetimePickerContentData<D> {
   styleUrls: ['./datetime-picker-content-v2.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule, FormsModule, MatCalendar, MatButtonModule, NgxMatTimepickerComponent],
+  imports: [FormsModule, MatCalendar, MatButtonModule, NgxMatTimepickerComponent],
   host: {
     class: 'ngx-mat-datetime-picker-content-v2',
     '[class.ngx-mat-datetime-picker-content-touch]': 'data.touchUi',
