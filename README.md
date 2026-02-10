@@ -1,107 +1,102 @@
-# FORKED FROM [h2qutc/angular-material-components](https://github.com/h2qutc/angular-material-components)
+# Angular Material Extra Components
+## Includes DatetimePicker, TimePicker, ColorPicker, FileInput...
+### For Angular Material 21.x
 
-# Angular Material Extra Components (DatetimePicker, TimePicker, ColorPicker, FileInput ...) for @angular/material 7.x, 8.x, 9.x, 10.x, 11.x, 12.x, 13.x, 14.x, 15.x, 16.x, 18.x, 19.x, 20.x
+Forked from [**GNURub/angular-material-components**](https://github.com/GNURub/angular-material-components).
 
-[![Build Status](https://travis-ci.com/h2qutc/angular-material-components.svg?branch=master)](https://travis-ci.com/h2qutc/angular-material-components)
-[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/angular-material-components)
+[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/@ngx-mce/angular-material-components)
 
 ## 🚀 Live Demo
 
-**[Ver Demo en GitHub Pages](https://fbf-prog64.github.io/angular-material-components/)**
+See live demo and documentation [**here**](https://fbf-prog64.github.io/angular-material-components/).
 
 ## Description
 
-Angular Material Library provide extra components for every project (Datetime picker, Time picker,
-Color picker...).
+This repository provides extra components for Angular Material projects: Datetime picker, Time picker, Color picker, etc.  
 
-Please do not hesitate to contact us if you have any question or suggestion.
+Please contact us if you have any question or suggestion. Also feel free to open an issue [here](https://github.com/fbf-prog64/angular-material-components/issues), or contribute via a PR.
 
-Feel free to open the [issues](https://github.com/fbf-prog64/angular-material-components/issues) or
-provide a PR.
+If you like this project, support it by starring it ⭐.
 
-If you like this project, support angular-material-components by starring⭐.
-
-And thank you so much for your coffee ❤️
+You can also donate if you have the means. Thank you very much! 💖
 
 <a href="https://www.buymeacoffee.com/fbf-prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
-## DEMO Angular Material Components
-
-@see [LIVE DEMO AND DOCUMENTATION](https://h2qutc.github.io/angular-material-components/)
+## Version control
 
 Choose the version corresponding to your Angular version:
 
-| Angular | @ngx-mce/datetime-picker          |
-| ------- | ------------------------------- |
-| 20      | 20.x+                           |
-| 19      | 19.x+                           |
-| 18      | 18.x+                           |
-| 17      | none                            |
-| 15      | 15.x+ OR 9.x+ for legacy import |
-| 14      | 8.x+                            |
-| 13      | 7.x+                            |
-| 12      | 6.x+                            |
-| 11      | 5.x+                            |
-| 10      | 4.x+                            |
-| 9       | 2.x+                            |
-| 8       | 2.x+                            |
-| 7       | 2.x+                            |
+| Angular  | @ngx-mce/datetime-picker |
+| -------- | -------------------------|
+|    21    |           21.x           |
+| 15 -- 20 | Please use [GNURub's version](https://github.com/GNURub/angular-material-components) |
+|  7 -- 14 | Please use [h2qutc's version](https://github.com/h2qutc/angular-material-components) |
+
+## Available components
+
+These are the components included with this project.
 
 ### Datetime Picker
+
+You can details about this component [**here**](https://fbf-prog64.github.io/angular-material-components/)
 
 [![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngx-mce/datetime-picker)
 [![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/datetime-picker.svg)]()
 
-[TUTORIAL HERE](https://h2qutc.github.io/angular-material-components/)
+#### How to install
 
 ```
 npm install --save  @ngx-mce/datetime-picker
 ```
 
-![Alt Text](demo_datetime_picker.png)
+![Datetime picker in action](demo_datetime_picker.png)
 
-@see
-[DEMO stackblitz for Angular 7, Angular 8](https://stackblitz.com/edit/demo-ngx-mat-datetime-picker)
+Online demos for old versions:
 
-@see
-[DEMO stackblitz for Angular 9](https://stackblitz.com/edit/demo-ngx-mat-datetime-picker-angular9)
+* [Angular 7 and 8](https://stackblitz.com/edit/demo-ngx-mat-datetime-picker)
+* [Angular 9](https://stackblitz.com/edit/demo-ngx-mat-datetime-picker-angular9)
 
 ### Color Picker
+
+You can see details about this component [**here**](https://fbf-prog64.github.io/angular-material-components/)
 
 [![npm version](https://badge.fury.io/js/%40angular-material-components%2Fcolor-picker.svg)](https://www.npmjs.com/package/@ngx-mce/color-picker)
 [![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/color-picker.svg)]()
 
-[TUTORIAL HERE](https://h2qutc.github.io/angular-material-components/)
+#### How to install
 
 ```
 npm install --save  @ngx-mce/color-picker
 ```
 
-![Alt Text](demo_color_picker.png) @see
-[DEMO stackblitz](https://stackblitz.com/edit/demo-ngx-mat-color-picker)
+![Color picker in action](demo_color_picker.png)
+
+Online demo: [here](https://stackblitz.com/edit/demo-ngx-mat-color-picker).
 
 ### File Input
+
+You can see details about this component [**here**](https://fbf-prog64.github.io/angular-material-components/)
 
 [![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
 [![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/file-input.svg)]()
 
-[TUTORIAL HERE](https://h2qutc.github.io/angular-material-components/)
+#### How to install
 
 ```
 npm install --save  @ngx-mce/file-input
 ```
 
-![Alt Text](demo_file_input.png)
+![File Input in action](demo_file_input.png)
 
 ### Theming
 
-- @see @angular/material
+- Check out @angular/material
   [Using a pre-built theme](https://material.angular.io/guide/theming#using-a-pre-built-theme)
-- Add the Material Design icon font to your index.html
+- Add the Material Design icon font to your index.html:
 
-```
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
-```
+  ```
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+  ```
 
 ## 🚀 Deployment
 
@@ -110,9 +105,9 @@ manually:
 
 ### Automatic Deployment
 
-- Pushes to `main` branch automatically trigger deployment
-- GitHub Actions workflow builds and deploys to `gh-pages` branch
-- Site is available at: https://fbf-prog64.github.io/angular-material-components/
+- Pushes to the `main` branch automatically trigger deployment.
+- GitHub Actions workflow builds and deploys to `gh-pages` branch.
+- Site is available at: [https://fbf-prog64.github.io/angular-material-components/](https://fbf-prog64.github.io/angular-material-components/)
 
 ### Manual Deployment
 
