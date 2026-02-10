@@ -1,6 +1,6 @@
 {
-  "name": "@ngxmc/color-picker",
-  "version": "20.1.0",
+  "name": "@ngx-mce/color-picker",
+  "version": "21.1.0",
   "description": "Angular Material Color Picker",
   "author": "HO Hong Quan",
   "repository": {

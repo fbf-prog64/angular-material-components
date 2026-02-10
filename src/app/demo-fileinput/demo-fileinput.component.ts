@@ -77,9 +77,9 @@ export class DemoFileInputComponent implements OnInit {
   <mat-hint>Hint</mat-hint>
 </mat-form-field>`;
 
-  code1 = `npm install --save @ngxmc/file-input`;
+  code1 = `npm install --save @ngx-mce/file-input`;
 
-  code2 = `import { NgxMatFileInputComponent } from '@ngxmc/file-input';
+  code2 = `import { NgxMatFileInputComponent } from '@ngx-mce/file-input';
 
   @Component({
      ...

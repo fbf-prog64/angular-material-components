@@ -31,7 +31,7 @@ And thank you so much for your coffee ❤️
 
 Choose the version corresponding to your Angular version:
 
-| Angular | @ngxmc/datetime-picker          |
+| Angular | @ngx-mce/datetime-picker          |
 | ------- | ------------------------------- |
 | 20      | 20.x+                           |
 | 19      | 19.x+                           |
@@ -49,13 +49,13 @@ Choose the version corresponding to your Angular version:
 
 ### Datetime Picker
 
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngxmc/datetime-picker)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngxmc/datetime-picker.svg)]()
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngx-mce/datetime-picker)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/datetime-picker.svg)]()
 
 [TUTORIAL HERE](https://h2qutc.github.io/angular-material-components/)
 
 ```
-npm install --save  @ngxmc/datetime-picker
+npm install --save  @ngx-mce/datetime-picker
 ```
 
 ![Alt Text](demo_datetime_picker.png)
@@ -68,13 +68,13 @@ npm install --save  @ngxmc/datetime-picker
 
 ### Color Picker
 
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fcolor-picker.svg)](https://www.npmjs.com/package/@ngxmc/color-picker)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngxmc/color-picker.svg)]()
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fcolor-picker.svg)](https://www.npmjs.com/package/@ngx-mce/color-picker)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/color-picker.svg)]()
 
 [TUTORIAL HERE](https://h2qutc.github.io/angular-material-components/)
 
 ```
-npm install --save  @ngxmc/color-picker
+npm install --save  @ngx-mce/color-picker
 ```
 
 ![Alt Text](demo_color_picker.png) @see
@@ -82,13 +82,13 @@ npm install --save  @ngxmc/color-picker
 
 ### File Input
 
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngxmc/file-input)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngxmc/file-input.svg)]()
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/file-input.svg)]()
 
 [TUTORIAL HERE](https://h2qutc.github.io/angular-material-components/)
 
 ```
-npm install --save  @ngxmc/file-input
+npm install --save  @ngx-mce/file-input
 ```
 
 ![Alt Text](demo_file_input.png)

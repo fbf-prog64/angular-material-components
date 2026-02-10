@@ -18,26 +18,26 @@
       "node"
     ],
     "paths": {
-      "@ngxmc/*": [
-        "dist/@ngxmc/*"
+      "@ngx-mce/*": [
+        "dist/@ngx-mce/*"
       ],
-      "@ngxmc/color-picker": [
-        "dist/@ngxmc/color-picker"
+      "@ngx-mce/color-picker": [
+        "dist/@ngx-mce/color-picker"
       ],
-      "@ngxmc/color-picker/*": [
-        "dist/@ngxmc/color-picker/*"
+      "@ngx-mce/color-picker/*": [
+        "dist/@ngx-mce/color-picker/*"
       ],
-      "@ngxmc/datetime-picker": [
-        "dist/@ngxmc/datetime-picker"
+      "@ngx-mce/datetime-picker": [
+        "dist/@ngx-mce/datetime-picker"
       ],
-      "@ngxmc/datetime-picker/*": [
-        "dist/@ngxmc/datetime-picker/*"
+      "@ngx-mce/datetime-picker/*": [
+        "dist/@ngx-mce/datetime-picker/*"
       ],
       "file-input": [
-        "dist/@ngxmc/file-input"
+        "dist/@ngx-mce/file-input"
       ],
       "file-input/*": [
-        "dist/@ngxmc/file-input/*"
+        "dist/@ngx-mce/file-input/*"
       ]
     },
     "useDefineForClassFields": false,
