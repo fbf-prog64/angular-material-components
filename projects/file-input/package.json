@@ -1,6 +1,6 @@
 {
-  "name": "@ngxmc/file-input",
-  "version": "20.1.0",
+  "name": "@ngx-mce/file-input",
+  "version": "21.1.0",
   "description": "Angular Material File Input",
   "author": "HO Hong Quan",
   "repository": {

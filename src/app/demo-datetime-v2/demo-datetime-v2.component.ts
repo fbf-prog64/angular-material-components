@@ -207,7 +207,7 @@ export class DemoDatetimeV2Component {
   import {
     NgxMatDatetimePickerV2,
     NgxMatDatetimePickerInputV2,
-  } from '@ngxmc/datetime-picker';
+  } from '@ngx-mce/datetime-picker';
 
   @Component({
     imports: [

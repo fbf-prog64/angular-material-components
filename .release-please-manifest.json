@@ -4,7 +4,7 @@
     ".": {
       "changelog-path": "CHANGELOG.md",
       "release-type": "node",
-      "package-name": "@ngxmc/amc",
+      "package-name": "@ngx-mce/amc",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "draft": false,

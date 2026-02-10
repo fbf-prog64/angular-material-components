@@ -1,6 +1,6 @@
 {
-  "name": "@ngxmc/amc",
-  "version": "20.1.0",
+  "name": "@ngx-mce/amc",
+  "version": "21.1.0",
   "description": "Angular Material Datetime Picker",
   "author": "Felipe B.",
   "repository": {
@@ -47,9 +47,9 @@
     "build:datetime-picker": "ng build NgxMatDatetimePicker",
     "build:color-picker": "ng build NgxMatColorPicker",
     "build:file-input": "ng build NgxMatFileInput",
-    "publish:datetime-picker": "ng build NgxMatDatetimePicker && cd dist/@ngxmc/datetime-picker && npm publish --access public && cd .. && cd .. && cd ..",
-    "publish:color-picker": "ng build NgxMatColorPicker && cd dist/@ngxmc/color-picker && npm publish --access public  && cd .. && cd .. && cd ..",
-    "publish:file-input": "ng build NgxMatFileInput && cd dist/@ngxmc/file-input && npm publish --access public  && cd .. && cd .. && cd ..",
+    "publish:datetime-picker": "ng build NgxMatDatetimePicker && cd dist/@ngx-mce/datetime-picker && npm publish --access public && cd .. && cd .. && cd ..",
+    "publish:color-picker": "ng build NgxMatColorPicker && cd dist/@ngx-mce/color-picker && npm publish --access public  && cd .. && cd .. && cd ..",
+    "publish:file-input": "ng build NgxMatFileInput && cd dist/@ngx-mce/file-input && npm publish --access public  && cd .. && cd .. && cd ..",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

@@ -6,15 +6,15 @@
   ],
   "release-type": "node",
   "packages": {
-    "@ngxmc/color-picker": {
+    "@ngx-mce/color-picker": {
       "path": "projects/color-picker",
       "release-type": "node"
     },
-    "@ngxmc/datetime-picker": {
+    "@ngx-mce/datetime-picker": {
       "path": "projects/datetime-picker",
       "release-type": "node"
     },
-    "@ngxmc/file-input": {
+    "@ngx-mce/file-input": {
       "path": "projects/file-input",
       "release-type": "node"
     }

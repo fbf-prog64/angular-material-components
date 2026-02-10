@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.com/h2qutc/angular-material-components.svg?branch=master)](https://travis-ci.com/h2qutc/angular-material-components)
 [![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/angular-material-components)
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngxmc/datetime-picker)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngxmc/datetime-picker.svg)]()
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngx-mce/datetime-picker)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/datetime-picker.svg)]()
 
 ## Description
 
@@ -23,7 +23,7 @@ choosing time.
 
 Choose the version corresponding to your Angular version:
 
-| Angular | @ngxmc/datetime-picker          |
+| Angular | @ngx-mce/datetime-picker          |
 | ------- | ------------------------------- |
 | 20      | 20.x+                           |
 | 19      | 19.x+                           |
@@ -42,7 +42,7 @@ Choose the version corresponding to your Angular version:
 ## Getting started
 
 ```
-npm install --save  @ngxmc/datetime-picker
+npm install --save  @ngx-mce/datetime-picker
 ```
 
 ## Setup
@@ -76,7 +76,7 @@ import {
   NgxMatDatepickerClear,
   NgxMatDatepickerInput,
   NgxMatDatetimepicker,
-} from '@ngxmc/datetime-picker';
+} from '@ngx-mce/datetime-picker';
 
 @Component({
   selector: 'test',
