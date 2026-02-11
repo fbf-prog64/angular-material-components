@@ -1,8 +1,9 @@
 # Angular Material File Input
 ## For Angular Material 21.x
 
-[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/@ngx-mce/angular-material-components)
+[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
 [![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/file-input.svg)]()
 
 ## Description
 
