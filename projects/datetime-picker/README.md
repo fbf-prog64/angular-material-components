@@ -1,58 +1,61 @@
-# Angular Material DatetimePicker, Timepicker for @angular/material 7.x, 8.x, 9.x, 10.x, 11.x, 12.x, 13.x, 14.x, 15.x, 16.x, 18.x, 19.x, 20.x
+# Angular Material DatetimePicker and Timepicker
+## For Angular Material 21.x
 
-[![Build Status](https://travis-ci.com/h2qutc/angular-material-components.svg?branch=master)](https://travis-ci.com/h2qutc/angular-material-components)
 [![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/angular-material-components)
 [![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngx-mce/datetime-picker)
 [![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/datetime-picker.svg)]()
 
 ## Description
 
-A DatetimePicker like @angular/material
-[Datepicker](https://material.angular.io/components/datepicker/overview) by adding support for
-choosing time.
+These are Date and Time pickers for Angular Material projects. Specifically, this extends the @angular/material
+[Datepicker](https://material.angular.io/components/datepicker/overview) to support choosing time.
 
 <a href="https://buymeacoffee.com/fbf.prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
-## DEMO
-
-@see [LIVE DEMO AND DOCUMENTATION](https://h2qutc.github.io/angular-material-components/)
-
-@see [DEMO stackblitz](https://stackblitz.com/edit/demo-ngx-mat-datetime-picker)
-
-![Alt Text](demo_datetime_picker.png)
+# Version control
 
 Choose the version corresponding to your Angular version:
 
-| Angular | @ngx-mce/datetime-picker          |
-| ------- | ------------------------------- |
-| 20      | 20.x+                           |
-| 19      | 19.x+                           |
-| 18      | 18.x+                           |
-| 16      | 16.x+                           |
-| 15      | 15.x+ OR 9.x+ for legacy import |
-| 14      | 8.x+                            |
-| 13      | 7.x+                            |
-| 12      | 6.x+                            |
-| 11      | 5.x+                            |
-| 10      | 4.x+                            |
-| 9       | 2.x+                            |
-| 8       | 2.x+                            |
-| 7       | 2.x+                            |
+| Angular  | @ngx-mce/datetime-picker |
+| -------- | -------------------------|
+|    21    |           21.x           |
+| 15 -- 20 | Please use [GNURub's version](https://github.com/GNURub/angular-material-components) |
+|  7 -- 14 | Please use [h2qutc's version](https://github.com/h2qutc/angular-material-components) |
 
-## Getting started
+# Date and Time pickers in action
+
+See demo:
+
+* Over [StackBlitz](https://stackblitz.com/edit/demo-ngx-mat-datetime-picker).
+* In the [documentation](https://fbf-prog64.github.io/angular-material-components/).
+
+![DateTimePicker in action](demo_datetime_picker.png)
+
+# How to use
+
+## Install
 
 ```
 npm install --save  @ngx-mce/datetime-picker
 ```
 
-## Setup
+## Configure
 
-Add the date provider to your app configuration.
+Add the date provider of your choice to your app configuration, either in your application root or in your standalone component.
 
-[!IMPORTANT] to prevent the \_ERROR Error: NgxMatDatetimePicker: No provider found for DateAdapter.
-You must import one of the following providers at your application root or standalone component:
-provideNativeDateAdapter, provideMomentDateAdapter, provideLuxonDateAdapter, provideDateFnsAdapter,
-or provide a custom implementation.
+The following providers are available:
+
+* `provideNativeDateAdapter`, based on native JS.
+* `provideMomentDateAdapter`, based on Moment.js.
+* `provideLuxonDateAdapter`, based on Luxon.
+* `provideDateFnsAdapter`, based on date.fns.
+* You may also provide a custom implementation.
+
+This step is important to prevent the following error:
+
+```
+Error: NgxMatDatetimePicker: No provider found for DateAdapter.
+```
 
 ```typescript
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -65,6 +68,8 @@ export const appConfig: ApplicationConfig = {
   ],
 };
 ```
+
+## Using the component
 
 On your component, you can use the datepicker as follows:
 
@@ -109,12 +114,13 @@ import {
 export class TestComponent {}
 ```
 
-@see [src/app/demo-datetime/demo-datetime.module.ts](src/app/demo-datetime/demo-datetime.module.ts)
+Check out the demo source code [here](src/app/demo-datetime/demo-datetime.module.ts).
 
-## Using the component The same API as @angular/material Datepicker (@see [API
+### Markup
 
-docs](https://material.angular.io/components/datepicker/api)) ### Datetime Picker
-(ngx-mat-datetime-picker)
+The template uses the same API as @angular/material Datepicker (see [API docs](https://material.angular.io/components/datepicker/api))
+
+### Datetime Picker (ngx-mat-datetime-picker)
 
 ```html
 <mat-form-field>
@@ -156,9 +162,9 @@ docs](https://material.angular.io/components/datepicker/api)) ### Datetime Picke
 <ngx-mat-timepicker [formControl]="formControl"></ngx-mat-timepicker>
 ```
 
-#### List of @Input of ngx-mat-timepicker
+## List of @Input of ngx-mat-timepicker
 
-_You can use all @Input of ngx-mat-timepicker for ngx-mat-datetime-picker_
+_These properties are also available in ngx-mat-datetime-picker._
 
 | @Input             | Type         | Default value | Description                                                                                                                                                                  |
 | ------------------ | ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -175,16 +181,14 @@ _You can use all @Input of ngx-mat-timepicker for ngx-mat-datetime-picker_
 | **hideTime**       | boolean      | false         | If true, the time is hidden.                                                                                                                                                 |
 | **touchUi**        | boolean      | false         | Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather than a popup and elements have more padding to allow for bigger touch targets. |
 
-## Choosing a date implementation and date format settings
+## Choosing the best date provider and format settings
 
-[NativeDateAdapter](https://github.com/angular/components/blob/main/src/material/core/datetime/index.ts)
-[DateFnsAdapter](https://github.com/angular/components/blob/main/src/material-date-fns-adapter/adapter/index.ts)
-[LuxonDateAdapter](https://github.com/angular/components/blob/main/src/material-luxon-adapter/adapter/index.ts)
-[MomentDateAdapter](https://github.com/angular/components/blob/main/src/material-moment-adapter/adapter/index.ts)
+* [NativeDateAdapter](https://github.com/angular/components/blob/main/src/material/core/datetime/index.ts)
+* [DateFnsAdapter](https://github.com/angular/components/blob/main/src/material-date-fns-adapter/adapter/index.ts)
+* [LuxonDateAdapter](https://github.com/angular/components/blob/main/src/material-luxon-adapter/adapter/index.ts)
+* [MomentDateAdapter](https://github.com/angular/components/blob/main/src/material-moment-adapter/adapter/index.ts)
 
-For example:
-
-Creating a custom date adapter:
+Examples of using a custom adapter are provided below.
 
 ```
 @Injectable()
@@ -207,7 +211,7 @@ const CUSTOM_DATE_FORMATS: MatDateFormats = {
 };
 ```
 
-Creating a custom date adapter module
+Providing the custom adapter in the Module.
 
 ```
 export function provideNgxMatCustomDate() {
@@ -219,7 +223,7 @@ export function provideNgxMatCustomDate() {
 
 ```
 
-You can also customize the date format by providing your custom MAT_DATE_FORMATS in your module.
+You can also customize the date format by providing your custom `MAT_DATE_FORMATS` in your module.
 
 ## Theming
 
