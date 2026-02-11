@@ -1,16 +1,16 @@
 {
-  "name": "@ngxmc/color-picker",
-  "version": "20.1.0",
+  "name": "@ngx-mce/color-picker",
+  "version": "21.1.0",
   "description": "Angular Material Color Picker",
   "author": "HO Hong Quan",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GNURub/angular-material-components.git"
+    "url": "https://github.com/fbf-prog64/angular-material-components.git"
   },
   "bugs": {
-    "url": "https://github.com/GNURub/angular-material-components/issues"
+    "url": "https://github.com/fbf-prog64/angular-material-components/issues"
   },
-  "homepage": "https://github.com/GNURub/angular-material-components",
+  "homepage": "https://github.com/fbf-prog64/angular-material-components",
   "keywords": [
     "angular",
     "angular2",
@@ -33,11 +33,11 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@angular/platform-browser": "^20.0.0",
-    "@angular/common": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "@angular/forms": "^20.0.0",
-    "@angular/material": "^20.0.0",
-    "@angular/cdk": "^20.0.0"
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/material": "^21.0.0",
+    "@angular/cdk": "^21.0.0"
   }
 }

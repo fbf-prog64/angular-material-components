@@ -19,7 +19,7 @@ El proyecto incluye un workflow de GitHub Actions que se ejecuta automáticament
 
 ### URL del sitio:
 
-Tu sitio estará disponible en: `https://gnurub.github.io/angular-material-components/`
+Tu sitio estará disponible en: `https://fbf-prog64.github.io/angular-material-components/`
 
 ## Método 2: Deployment Manual
 

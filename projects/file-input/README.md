@@ -2,13 +2,13 @@
 
 [![Build Status](https://travis-ci.com/h2qutc/angular-material-components.svg?branch=master)](https://travis-ci.com/h2qutc/angular-material-components)
 [![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/angular-material-components)
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngxmc/file-input)
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
 
 ## Description
 
 An Angular Material File Input.
 
-<a href="https://www.buymeacoffee.com/gnurub" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+<a href="https://buymeacoffee.com/fbf.prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## DEMO
 
@@ -20,7 +20,7 @@ An Angular Material File Input.
 
 Choose the version corresponding to your Angular version:
 
-| Angular | @ngxmc/file-input               |
+| Angular | @ngx-mce/file-input               |
 | ------- | ------------------------------- |
 | 16      | 16.x+                           |
 | 15      | 15.x+ OR 9.x+ for legacy import |
@@ -36,13 +36,13 @@ Choose the version corresponding to your Angular version:
 ## Getting started
 
 ```
-npm install --save @ngxmc/file-input
+npm install --save @ngx-mce/file-input
 ```
 
 ## Setup
 
 ```
-import { NgxMatFileInputModule } from '@ngxmc/file-input';
+import { NgxMatFileInputModule } from '@ngx-mce/file-input';
 
 @NgModule({
    ...

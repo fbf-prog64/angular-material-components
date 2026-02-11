@@ -82,7 +82,7 @@ export class DemoDatetimeComponent {
   public stepMinutes = [1, 5, 10, 15, 20, 25];
   public stepSeconds = [1, 5, 10, 15, 20, 25];
 
-  public code1 = 'npm install --save @ngxmc/datetime-picker';
+  public code1 = 'npm install --save @ngx-mce/datetime-picker';
 
   public code3 = `
   <mat-form-field>
@@ -101,7 +101,7 @@ export class DemoDatetimeComponent {
     NgxMatDatetimePickerComponent,
     NgxMatNativeDateComponent,
     NgxMatTimepickerComponent
-  } from '@ngxmc/datetime-picker';
+  } from '@ngx-mce/datetime-picker';
 
   @Component({
     imports: [
