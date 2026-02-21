@@ -101,7 +101,7 @@ jobs:
             exit 0
           fi
           git commit -m "feat: update ${{ steps.vars.outputs.folder }} from ${{ steps.vars.outputs.branch }}"
-          if [ "${{ steps.gh-pages-checkout.outcome }}" == "success" ]; then
+          if [ "${{ steps.gh-pages-checkout.outcome }}" = "success" ]; then
             git pull --rebase origin gh-pages || (git rebase --abort && echo "Rebase failed" && exit 1)
           fi
           git push origin gh-pages
