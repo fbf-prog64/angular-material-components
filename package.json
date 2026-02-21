@@ -83,7 +83,7 @@
     "angular-cli-ghpages": "^2.0.3",
     "codecov": "^3.8.3",
     "codelyzer": "^6.0.2",
-    "jasmine-core": "~5.9.0",
+    "jasmine-core": "~5.13.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
