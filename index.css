@@ -1,0 +1,65 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.card-menu {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px;
+}
+.btn-doc {
+    padding: 1.2rem 2rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    margin: 0.7rem 0;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.btn-doc:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.btn-stable {
+    background: #28a745;
+    color: white;
+}
+.btn-stable:hover {
+    background: #218838;
+}
+.btn-dev {
+    background: #007bff;
+    color: white;
+}
+.btn-dev:hover {
+    background: #0069d9;
+}
+.btn-nightly {
+    background: #fd7e14;
+    color: white;
+}
+.btn-nightly:hover {
+    background: #dc6c12;
+}
+.lead {
+    color: #333;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+}
+.icon-large {
+    font-size: 1.8rem;
+    vertical-align: middle;
+    margin-right: 10px;
+}
