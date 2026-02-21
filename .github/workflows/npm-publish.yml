@@ -1,0 +1,60 @@
+name: Publish to NPM
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+  id-token: write   # if you use npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: deploy-zone
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Determine npm tag from release tag
+        id: npm_tag
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          if [[ "$TAG_NAME" == *-dev* ]]; then
+            echo "tag=dev" >> $GITHUB_OUTPUT
+          elif [[ "$TAG_NAME" == *-nightly* ]]; then
+            echo "tag=nightly" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Extract component name from tag
+        id: component
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          # Assuming tag format: component-name-v1.2.3
+          COMPONENT=$(echo "$TAG_NAME" | sed -E 's/-v[0-9].*//')
+          echo "name=$COMPONENT" >> $GITHUB_OUTPUT
+
+      - name: Publish component
+        run: |
+          COMPONENT="${{ steps.component.outputs.name }}"
+          TAG="${{ steps.npm_tag.outputs.tag }}"
+          if [ "$TAG" = "latest" ]; then
+            VERSION_FILE="versions/main/${COMPONENT}.txt"
+          else
+            VERSION_FILE="versions/${TAG}/${COMPONENT}.txt"
+          fi
+          VERSION=$(cat $VERSION_FILE)
+          cd projects/$COMPONENT
+          npm version $VERSION --no-git-tag-version
+          npm publish --tag $TAG
