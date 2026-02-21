@@ -3,6 +3,7 @@ name: GitHub Pages - Check if build succeeds
 on:
   pull_request:
     branches:
+      - nightly
       - dev
       - main
 
