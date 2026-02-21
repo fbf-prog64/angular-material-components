@@ -1,0 +1,23 @@
+{
+  "bootstrap-sha": "d61e746b648dde3ff4f695948827fbd68ba071fd",
+  "packages": {
+    "projects/datetime-picker": {
+      "release-type": "node"
+    },
+    "projects/color-picker": {
+      "release-type": "node"
+    },
+    "projects/file-input": {
+      "release-type": "node"
+    }
+  },
+  "plugins": [
+    "node-workspace"
+  ],
+  "versioning": "prerelease",
+  "prerelease": true,
+  "prerelease-type": "dev",
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore: release ${version}",
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}
