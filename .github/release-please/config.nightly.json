@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    "projects/datetime-picker": {
+      "release-type": "node",
+      "version-file": "versions/nightly/datetime-picker.txt"
+    },
+    "projects/color-picker": {
+      "release-type": "node",
+      "version-file": "versions/nightly/color-picker.txt"
+    },
+    "projects/file-input": {
+      "release-type": "node",
+      "version-file": "versions/nightly/file-input.txt"
+    }
+  },
+  "bootstrap-sha": "d61e746b648dde3ff4f695948827fbd68ba071fd",
+  "prerelease": true,
+  "prerelease-type": "nightly"
+}

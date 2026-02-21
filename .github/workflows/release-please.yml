@@ -1,19 +1,43 @@
+name: Release Please
+
 on:
   push:
     branches:
+      - nightly
+      - dev
       - main
 
 permissions:
   contents: write
   pull-requests: write
 
-name: release-please
-
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: Determine config and manifest files
+        id: config
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          BASE_PATH=".github/release-please"
+          if [ "$BRANCH" = "main" ]; then
+            CONFIG="${BASE_PATH}/config.main.json"
+            MANIFEST="${BASE_PATH}/manifest.main.json"
+          elif [ "$BRANCH" = "dev" ]; then
+            CONFIG="${BASE_PATH}/config.dev.json"
+            MANIFEST="${BASE_PATH}/manifest.dev.json"
+          else
+            CONFIG="${BASE_PATH}/config.nightly.json"
+            MANIFEST="${BASE_PATH}/manifest.nightly.json"
+          fi
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "config=$CONFIG" >> $GITHUB_OUTPUT
+          echo "manifest=$MANIFEST" >> $GITHUB_OUTPUT
+
+      - name: Perform release
+        uses: googleapis/release-please-action@v4
         with:
+          target-branch: ${{ steps.config.outputs.branch }}
+          config-file: ${{ steps.config.outputs.config }}
+          manifest-file: ${{ steps.config.outputs.manifest }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          config-file: release-please-config.json
