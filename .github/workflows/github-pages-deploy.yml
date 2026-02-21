@@ -1,0 +1,105 @@
+name: GitHub Pages - Deploy
+
+on:
+  push:
+    branches:
+      - '**'
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: 'gh-pages-deploy'
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine section to deploy
+        id: vars
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          if [ "$BRANCH" = "main" ]; then
+            echo "folder=stable" >> $GITHUB_OUTPUT
+          elif [ "$BRANCH" = "dev" ]; then
+            echo "folder=dev" >> $GITHUB_OUTPUT
+          else
+            echo "folder=nightly" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout source
+        uses: actions/checkout@v6
+        with:
+          path: source
+          ref: ${{ steps.vars.outputs.branch }}
+
+      - name: Checkout gh-pages
+        id: gh-pages-checkout
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+
+      - name: Create gh-pages orphan branch if needed
+        if: steps.gh-pages-checkout.outcome == 'failure'
+        run: |
+          mkdir -p gh-pages
+          cd gh-pages
+          git init
+          git checkout --orphan gh-pages
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: "./source/package.json"
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+          cache-dependency-path: "./source/pnpm-lock.yaml"
+
+      - name: Install source dependencies
+        working-directory: ./source
+        run: pnpm install --frozen-lockfile
+
+      - name: Build source
+        working-directory: ./source
+        run: |
+          pnpm run build \
+            --base-href="/${{ github.event.repository.name }}/${{ steps.vars.outputs.folder }}/" \
+            --output-path="../temp-build"
+
+      - name: Prepare deployment
+        run: |
+          rm -rf ./gh-pages/${{ steps.vars.outputs.folder }}
+          cp -r ./temp-build/browser ./gh-pages/${{ steps.vars.outputs.folder }}
+
+      - name: Deploy to GitHub Pages
+        working-directory: ./gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "feat: update ${{ steps.vars.outputs.folder }} from ${{ steps.vars.outputs.branch }}"
+          if [ "${{ steps.gh-pages-checkout.outcome }}" == "success" ]; then
+            git pull --rebase origin gh-pages || (git rebase --abort && echo "Rebase failed" && exit 1)
+          fi
+          git push origin gh-pages
