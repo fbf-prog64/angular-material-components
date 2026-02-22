@@ -22,6 +22,10 @@
     "ngx-material-file-input"
   ],
   "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "build": "ng build -c=production"
+  },
   "peerDependencies": {
     "@angular/platform-browser": "^21",
     "@angular/common": "^21",

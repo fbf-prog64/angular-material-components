@@ -25,6 +25,10 @@
     "ngx-mat-timepicker"
   ],
   "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "build": "ng build -c=production"
+  },
   "peerDependencies": {
     "@angular/cdk": "^21",
     "@angular/common": "^21",

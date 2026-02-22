@@ -29,10 +29,10 @@ export class AppComponent {
 
   public nameApp = 'angular-material-components';
 
-  isHandset: boolean;
-  sidenavMode: 'side' | 'over' | 'push';
-  sidenavHasBackdrop: boolean;
-  sidenavOpened: boolean;
+  isHandset: boolean = false;
+  sidenavMode: 'side' | 'over' | 'push' = 'side';
+  sidenavHasBackdrop: boolean = false;
+  sidenavOpened: boolean = false;
 
   constructor() {
     this.breakpointObserver
