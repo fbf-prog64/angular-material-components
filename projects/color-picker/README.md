@@ -1,63 +1,88 @@
-# ColorPicker
+# Angular Material Color Picker
+## For Angular Material 21.x
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
+[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/@ngx-mce/color-picker)
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fcolor-picker.svg)](https://www.npmjs.com/package/@ngx-mce/color-picker)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/color-picker.svg)]()
 
-## Code scaffolding
+## Description
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This is a Color Picker for Angular Material projects.
 
-```bash
-ng generate component component-name
+<a href="https://buymeacoffee.com/fbf.prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+# Version control
+
+Choose the version corresponding to your Angular version:
+
+| Angular  | @ngx-mce/datetime-picker |
+| -------- | -------------------------|
+|    21    |           21.x           |
+| 15 -- 20 | Please use [GNURub's version](https://github.com/GNURub/angular-material-components) |
+|  7 -- 14 | Please use [h2qutc's version](https://github.com/h2qutc/angular-material-components) |
+
+# Color Picker in action
+
+See demo [here](https://stackblitz.com/edit/demo-ngx-mat-color-picker).
+
+![Color Picker in action](demo_color_picker.png)
+
+# How to use
+
+## Install
+
+```
+npm install --save  @ngx-mce/color-picker
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Configure
 
-```bash
-ng generate --help
+```
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@ngx-mce/color-picker';
+
+@NgModule({
+   ...
+   imports: [
+        ...
+        NgxMatColorPickerModule
+   ],
+   providers: [
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
+   ],
+   ...
+})
+export class AppModule { }
 ```
 
-## Building
+Check more details [here](src/app/demo-colorpicker/demo-colorpicker.module.ts).
 
-To build the library, run:
+## Using the component
 
-```bash
-ng build color-picker
+```
+<mat-form-field>
+    <input matInput [ngxMatColorPicker]="picker" [formControl]="colorCtr" [disabled]="disabled">
+    <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+    <ngx-mat-color-picker #picker [touchUi]="touchUi" [color]="color"></ngx-mat-color-picker>
+</mat-form-field>
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+### List of @Input
 
-### Publishing the Library
+| @Input       | Type    | Default value | Description                                                                                                                                                                  |
+| ------------ | ------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **disabled** | boolean | null          | If true, the picker is readonly and can't be modified                                                                                                                        |
+| **touchUi**  | boolean | false         | Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather than a popup and elements have more padding to allow for bigger touch targets. |
 
-Once the project is built, you can publish your library by following these steps:
+## Theming
 
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/color-picker
-   ```
+- @see @angular/material
+  [Using a pre-built theme](https://material.angular.io/guide/theming#using-a-pre-built-theme)
+- Add the Material Design icon font to your index.html
 
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
 ```
 
-## Running end-to-end tests
+## License
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT
