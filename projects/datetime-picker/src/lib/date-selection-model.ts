@@ -32,13 +32,13 @@ export type NgxExtractDateTypeFromSelection<T> =
  */
 export interface NgxDateSelectionModelChange<S> {
   /** New value for the selection. */
-  selection: S;
+  selection: S | null;
 
   /** Object that triggered the change. */
   source: unknown;
 
   /** Previous value */
-  oldValue?: S;
+  oldValue?: S | null;
 }
 
 /**
@@ -67,9 +67,9 @@ export abstract class NgxMatDateSelectionModel<S, D = NgxExtractDateTypeFromSele
    * @param value New selection that should be assigned.
    * @param source Object that triggered the selection change.
    */
-  updateSelection(value: S, source: unknown) {
-    const oldValue = (this as { selection: S }).selection;
-    (this as { selection: S }).selection = value;
+  updateSelection(value: S | null, source: unknown) {
+    const oldValue = (this as { selection: S | null }).selection;
+    (this as { selection: S | null }).selection = value;
     this._selectionChanged.next({ selection: value, source, oldValue });
   }
 

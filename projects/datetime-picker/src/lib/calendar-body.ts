@@ -43,7 +43,7 @@ export class NgxMatCalendarCell<D = any> {
 /** Event emitted when a date inside the calendar is triggered as a result of a user action. */
 export interface NgxMatCalendarUserEvent<D> {
   value: D;
-  event: Event;
+  event: Event | null;
 }
 
 let calendarBodyId = 1;

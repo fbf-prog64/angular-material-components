@@ -220,7 +220,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   protected abstract _assignValueToModel(model: D | null): void;
 
   /** Converts a value from the model into a native value for the input. */
-  protected abstract _getValueFromModel(modelValue: S): D | null;
+  protected abstract _getValueFromModel(modelValue: S | null): D | null;
 
   /** Combined form control validator for this input. */
   protected abstract _validator: ValidatorFn | null;
@@ -312,9 +312,10 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
     }
   }
 
-  _onInput(value: string) {
+  _onInput(event: Event) {
     const lastValueWasValid = this._lastValueValid;
-    let date = this._dateAdapter.parse(value, this._dateFormats.parse.dateInput);
+    const target = event.target as HTMLInputElement;
+    let date = this._dateAdapter.parse(target.value, this._dateFormats.parse.dateInput);
     this._lastValueValid = this._isValidValue(date);
     date = this._dateAdapter.getValidDateOrNull(date);
 
@@ -331,7 +332,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
     } else {
       // Call the CVA change handler for invalid values
       // since this is what marks the control as dirty.
-      if (value && !this.value) {
+      if (target.value && !this.value) {
         this._cvaOnChange(date);
       }
 

@@ -432,7 +432,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
       const previewRange = this._rangeStrategy.createPreview(
         value,
         this.selected as NgxDateRange<D>,
-        event,
+        event!,
       );
       this._previewStart = this._getCellCompareValue(previewRange.start);
       this._previewEnd = this._getCellCompareValue(previewRange.end);
@@ -442,7 +442,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
           this.activeDrag()!.value,
           this.selected as NgxDateRange<D>,
           value,
-          event,
+          event!,
         );
 
         if (dragRange) {
@@ -472,7 +472,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
         this.activeDrag()!.value,
         this.selected as NgxDateRange<D>,
         event.value,
-        event.event,
+        event.event!,
       );
 
       this.dragEnded.emit({

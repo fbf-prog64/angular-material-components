@@ -47,9 +47,9 @@ export interface NgxMatDatetimePickerContentData<D> {
       <mat-calendar
         #calendar
         [startView]="data.startView || 'month'"
-        [startAt]="selectedDate() || data.value"
-        [minDate]="data.minDate"
-        [maxDate]="data.maxDate"
+        [startAt]="selectedDate() || data.value!"
+        [minDate]="data.minDate!"
+        [maxDate]="data.maxDate!"
         [dateFilter]="data.dateFilter"
         [selected]="selectedDate()"
         (selectedChange)="onDateSelected($event)"
@@ -71,7 +71,7 @@ export interface NgxMatDatetimePickerContentData<D> {
             [stepSecond]="data.stepSecond ?? 1"
             [enableMeridian]="data.enableMeridian ?? false"
             [defaultTime]="data.defaultTime"
-            [disabled]="data.disabled">
+            [disabled]="data.disabled!">
           </ngx-mat-timepicker>
         </div>
       }
@@ -105,8 +105,8 @@ export interface NgxMatDatetimePickerContentData<D> {
   },
 })
 export class NgxMatDatetimePickerContentV2<D> implements OnInit, OnDestroy {
-  @ViewChild('calendar', { static: true }) calendar: MatCalendar<D>;
-  @ViewChild('timepicker', { static: false }) timepicker: NgxMatTimepickerComponent<D>;
+  @ViewChild('calendar', { static: true }) calendar!: MatCalendar<D>;
+  @ViewChild('timepicker', { static: false }) timepicker!: NgxMatTimepickerComponent<D>;
 
   readonly dialogRef = inject(MatDialogRef<NgxMatDatetimePickerContentV2<D>>);
   readonly data = inject<NgxMatDatetimePickerContentData<D>>(MAT_DIALOG_DATA);

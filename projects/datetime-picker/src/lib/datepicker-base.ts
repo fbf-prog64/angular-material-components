@@ -122,8 +122,8 @@ export const NGX_MAT_DATEPICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
     '[@transformPanel]': '_animationState',
     '(@transformPanel.start)': '_handleAnimationEvent($event)',
     '(@transformPanel.done)': '_handleAnimationEvent($event)',
-    '[class.mat-datepicker-content-touch]': 'datepicker.touchUi',
-    '[class.mat-datepicker-content-touch-with-time]': '!datepicker.hideTime',
+    '[class.mat-datepicker-content-touch]': 'datepicker!.touchUi',
+    '[class.mat-datepicker-content-touch-with-time]': '!datepicker!.hideTime',
   },
   animations: [
     ngxMatDatepickerAnimations.transformPanel,
@@ -148,30 +148,30 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   implements OnInit, AfterViewInit, OnDestroy
 {
   private _subscriptions = new Subscription();
-  private _model: NgxMatDateSelectionModel<S, D>;
+  private _model: NgxMatDateSelectionModel<S, D> | null = null;
   /** Reference to the internal calendar component. */
   _calendar = viewChild.required<NgxMatCalendar<D>>(NgxMatCalendar);
 
   /** Reference to the datepicker that created the overlay. */
-  datepicker: NgxMatDatepickerBase<any, S, D>;
+  datepicker: NgxMatDatepickerBase<any, S, D> | null = null;
 
   /** Start of the comparison range. */
-  comparisonStart: D | null;
+  comparisonStart: D | null = null;
 
   /** End of the comparison range. */
-  comparisonEnd: D | null;
+  comparisonEnd: D | null = null;
 
   /** ARIA Accessible name of the `<input matStartDate/>` */
-  startDateAccessibleName: string | null;
+  startDateAccessibleName: string | null = null;
 
   /** ARIA Accessible name of the `<input matEndDate/>` */
-  endDateAccessibleName: string | null;
+  endDateAccessibleName: string | null = null;
 
   /** Whether the datepicker is above or below the input. */
-  _isAbove: boolean;
+  _isAbove: boolean = false;
 
   /** Current state of the animation. */
-  _animationState: 'enter-dropdown' | 'enter-dialog' | 'void';
+  _animationState: 'enter-dropdown' | 'enter-dialog' | 'void' = 'void';
 
   /** Emits when an animation has finished. */
   readonly _animationDone = new Subject<void>();
@@ -183,13 +183,13 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   _closeButtonText: string;
 
   /** Whether the close button currently has focus. */
-  _closeButtonFocused: boolean;
+  _closeButtonFocused: boolean = false;
 
   /** Portal with projected action buttons. */
   _actionsPortal: TemplatePortal | null = null;
 
   /** Id of the label for the `role="dialog"` element. */
-  _dialogLabelId: string | null;
+  _dialogLabelId: string | null = null;
 
   @Input()
   color: ThemePalette = 'primary';
@@ -209,7 +209,7 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
     return this._calendar().currentView() == 'month';
   }
 
-  _modelTime: D | null;
+  _modelTime: D | null = null;
 
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
@@ -231,12 +231,12 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   }
 
   ngOnInit() {
-    this._animationState = this.datepicker.touchUi ? 'enter-dialog' : 'enter-dropdown';
+    this._animationState = this.datepicker!.touchUi ? 'enter-dialog' : 'enter-dropdown';
   }
 
   ngAfterViewInit() {
     this._subscriptions.add(
-      this.datepicker.stateChanges.subscribe(() => {
+      this.datepicker!.stateChanges.subscribe(() => {
         this._changeDetectorRef.markForCheck();
       }),
     );
@@ -260,15 +260,15 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
     this._updateUserSelectionWithCalendarUserEvent(event);
 
     // Delegate closing the overlay to the actions.
-    if (this.datepicker.hideTime) {
+    if (this.datepicker!.hideTime) {
       if ((!this._model || this._model.isComplete()) && !this._actionsPortal) {
-        this.datepicker.close();
+        this.datepicker?.close();
       }
     }
   }
 
   private _updateUserSelectionWithCalendarUserEvent(event: NgxMatCalendarUserEvent<D | null>) {
-    const selection = this._model.selection;
+    const selection = this._model!.selection;
     const value = event.value;
     const isRange = selection instanceof NgxDateRange;
 
@@ -281,22 +281,22 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
       const newSelection = this._rangeSelectionStrategy.selectionFinished(
         value,
         selection as unknown as NgxDateRange<D>,
-        event.event,
+        event.event!,
       );
-      this._model.updateSelection(newSelection as unknown as S, this);
+      this._model?.updateSelection(newSelection as unknown as S, this);
     } else {
       const isSameTime = this._dateAdapter.sameTime(selection as unknown as D, value);
       const isSameDate = this._dateAdapter.sameDate(value, selection as unknown as D);
       const isSame = isSameDate && isSameTime;
 
       if (value && (isRange || !isSame)) {
-        this._model.add(value);
+        this._model?.add(value);
       }
     }
   }
 
   _handleUserDragDrop(event: NgxMatCalendarUserEvent<NgxDateRange<D>>) {
-    this._model.updateSelection(event.value as unknown as S, this);
+    this._model?.updateSelection(event.value as unknown as S, this);
   }
 
   _startExitAnimation() {
@@ -313,14 +313,14 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   }
 
   _getSelected() {
-    this._modelTime = this._model.selection as unknown as D;
-    return this._model.selection as unknown as D | NgxDateRange<D> | null;
+    this._modelTime = this._model!.selection as unknown as D;
+    return this._model!.selection as unknown as D | NgxDateRange<D> | null;
   }
 
   /** Applies the current pending selection to the global model. */
   _applyPendingSelection() {
     if (this._model !== this._globalModel) {
-      this._globalModel.updateSelection(this._model.selection, this);
+      this._globalModel.updateSelection(this._model!.selection, this);
     }
   }
 
@@ -424,7 +424,7 @@ export abstract class NgxMatDatepickerBase<
     this._startAt = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
 
-  private _startAt: D | null;
+  private _startAt: D | null = null;
 
   /** The view that the calendar should start in. */
   startView = input<'month' | 'year' | 'multi-year'>('month');
@@ -486,7 +486,7 @@ export abstract class NgxMatDatepickerBase<
     }
   }
 
-  public _disabled: boolean;
+  public _disabled: boolean = false;
 
   /** Preferred position of the datepicker in the X axis. */
   readonly xPosition = input<NgxDatepickerDropdownPositionX>('start');
@@ -541,7 +541,7 @@ export abstract class NgxMatDatepickerBase<
    * Supports string and string array values, similar to `ngClass`.
    */
   @Input()
-  get panelClass(): string | string[] {
+  get panelClass(): string | string[] | null {
     return this._panelClass;
   }
 
@@ -549,7 +549,7 @@ export abstract class NgxMatDatepickerBase<
     this._panelClass = coerceStringArray(value);
   }
 
-  private _panelClass: string[];
+  private _panelClass: string[] | null = null;
 
   /** Whether the calendar is open. */
   @Input()
@@ -645,11 +645,11 @@ export abstract class NgxMatDatepickerBase<
     this._disableMinute = value;
   }
 
-  public _disableMinute: boolean;
+  public _disableMinute: boolean = false;
 
   /** Step second */
   @Input()
-  get defaultTime(): number[] {
+  get defaultTime(): number[] | null {
     return this._defaultTime;
   }
 
@@ -657,7 +657,7 @@ export abstract class NgxMatDatepickerBase<
     this._defaultTime = value;
   }
 
-  public _defaultTime: number[];
+  public _defaultTime: number[] | null = null;
 
   /** The id for the datepicker calendar. */
   id: string = `mat-datepicker-${datepickerUid++}`;
@@ -677,10 +677,10 @@ export abstract class NgxMatDatepickerBase<
   }
 
   /** A reference to the overlay into which we've rendered the calendar. */
-  private _overlayRef: OverlayRef | null;
+  private _overlayRef: OverlayRef | null = null;
 
   /** Reference to the component instance rendered in the overlay. */
-  private _componentRef: ComponentRef<NgxMatDatepickerContent<S, D>> | null;
+  private _componentRef: ComponentRef<NgxMatDatepickerContent<S, D>> | null = null;
 
   /** The element that was focused before the datepicker was opened. */
   private _focusedElementBeforeOpen: HTMLElement | null = null;
@@ -689,10 +689,10 @@ export abstract class NgxMatDatepickerBase<
   private _backdropHarnessClass = `${this.id}-backdrop`;
 
   /** Currently-registered actions portal. */
-  private _actionsPortal: TemplatePortal | null;
+  private _actionsPortal: TemplatePortal | null = null;
 
   /** The input element this datepicker is associated with. */
-  datepickerInput: C;
+  datepickerInput!: C;
 
   /** Emits when the datepicker's state changes. */
   readonly stateChanges = new Subject<void>();
