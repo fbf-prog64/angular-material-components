@@ -4,13 +4,13 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "color-picker": [
+      "@ngx-mce/color-picker": [
         "./dist/color-picker"
       ],
-      "datetime-picker": [
+      "@ngx-mce/datetime-picker": [
         "./dist/datetime-picker"
       ],
-      "file-input": [
+      "@ngx-mce/file-input": [
         "./dist/file-input"
       ]
     },
