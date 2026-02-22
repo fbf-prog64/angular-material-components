@@ -60,8 +60,8 @@ export class DemoDatetimeComponent {
   public showSeconds = false;
   public touchUi = false;
   public enableMeridian = false;
-  public minDate: Date;
-  public maxDate: Date;
+  public minDate: Date | null = null;
+  public maxDate: Date | null = null;
   public stepHour = 1;
   public stepMinute = 1;
   public stepSecond = 1;
@@ -69,7 +69,7 @@ export class DemoDatetimeComponent {
   public disableMinute = false;
   public hideTime = false;
 
-  public dateControl = new FormControl<Date>(null);
+  public dateControl = new FormControl<Date | null>(null);
 
   public options = [
     { value: true, label: 'True' },
@@ -236,7 +236,7 @@ providers: [
   }
 
   closePicker() {
-    this.pickerElement().close();
+    this.pickerElement()?.close();
   }
 
   private _setMinDate() {

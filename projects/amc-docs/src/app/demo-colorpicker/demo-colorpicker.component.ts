@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
   FormControl,
   FormsModule,
   ReactiveFormsModule,
@@ -44,7 +43,6 @@ const CUSTOM_MAT_COLOR_FORMATS: MatColorFormats = {
     MatSelectModule,
     MatTabsModule,
     NgxMatColorPickerComponent,
-    NgxMatColorPickerComponent,
     NgxMatColorPickerInput,
     NgxMatColorToggleComponent,
     NgxMatHighlightDirective,
@@ -57,7 +55,7 @@ export class DemoColorpickerComponent {
   public color: ThemePalette = 'primary';
   public touchUi = false;
 
-  colorCtr: AbstractControl = new FormControl(new Color(0, 255, 255), [Validators.required]);
+  colorCtr: FormControl = new FormControl(new Color(0, 255, 255), [Validators.required]);
 
   public options = [
     { value: true, label: 'True' },

@@ -39,7 +39,7 @@ export class DemoFileInputComponent implements OnInit {
   color: ThemePalette = 'primary';
   disabled: boolean = false;
   multiple: boolean = false;
-  accept: string;
+  accept: string = "";
 
   fileControl: FormControl;
   file2Control: FormControl;
@@ -58,7 +58,7 @@ export class DemoFileInputComponent implements OnInit {
     '.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   ];
 
-  public files;
+  public files: any;
 
   code3 = `<mat-form-field>
   <ngx-mat-file-input [formControl]="fileControl" [multiple]="multiple" [accept]="accept" [color]="color">

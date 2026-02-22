@@ -198,9 +198,9 @@ import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
   `]
 })
 export class DemoDatetimeV2Component {
-  datetimeControl = new FormControl(new Date());
-  dateOnlyControl = new FormControl(null);
-  fullDatetimeControl = new FormControl(null);
+  datetimeControl = new FormControl<Date>(new Date());
+  dateOnlyControl = new FormControl<Date | null>(null);
+  fullDatetimeControl = new FormControl<Date | null>(null);
 
   public code1 = `
   import {
@@ -239,7 +239,10 @@ export class DemoDatetimeV2Component {
   protected readonly minDate = toSignal(this.datetimeControl.valueChanges, { initialValue: new Date() });
   protected readonly maxDate = computed(() => {
     const minDate = this.minDate();
-    return new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate() + 32, minDate.getHours(), minDate.getMinutes(), minDate.getSeconds());
+    return new Date(
+      minDate!.getFullYear(), minDate!.getMonth(), minDate!.getDate() + 32,
+      minDate!.getHours(), minDate!.getMinutes(), minDate!.getSeconds()
+    );
   });
 
   constructor() {
