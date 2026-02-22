@@ -1,6 +1,6 @@
 {
   "name": "@ngx-mce/color-picker",
-  "version": "21.1.1",
+  "version": "21.2.0-next.1",
   "description": "Angular Material Color Picker",
   "author": "Felipe B.",
   "repository": {

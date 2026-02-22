@@ -1,6 +1,6 @@
 {
   "name": "@ngx-mce/datetime-picker",
-  "version": "21.1.1",
+  "version": "21.2.0-next.1",
   "description": "Angular Material Datetime Picker",
   "author": "Felipe B.",
   "repository": {
