@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter } from '@angular/material/core';
+import { DateAdapter, ThemePalette } from '@angular/material/core';
 import { MatCalendar, MatCalendarView } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -19,7 +19,7 @@ import { NgxMatTimepickerComponent } from './timepicker.component';
 
 export interface NgxMatDatetimePickerContentData<D> {
   datepicker: any; // Reference to the main datepicker component
-  color?: string;
+  color?: ThemePalette;
   touchUi?: boolean;
   hideTime?: boolean;
   showSpinners?: boolean;
@@ -63,7 +63,7 @@ export interface NgxMatDatetimePickerContentData<D> {
             #timepicker
             [ngModel]="selectedDateTime()"
             (ngModelChange)="onTimeChanged($event)"
-            [color]="data.color"
+            [color]="data.color!"
             [showSpinners]="data.showSpinners ?? true"
             [showSeconds]="data.showSeconds ?? false"
             [stepHour]="data.stepHour ?? 1"

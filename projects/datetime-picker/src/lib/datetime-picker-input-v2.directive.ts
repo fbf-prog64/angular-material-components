@@ -52,12 +52,12 @@ export const NGX_MAT_DATETIME_PICKER_VALIDATORS: any = {
   host: {
     class: 'ngx-mat-datetime-picker-input',
     '[attr.aria-haspopup]': 'ngxMatDatetimePicker ? "dialog" : null',
-    '[attr.aria-owns]': '(ngxMatDatetimePicker?.opened && ngxMatDatetimePicker.id) || null',
-    '[attr.min]': 'min ? _dateAdapter.toIso8601(min) : null',
-    '[attr.max]': 'max ? _dateAdapter.toIso8601(max) : null',
+    '[attr.aria-owns]': '(ngxMatDatetimePicker?.opened && ngxMatDatetimePicker?.id) || null',
+    '[attr.min]': 'min ? _dateAdapter?.toIso8601(min) : null',
+    '[attr.max]': 'max ? _dateAdapter?.toIso8601(max) : null',
     '[attr.data-mat-calendar]': 'ngxMatDatetimePicker ? ngxMatDatetimePicker.id : null',
     '[disabled]': 'disabled',
-    '(input)': '_onInput($event.target.value)',
+    '(input)': '_onInput($event)',
     '(change)': '_onChange()',
     '(blur)': '_onBlur()',
     '(keydown)': '_onKeydown($event)',
@@ -82,7 +82,7 @@ export class NgxMatDatetimePickerInputV2<D>
   // Reference to NgControl - will be set manually to avoid circular dependency
   public ngControl: NgControl | null = null;
 
-  @Input() ngxMatDatetimePicker: NgxMatDatetimePickerV2<D>;
+  @Input() ngxMatDatetimePicker: NgxMatDatetimePickerV2<D> | null = null;
 
   /** The value of the input. */
   @Input()
@@ -120,17 +120,17 @@ export class NgxMatDatetimePickerInputV2<D>
 
   /** Function that can be used to filter out dates within the datepicker. */
   @Input()
-  get dateFilter(): (date: D) => boolean {
+  get dateFilter(): (date: D | null) => boolean {
     return this._dateFilter();
   }
-  set dateFilter(value: (date: D) => boolean) {
+  set dateFilter(value: (date: D | null) => boolean) {
     const wasMatchingValue = this._matchesFilter(this.value);
     this._dateFilter.set(value);
     if (this._matchesFilter(this.value) !== wasMatchingValue) {
       this._validatorOnChange();
     }
   }
-  private readonly _dateFilter = signal<(date: D) => boolean>(() => true);
+  private readonly _dateFilter = signal<(date: D | null) => boolean>(() => true);
 
   /** Whether the datepicker-input is disabled. */
   @Input()
@@ -331,10 +331,11 @@ export class NgxMatDatetimePickerInputV2<D>
     }
   }
 
-  _onInput(value: string): void {
-    const parsedDate = this._dateAdapter.parse(value, this._dateFormats.display.dateInput);
-    this._lastValueValid = this._dateAdapter.isValid(parsedDate);
-    let date = this._dateAdapter.getValidDateOrNull(parsedDate);
+  _onInput(event: Event): void {
+    const target = event?.target as HTMLInputElement;
+    const parsedDate = this._dateAdapter?.parse(target.value, this._dateFormats!.display.dateInput);
+    this._lastValueValid = this._dateAdapter?.isValid(parsedDate)!;
+    let date = this._dateAdapter?.getValidDateOrNull(parsedDate);
 
     // Update internal value
     this._value.set(date);
@@ -370,9 +371,9 @@ export class NgxMatDatetimePickerInputV2<D>
   /** Formats a value and sets it on the input element. */
   private _formatValue(value: D | null): void {
     const formattedValue = value
-      ? this._dateAdapter.format(value, this._dateFormats.display.dateInput)
+      ? this._dateAdapter?.format(value, this._dateFormats!.display.dateInput)
       : '';
-    this._elementRef.nativeElement.value = formattedValue;
+    this._elementRef.nativeElement.value = formattedValue!;
   }
 
   /** Assigns a value to the model. */
