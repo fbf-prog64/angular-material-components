@@ -16,7 +16,7 @@ import { Color } from '../../models';
 export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit {
   readonly colorChanged = output<Color>();
   readonly theme = input<ThemePalette>();
-  readonly color = signal<Color>(null);
+  readonly color = signal<Color | null>(null);
 
   @Input({
     alias: 'color',
@@ -25,13 +25,13 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
     this.color.set(color);
   }
 
-  canvas: HTMLCanvasElement;
+  canvas: HTMLCanvasElement | null = null;
 
   elementId: string;
 
-  ctx: CanvasRenderingContext2D;
-  width: number;
-  height: number;
+  ctx: CanvasRenderingContext2D | null = null;
+  width: number = 0;
+  height: number = 0;
 
   x: number = 0;
   y: number = 0;
@@ -61,8 +61,8 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
   }
 
   protected draw() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.rect(0, 0, this.width, this.height);
+    this.ctx?.clearRect(0, 0, this.width, this.height);
+    this.ctx?.rect(0, 0, this.width, this.height);
     this.fillGradient();
     if (this.y != 0) {
       this.redrawIndicator(this.x, this.y);
@@ -74,7 +74,7 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
     this.changeColor(e);
 
     this.zone.runOutsideAngular(() => {
-      this.canvas.addEventListener('mousemove', this.onMousemove.bind(this));
+      this.canvas?.addEventListener('mousemove', this.onMousemove.bind(this));
     });
   }
 
@@ -88,7 +88,7 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
 
   public onMouseup(e: MouseEvent) {
     this.drag = false;
-    this.canvas.removeEventListener('mousemove', this.onMousemove);
+    this.canvas?.removeEventListener('mousemove', this.onMousemove);
   }
 
   public emitChange(color: Color) {
