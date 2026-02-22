@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MaxSizeValidator, NgxMatFileInputComponent } from '../../../projects/file-input/src';
+import { MaxSizeValidator, NgxMatFileInputComponent } from '@ngx-mce/file-input';
 import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
 
 @Component({

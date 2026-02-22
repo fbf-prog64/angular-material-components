@@ -21,7 +21,7 @@ import {
   NgxMatColorPickerComponent,
   NgxMatColorPickerInput,
   NgxMatColorToggleComponent,
-} from 'projects/color-picker/src/public-api';
+} from '@ngx-mce/color-picker';
 import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
 
 const CUSTOM_MAT_COLOR_FORMATS: MatColorFormats = {

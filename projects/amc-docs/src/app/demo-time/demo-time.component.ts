@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { NgxMatTimepickerComponent } from '../../../projects/datetime-picker/src/lib/timepicker.component';
+import { NgxMatTimepickerComponent } from '@ngx-mce/datetime-picker';
 import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
 
 @Component({

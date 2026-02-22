@@ -18,7 +18,7 @@ import {
   NgxMatDatepickerInput,
   NgxMatDatepickerToggle,
   NgxMatDatetimepicker,
-} from 'projects/datetime-picker/src';
+} from '@ngx-mce/datetime-picker';
 import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
 
 @Component({

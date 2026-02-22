@@ -5,8 +5,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NgxMatDatetimePickerInputV2 } from '../../../projects/datetime-picker/src/lib/datetime-picker-input-v2.directive';
-import { NgxMatDatetimePickerV2 } from '../../../projects/datetime-picker/src/lib/datetime-picker-v2.component';
+import { NgxMatDatetimePickerInputV2, NgxMatDatetimePickerV2 } from '@ngx-mce/datetime-picker';
 import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
 
 @Component({
