@@ -26,6 +26,11 @@
     "ng": "ng",
     "build": "ng build -c=production"
   },
+  "publishConfig": {
+    "directory": "../../dist/color-picker",
+    "provenance": true,
+    "access": "public"
+  },
   "peerDependencies": {
     "@angular/platform-browser": "^21",
     "@angular/common": "^21",

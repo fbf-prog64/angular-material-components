@@ -29,6 +29,11 @@
     "ng": "ng",
     "build": "ng build -c=production"
   },
+  "publishConfig": {
+    "directory": "../../dist/datetime-picker",
+    "provenance": true,
+    "access": "public"
+  },
   "peerDependencies": {
     "@angular/cdk": "^21",
     "@angular/common": "^21",

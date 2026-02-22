@@ -99,6 +99,7 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    publishDirectory: ../../dist/color-picker
 
   projects/datetime-picker:
     dependencies:
@@ -123,6 +124,7 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    publishDirectory: ../../dist/datetime-picker
 
   projects/file-input:
     dependencies:
@@ -147,6 +149,7 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+    publishDirectory: ../../dist/file-input
 
 packages:
 
