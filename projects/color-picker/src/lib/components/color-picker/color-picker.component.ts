@@ -61,7 +61,7 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
   host: {
     class: 'ngx-mat-colorpicker-content',
     '[@transformPanel]': '"enter"',
-    '[class.ngx-mat-colorpicker-content-touch]': 'picker.touchUi',
+    '[class.ngx-mat-colorpicker-content-touch]': 'picker?.touchUi',
   },
   exportAs: 'ngxMatColorPickerContent',
   encapsulation: ViewEncapsulation.None,
@@ -73,8 +73,8 @@ export class NgxMatColorPickerContentComponent {
   /** Reference to the internal calendar component. */
   _palette = viewChild(NgxMatColorPaletteComponent);
 
-  picker: NgxMatColorPickerComponent;
-  _isAbove: boolean;
+  picker: NgxMatColorPickerComponent | null = null;
+  _isAbove: boolean = false;
   color: ThemePalette;
 
   constructor() {}
@@ -112,7 +112,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
       this._disabledChange.next(newValue);
     }
   }
-  private _disabled: boolean;
+  private _disabled: boolean = false;
 
   @Input()
   get touchUi(): boolean {
@@ -164,24 +164,24 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   }
 
   /** The currently selected date. */
-  get _selected(): Color {
+  get _selected(): Color | null {
     return this._validSelected;
   }
   set _selected(value: Color) {
     this._validSelected = value;
   }
-  private _validSelected: Color = null;
+  private _validSelected: Color | null = null;
 
-  _pickerInput: NgxMatColorPickerInput;
+  _pickerInput: NgxMatColorPickerInput | null = null;
   /** A reference to the overlay when the picker is opened as a popup. */
-  _popupRef: OverlayRef;
+  _popupRef: OverlayRef | null = null;
 
   /** A reference to the dialog when the picker is opened as a dialog. */
-  private _dialogRef: MatDialogRef<NgxMatColorPickerContentComponent> | null;
+  private _dialogRef: MatDialogRef<NgxMatColorPickerContentComponent> | null = null;
   /** Reference to the component instantiated in popup mode. */
-  private _popupComponentRef: ComponentRef<NgxMatColorPickerContentComponent> | null;
+  private _popupComponentRef: ComponentRef<NgxMatColorPickerContentComponent> | undefined | null = null;
   /** A portal containing the content for this picker. */
-  private _portal: ComponentPortal<NgxMatColorPickerContentComponent>;
+  private _portal: ComponentPortal<NgxMatColorPickerContentComponent> | null = null;
 
   /** Emits when the datepicker is disabled. */
   readonly _disabledChange = new EventEmitter<boolean>();
@@ -223,7 +223,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   select(nextVal: Color): void {
     let oldValue = this._selected;
     this._selected = nextVal;
-    if (!this._adapter.sameColor(oldValue, this._selected)) {
+    if (!this._adapter.sameColor(oldValue!, this._selected)) {
       this._selectedChanged.next(nextVal);
     }
   }
@@ -292,9 +292,9 @@ export class NgxMatColorPickerComponent implements OnDestroy {
       this._createPopup();
     }
 
-    if (!this._popupRef.hasAttached()) {
-      this._popupComponentRef = this._popupRef.attach(this._portal);
-      this._popupComponentRef.instance.picker = this;
+    if (!this._popupRef?.hasAttached()) {
+      this._popupComponentRef = this._popupRef?.attach(this._portal);
+      this._popupComponentRef!.instance.picker = this;
       this._setColor();
 
       // Update the position once the calendar has rendered.
@@ -302,7 +302,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
         .asObservable()
         .pipe(take(1))
         .subscribe(() => {
-          this._popupRef.updatePosition();
+          this._popupRef?.updatePosition();
         });
     }
   }
@@ -329,7 +329,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
           // Closing on alt + up is only valid when there's an input associated with the datepicker.
           return (
             event.keyCode === ESCAPE ||
-            (this._pickerInput && event.altKey && event.keyCode === UP_ARROW)
+            (this._pickerInput! && event.altKey && event.keyCode === UP_ARROW)
           );
         }),
       ),
@@ -398,7 +398,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   private _createPopupPositionStrategy(): PositionStrategy {
     return this._overlay
       .position()
-      .flexibleConnectedTo(this._pickerInput.getConnectedOverlayOrigin())
+      .flexibleConnectedTo(this._pickerInput!.getConnectedOverlayOrigin())
       .withTransformOriginOn('.ngx-mat-colorpicker-content')
       .withFlexibleDimensions(false)
       .withViewportMargin(8)

@@ -18,7 +18,7 @@ export class NgxMatColorCollectionComponent {
   readonly colorChanged = output<Color>();
 
   @Input()
-  set color(c: Color) {
+  set color(c: Color | undefined | null) {
     if (c) {
       this.selectedColor.set(c.toHexString());
     }

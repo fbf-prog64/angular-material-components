@@ -16,12 +16,12 @@ import { Color } from '../../models';
 export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit {
   readonly colorChanged = output<Color>();
   readonly theme = input<ThemePalette>();
-  readonly color = signal<Color | null>(null);
+  readonly color = signal<Color | undefined | null>(null);
 
   @Input({
     alias: 'color',
   })
-  set setColor(color: Color) {
+  set setColor(color: Color | undefined | null) {
     this.color.set(color);
   }
 

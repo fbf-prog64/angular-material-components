@@ -31,9 +31,9 @@ export class NgxMatColorpickerToggleIcon {}
     // Always set the tabindex to -1 so that it doesn't overlap with any custom tabindex the
     // consumer may have provided, while still being able to receive focus.
     '[attr.tabindex]': '-1',
-    '[class.ngx-mat-color-toggle-active]': 'picker && picker()?.opened',
-    '[class.mat-accent]': 'picker && picker()?.color === "accent"',
-    '[class.mat-warn]': 'picker && picker()?.color === "warn"',
+    '[class.ngx-mat-color-toggle-active]': 'picker()?.opened',
+    '[class.mat-accent]': 'picker()?.color === "accent"',
+    '[class.mat-warn]': 'picker()?.color === "warn"',
     '(focus)': '_button()?.focus()',
   },
   exportAs: 'ngxMatColorPickerToggle',
@@ -46,15 +46,16 @@ export class NgxMatColorToggleComponent implements AfterContentInit, OnDestroy {
   picker = input<NgxMatColorPickerComponent>(undefined, { alias: 'for' });
   tabIndex = input<number>();
 
-  @Input() get disabled(): boolean {
+  @Input() get disabled(): boolean | undefined { 
     if (this._disabled == null && this.picker()) {
-      return this.picker().disabled;
+      return this.picker()?.disabled;
     }
+    return undefined;
   }
   set disabled(value: boolean) {
     this._disabled = value;
   }
-  private _disabled: boolean;
+  private _disabled: boolean = false;
 
   /** Whether ripples on the toggle should be disabled. */
   disableRipple = input<boolean>();
@@ -79,7 +80,7 @@ export class NgxMatColorToggleComponent implements AfterContentInit, OnDestroy {
 
   public open(event: Event): void {
     if (this.picker() && !this.disabled) {
-      this.picker().open();
+      this.picker()?.open();
       event.stopPropagation();
     }
   }
