@@ -6,5 +6,151 @@
   },
   "newProjectRoot": "projects",
   "projects": {
+    "amc-docs": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/amc-docs",
+      "sourceRoot": "projects/amc-docs/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/amc-docs/src/main.ts",
+            "tsConfig": "projects/amc-docs/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/amc-docs/public"
+              }
+            ],
+            "styles": [
+              "projects/amc-docs/src/styles.scss"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "amc-docs:build:production"
+            },
+            "development": {
+              "buildTarget": "amc-docs:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    },
+    "color-picker": {
+      "projectType": "library",
+      "root": "projects/color-picker",
+      "sourceRoot": "projects/color-picker/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/color-picker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/color-picker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/color-picker/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "datetime-picker": {
+      "projectType": "library",
+      "root": "projects/datetime-picker",
+      "sourceRoot": "projects/datetime-picker/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/datetime-picker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/datetime-picker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/datetime-picker/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "file-input": {
+      "projectType": "library",
+      "root": "projects/file-input",
+      "sourceRoot": "projects/file-input/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/file-input/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/file-input/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/file-input/tsconfig.spec.json"
+          }
+        }
+      }
+    }
   }
 }
