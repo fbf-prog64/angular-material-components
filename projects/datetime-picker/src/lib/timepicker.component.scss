@@ -1,0 +1,95 @@
+$sizeButtonMeridian: 36px;
+$inputWidth: 24px;
+
+.ngx-mat-timepicker {
+  form {
+
+    .ngx-mat-timepicker-table {
+      .ngx-mat-timepicker-tbody {
+        tr {
+          td {
+            text-align: center;
+
+            &.ngx-mat-timepicker-spacer {
+              font-weight: bold;
+            }
+
+            &.ngx-mat-timepicker-meridian {
+              .mdc-button {
+                min-width: 64px;
+                line-height: $sizeButtonMeridian;
+                border-radius: 4px;
+                min-width: 0;
+                border-radius: 50%;
+                width: $sizeButtonMeridian;
+                height: $sizeButtonMeridian;
+                padding: 0;
+                flex-shrink: 0;
+              }
+            }
+
+            .mat-mdc-icon-button {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              height: var(--mat-icon-button-state-layer-size, 40px);
+              width: var(--mdc-icon-button-state-layer-size, 40px);
+              line-height: var(--mdc-icon-button-state-layer-size, 40px);
+              font-size: var(--mdc-icon-button-icon-size, 24px);
+              color: var(--mdc-icon-button-icon-color, var(--mat-sys-on-surface-variant));
+              padding: calc(calc(var(--mdc-icon-button-state-layer-size, 40px) - var(--mdc-icon-button-icon-size, 24px)) / 2);
+
+              .mat-icon {
+                font-size: var(--mdc-icon-button-icon-size, 24px);
+              }
+
+              svg {
+                width: var(--mdc-icon-button-icon-size, 24px);
+                height: var(--mdc-icon-button-icon-size, 24px);
+                vertical-align: baseline;
+              }
+            }
+
+            .mat-mdc-icon-button:disabled,
+            .mat-mdc-icon-button.mat-mdc-button-disabled {
+              cursor: default;
+              pointer-events: none;
+              color: var(--mdc-icon-button-disabled-icon-color,
+                  color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent));
+            }
+
+            .mat-mdc-form-field {
+              width: $inputWidth;
+              max-width: $inputWidth;
+              text-align: center;
+
+              &.mat-focused,
+              &:hover {
+                .mdc-text-field--filled {
+                  .mat-mdc-form-field-focus-overlay {
+                    background-color: transparent;
+                  }
+                }
+              }
+
+              .mdc-text-field--filled {
+                background-color: transparent !important;
+                padding: 0 !important;
+
+                .mat-mdc-form-field-infix {
+                  padding: 4px 0;
+                  min-height: 1px !important;
+
+                  input {
+                    text-align: center;
+                    font-size: 14px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

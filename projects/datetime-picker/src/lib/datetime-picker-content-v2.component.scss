@@ -1,0 +1,96 @@
+.ngx-mat-datetime-picker-content-v2 {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  min-width: 296px;
+
+  .ngx-mat-datetime-picker-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ngx-mat-datetime-picker-time {
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+    .mat-dark & {
+      border-top-color: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  .ngx-mat-datetime-picker-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 8px 16px 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+    .mat-dark & {
+      border-top-color: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  &.ngx-mat-datetime-picker-content-touch {
+    min-width: 320px;
+
+    .ngx-mat-datetime-picker-time {
+      padding: 24px;
+    }
+
+    .ngx-mat-datetime-picker-actions {
+      padding: 16px 24px 24px;
+    }
+  }
+
+  // Calendar specific adjustments
+  mat-calendar {
+    display: block;
+
+    .mat-calendar-header {
+      padding: 8px 8px 0 8px;
+    }
+
+    .mat-calendar-content {
+      padding: 0 8px 8px 8px;
+    }
+  }
+
+  // Timepicker specific adjustments
+  ngx-mat-timepicker {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .ngx-mat-timepicker-container {
+      justify-content: center;
+    }
+  }
+}
+
+// Animation classes for dialog
+.ngx-mat-datetime-picker-content-enter {
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 150ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 150ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ngx-mat-datetime-picker-content-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ngx-mat-datetime-picker-content-exit {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ngx-mat-datetime-picker-content-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+}

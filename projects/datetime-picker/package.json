@@ -1,9 +1,37 @@
 {
-  "name": "datetime-picker",
-  "version": "0.0.1",
+  "name": "@ngx-mce/datetime-picker",
+  "version": "21.1.1",
+  "description": "Angular Material Datetime Picker",
+  "author": "Felipe B.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fbf-prog64/angular-material-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fbf-prog64/angular-material-components/issues"
+  },
+  "homepage": "https://github.com/fbf-prog64/angular-material-components",
+  "keywords": [
+    "angular",
+    "angular-material",
+    "angular material datetime picker",
+    "angular material time picker",
+    "datetime-picker",
+    "datepicker",
+    "timepicker",
+    "ngx-mat",
+    "ngx-mat-datetime-picker",
+    "ngx-material-datetime-picker",
+    "ngx-mat-timepicker"
+  ],
+  "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^21.1.0",
-    "@angular/core": "^21.1.0"
+    "@angular/cdk": "^21",
+    "@angular/common": "^21",
+    "@angular/core": "^21",
+    "@angular/forms": "^21",
+    "@angular/material": "^21",
+    "@angular/platform-browser": "^21"
   },
   "dependencies": {
     "tslib": "^2.3.0"
