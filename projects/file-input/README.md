@@ -1,63 +1,110 @@
-# FileInput
+# Angular Material File Input
+## For Angular Material 21.x
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
+[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
+[![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
+[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/file-input.svg)]()
 
-## Code scaffolding
+## Description
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This is a File Input component for Angular Material projects.
 
-```bash
-ng generate component component-name
+<a href="https://buymeacoffee.com/fbf.prog64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+# Version control
+
+Choose the version corresponding to your Angular version:
+
+| Angular  | @ngx-mce/datetime-picker |
+| -------- | -------------------------|
+|    21    |           21.x           |
+| 15 -- 20 | Please use [GNURub's version](https://github.com/GNURub/angular-material-components) |
+|  7 -- 14 | Please use [h2qutc's version](https://github.com/h2qutc/angular-material-components) |
+
+# File Input in action
+
+See demo:
+
+* Over [StackBlitz](https://stackblitz.com/edit/demo-ngx-mat-file-input).
+* In the [documentation](https://fbf-prog64.github.io/angular-material-components/).
+
+![File Input in action](demo_file_input.png)
+
+# How to use
+
+## Install
+
+```
+npm install --save @ngx-mce/file-input
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Configure
 
-```bash
-ng generate --help
+```
+import { NgxMatFileInputModule } from '@ngx-mce/file-input';
+
+@NgModule({
+   ...
+   imports: [
+        ...
+        NgxMatFileInputModule
+   ]
+   ...
+})
+export class AppModule { }
 ```
 
-## Building
+Check more details [here](src/app/demo-fileinput/demo-fileinput.module.ts).
 
-To build the library, run:
+## Using the component
 
-```bash
-ng build file-input
+```
+<mat-form-field>
+   <ngx-mat-file-input [formControl]="fileControl" [multiple]="multiple" [accept]="accept" [color]="color">
+   </ngx-mat-file-input>
+</mat-form-field>
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+ℹ️ You can provide a custom icon by using the directive **_ngxMatFileInputIcon_**.
 
-### Publishing the Library
-
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/file-input
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```
+<mat-form-field>
+   <ngx-mat-file-input [formControl]="fileControl" [multiple]="multiple" [accept]="accept"
+   [color]="color">
+      <mat-icon ngxMatFileInputIcon>folder</mat-icon>
+   </ngx-mat-file-input>
+</mat-form-field>
 ```
 
-## Running end-to-end tests
+ℹ️ This compoment accepts all properties of a regular **MatFormField**, such as appearance variants, hints...
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```
+<mat-form-field appearance="outline">
+  <ngx-mat-file-input [formControl]="file3Control">
+  </ngx-mat-file-input>
+  <mat-hint>Hint</mat-hint>
+</mat-form-field>
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### List of @Input
 
-## Additional Resources
+| @Input       | Type         | Default value | Description                                                                                                                          |
+| ------------ | ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **disabled** | boolean      | null          | If true, the file input is readonly.                                                                                                 |
+| **multiple** | boolean      | false         | If true, the file input allows the user to select more than one file.                                                                |
+| **accept**   | string       | null          | Limiting accepted file types (For example: accept="image/png, image/jpeg" or accept=".png, .jpg, .jpeg" — Accept PNG or JPEG files.) |
+| **color**    | ThemePalette | null          | Theme color palette for the component.                                                                                               |
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Theming
+
+- @see @angular/material
+  [Using a pre-built theme](https://material.angular.io/guide/theming#using-a-pre-built-theme)
+- Add the Material Design icon font to your index.html
+
+```
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+```
+
+## License
+
+MIT
