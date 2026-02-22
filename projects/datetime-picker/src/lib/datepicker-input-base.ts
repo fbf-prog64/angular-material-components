@@ -76,7 +76,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy, Validator
 {
   /** Whether the component has been initialized. */
-  private _isInitialized: boolean;
+  private _isInitialized: boolean = false;
 
   /** The value of the input. */
   @Input()
@@ -113,7 +113,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
       element.blur();
     }
   }
-  private _disabled: boolean;
+  private _disabled: boolean = false;
 
   /** Emits when a `change` event is fired on this `<input>`. */
   readonly dateChange = output<NgxMatDatepickerInputEvent<D, S>>();
@@ -136,7 +136,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
    * we might get a value before we have a model. This property keeps track
    * of the value until we have somewhere to assign it.
    */
-  private _pendingValue: D | null;
+  private _pendingValue: D | null = null;
 
   /** The form control validator for whether the input parses. */
   private _parseValidator: ValidatorFn = (): ValidationErrors | null => {
