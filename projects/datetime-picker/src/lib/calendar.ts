@@ -72,11 +72,11 @@ export class NgxMatCalendarHeader<D> {
   get periodButtonText(): string {
     if (this.calendar.currentView() == 'month') {
       return this._dateAdapter
-        .format(this.calendar.activeDate, this._dateFormats.display.monthYearLabel)
+        .format(this.calendar.activeDate!, this._dateFormats.display.monthYearLabel)
         .toLocaleUpperCase();
     }
     if (this.calendar.currentView() == 'year') {
-      return this._dateAdapter.getYearName(this.calendar.activeDate);
+      return this._dateAdapter.getYearName(this.calendar.activeDate!);
     }
 
     return this._intl.formatYearRange(...this._formatMinAndMaxYearLabels());
@@ -86,11 +86,11 @@ export class NgxMatCalendarHeader<D> {
   get periodButtonDescription(): string {
     if (this.calendar.currentView() == 'month') {
       return this._dateAdapter
-        .format(this.calendar.activeDate, this._dateFormats.display.monthYearLabel)
+        .format(this.calendar.activeDate!, this._dateFormats.display.monthYearLabel)
         .toLocaleUpperCase();
     }
     if (this.calendar.currentView() == 'year') {
-      return this._dateAdapter.getYearName(this.calendar.activeDate);
+      return this._dateAdapter.getYearName(this.calendar.activeDate!);
     }
 
     // Format a label for the window of years displayed in the multi-year calendar view. Use
@@ -132,9 +132,9 @@ export class NgxMatCalendarHeader<D> {
   previousClicked(): void {
     this.calendar.activeDate =
       this.calendar.currentView() == 'month'
-        ? this._dateAdapter.addCalendarMonths(this.calendar.activeDate, -1)
+        ? this._dateAdapter.addCalendarMonths(this.calendar.activeDate!, -1)
         : this._dateAdapter.addCalendarYears(
-            this.calendar.activeDate,
+            this.calendar.activeDate!,
             this.calendar.currentView() == 'year' ? -1 : -yearsPerPage,
           );
   }
@@ -143,9 +143,9 @@ export class NgxMatCalendarHeader<D> {
   nextClicked(): void {
     this.calendar.activeDate =
       this.calendar.currentView() == 'month'
-        ? this._dateAdapter.addCalendarMonths(this.calendar.activeDate, 1)
+        ? this._dateAdapter.addCalendarMonths(this.calendar.activeDate!, 1)
         : this._dateAdapter.addCalendarYears(
-            this.calendar.activeDate,
+            this.calendar.activeDate!,
             this.calendar.currentView() == 'year' ? 1 : yearsPerPage,
           );
   }
@@ -156,14 +156,14 @@ export class NgxMatCalendarHeader<D> {
       return true;
     }
     return (
-      !this.calendar.minDate || !this._isSameView(this.calendar.activeDate, this.calendar.minDate)
+      !this.calendar.minDate || !this._isSameView(this.calendar.activeDate!, this.calendar.minDate)
     );
   }
 
   /** Whether the next period button is enabled. */
   nextEnabled(): boolean {
     return (
-      !this.calendar.maxDate || !this._isSameView(this.calendar.activeDate, this.calendar.maxDate)
+      !this.calendar.maxDate || !this._isSameView(this.calendar.activeDate!, this.calendar.maxDate)
     );
   }
 
@@ -197,7 +197,7 @@ export class NgxMatCalendarHeader<D> {
     // The offset from the active year to the "slot" for the starting year is the
     // *actual* first rendered year in the multi-year view, and the last year is
     // just yearsPerPage - 1 away.
-    const activeYear = this._dateAdapter.getYear(this.calendar.activeDate);
+    const activeYear = this._dateAdapter.getYear(this.calendar.activeDate!);
     const minYearOfPage =
       activeYear -
       getActiveOffset(
@@ -241,7 +241,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
   headerComponent = input<ComponentType<any>>();
 
   /** A portal containing the header component type for this calendar. */
-  _calendarHeaderPortal: Portal<any>;
+  _calendarHeaderPortal: Portal<any> | null = null;
 
   private _intlChanges: Subscription;
 
@@ -260,7 +260,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
   set startAt(value: D | null) {
     this._startAt = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _startAt: D | null;
+  private _startAt: D | null = null;
 
   /** Whether the calendar should be started in month or year view. */
   readonly startView = input<NgxMatCalendarView>('month');
@@ -277,7 +277,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
       this._selected = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
     }
   }
-  private _selected: NgxDateRange<D> | D | null;
+  private _selected: NgxDateRange<D> | D | null = null;
 
   /** The minimum selectable date. */
   @Input()
@@ -287,7 +287,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
   set minDate(value: D | null) {
     this._minDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _minDate: D | null;
+  private _minDate: D | null = null;
 
   /** The maximum selectable date. */
   @Input()
@@ -297,7 +297,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
   set maxDate(value: D | null) {
     this._maxDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _maxDate: D | null;
+  private _maxDate: D | null = null;
 
   /** Function used to filter which dates are selectable. */
   readonly dateFilter = input<(date: D) => boolean>();
@@ -358,7 +358,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
    * The current active date. This determines which time period is shown and which date is
    * highlighted when using keyboard navigation.
    */
-  get activeDate(): D {
+  get activeDate(): D | null {
     return this._clampedActiveDate;
   }
   set activeDate(value: D) {
@@ -366,7 +366,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     this.stateChanges.next();
     this._changeDetectorRef.markForCheck();
   }
-  private _clampedActiveDate: D;
+  private _clampedActiveDate: D | null = null;
 
   /** Origin of active drag, or null when dragging is not active. */
   protected _activeDrag: NgxMatCalendarUserEvent<D> | null = null;
@@ -527,6 +527,6 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     // The return type is explicitly written as a union to ensure that the Closure compiler does
     // not optimize calls to _init(). Without the explicit return type, TypeScript narrows it to
     // only the first component type. See https://github.com/angular/components/issues/22996.
-    return this.monthView() || this.yearView() || this.multiYearView();
+    return this.monthView()! || this.yearView()! || this.multiYearView()!;
   }
 }
