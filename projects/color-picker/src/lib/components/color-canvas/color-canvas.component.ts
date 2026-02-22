@@ -40,25 +40,25 @@ export class NgxMatColorCanvasComponent
   extends NgxMatBaseColorCanvas
   implements OnInit, AfterViewInit, OnChanges, OnDestroy
 {
-  private _baseColor: Color;
+  private _baseColor: Color | null = null;
 
-  get rCtrl(): AbstractControl {
+  get rCtrl(): AbstractControl | null {
     return this.formGroup.get('r');
   }
 
-  get gCtrl(): AbstractControl {
+  get gCtrl(): AbstractControl | null {
     return this.formGroup.get('g');
   }
 
-  get bCtrl(): AbstractControl {
+  get bCtrl(): AbstractControl | null {
     return this.formGroup.get('b');
   }
 
-  get aCtrl(): AbstractControl {
+  get aCtrl(): AbstractControl | null {
     return this.formGroup.get('a');
   }
 
-  get hexCtrl(): AbstractControl {
+  get hexCtrl(): AbstractControl | null {
     return this.formGroup.get('hex');
   }
 
@@ -66,9 +66,9 @@ export class NgxMatColorCanvasComponent
 
   formGroup: FormGroup;
 
-  rgba: string;
+  rgba: string = "";
 
-  constructor(protected zone: NgZone) {
+  constructor(override zone: NgZone) {
     super(zone, 'color-block');
     this.formGroup = new FormGroup({
       r: new FormControl(null, [Validators.required]),
@@ -81,22 +81,22 @@ export class NgxMatColorCanvasComponent
 
   ngOnInit() {
     const rgbaCtrl$ = merge(
-      this.rCtrl.valueChanges,
-      this.gCtrl.valueChanges,
-      this.bCtrl.valueChanges,
-      this.aCtrl.valueChanges,
+      this.rCtrl!.valueChanges,
+      this.gCtrl!.valueChanges,
+      this.bCtrl!.valueChanges,
+      this.aCtrl!.valueChanges,
     );
     rgbaCtrl$.pipe(takeUntil(this._destroyed), debounceTime(400)).subscribe((_) => {
       const color = new Color(
-        Number(this.rCtrl.value),
-        Number(this.gCtrl.value),
-        Number(this.bCtrl.value),
-        Number(this.aCtrl.value),
+        Number(this.rCtrl!.value),
+        Number(this.gCtrl!.value),
+        Number(this.bCtrl!.value),
+        Number(this.aCtrl!.value),
       );
       this.emitChange(color);
     });
 
-    const hexCtrl$ = this.hexCtrl.valueChanges;
+    const hexCtrl$ = this.hexCtrl!.valueChanges;
     hexCtrl$
       .pipe(takeUntil(this._destroyed), debounceTime(400), distinctUntilChanged())
       .subscribe((hex) => {
@@ -109,15 +109,15 @@ export class NgxMatColorCanvasComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.color && changes.color.currentValue) {
-      this.updateForm(changes.color.currentValue);
+    if (changes['color'] && changes['color'].currentValue) {
+      this.updateForm(changes['color'].currentValue);
       if (this._resetBaseColor) {
-        this._baseColor = changes.color.currentValue;
+        this._baseColor = changes['color'].currentValue;
       }
 
       this._resetBaseColor = true;
 
-      if (!changes.color.firstChange) {
+      if (!changes['color'].firstChange) {
         this.draw();
       }
     }
@@ -125,11 +125,11 @@ export class NgxMatColorCanvasComponent
 
   private updateForm(val: Color): void {
     const config = { emitEvent: false };
-    this.rCtrl.setValue(val.r, config);
-    this.gCtrl.setValue(val.g, config);
-    this.bCtrl.setValue(val.b, config);
-    this.aCtrl.setValue(val.a, config);
-    this.hexCtrl.setValue(val.hex, config);
+    this.rCtrl?.setValue(val.r, config);
+    this.gCtrl?.setValue(val.g, config);
+    this.bCtrl?.setValue(val.b, config);
+    this.aCtrl?.setValue(val.a, config);
+    this.hexCtrl?.setValue(val.hex, config);
   }
 
   public redrawIndicator(x: number, y: number) {
