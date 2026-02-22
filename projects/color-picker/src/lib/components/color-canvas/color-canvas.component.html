@@ -13,7 +13,7 @@
     </div>
 
     <div class="zone-inputs">
-      <mat-form-field [color]="theme">
+      <mat-form-field [color]="theme()">
         <mat-label>R</mat-label>
         <input
           matInput
@@ -23,7 +23,7 @@
         />
       </mat-form-field>
 
-      <mat-form-field [color]="theme">
+      <mat-form-field [color]="theme()">
         <mat-label>G</mat-label>
         <input
           matInput
@@ -33,7 +33,7 @@
         />
       </mat-form-field>
 
-      <mat-form-field [color]="theme">
+      <mat-form-field [color]="theme()">
         <mat-label>B</mat-label>
         <input
           matInput
@@ -51,12 +51,12 @@
       [style.background-color]="color()?.rgba || 'transparent'"
       class="preview"
     ></button>
-    <mat-form-field [color]="theme">
+    <mat-form-field [color]="theme()">
       <mat-label>HEX6</mat-label>
       <mat-label matPrefix class="symbol">#&nbsp;</mat-label>
       <input matInput formControlName="hex" autocomplete="off" />
     </mat-form-field>
-    <mat-form-field class="input-opacity" [color]="theme">
+    <mat-form-field class="input-opacity" [color]="theme()">
       <mat-label>A</mat-label>
       <input
         matInput

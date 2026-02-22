@@ -69,7 +69,7 @@ export const MAT_COLORPICKER_VALIDATORS: any = {
     '[attr.aria-haspopup]': '_picker ? "dialog" : null',
     '[attr.aria-owns]': '(_picker?.opened && _picker?.id) || null',
     '[disabled]': 'disabled',
-    '(input)': '_onInput($event.target?.value)',
+    '(input)': '_onInput($event)',
     '(change)': '_onChange()',
     '(blur)': '_onBlur()',
     '(keydown)': '_onKeydown($event)',
@@ -263,9 +263,10 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
       : '';
   }
 
-  _onInput(value: string) {
+  _onInput(event?: Event) {
     const lastValueWasValid = this._lastValueValid;
-    const nextValue = this._adapter.parse(value);
+    const target = event?.target as HTMLInputElement;
+    const nextValue = this._adapter.parse(target.value);
 
     if (!this._adapter.sameColor(nextValue!, this._value!)) {
       this._value = nextValue;
