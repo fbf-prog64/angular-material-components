@@ -63,7 +63,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   private _rerenderSubscription = Subscription.EMPTY;
 
   /** Flag used to filter out space/enter keyup events that originated outside of the view. */
-  private _selectionKeyPressed: boolean;
+  private _selectionKeyPressed: boolean = false;
 
   /**
    * The date to display in this month view (everything other than the month and year is ignored).
@@ -98,7 +98,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
 
     this._setRanges(this._selected);
   }
-  private _selected: NgxDateRange<D> | D | null;
+  private _selected: NgxDateRange<D> | D | null = null;
 
   /** The minimum selectable date. */
   @Input()
@@ -108,7 +108,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   set minDate(value: D | null) {
     this._minDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _minDate: D | null;
+  private _minDate: D | null = null;
 
   /** The maximum selectable date. */
   @Input()
@@ -118,7 +118,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   set maxDate(value: D | null) {
     this._maxDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _maxDate: D | null;
+  private _maxDate: D | null = null;
 
   /** Function used to filter which dates are selectable. */
   dateFilter = input<(date: D) => boolean>();
@@ -163,40 +163,40 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   _matCalendarBody = viewChild(NgxMatCalendarBody);
 
   /** The label for this month (e.g. "January 2017"). */
-  _monthLabel: string;
+  _monthLabel: string = "";
 
   /** Grid of calendar cells representing the dates of the month. */
-  _weeks: NgxMatCalendarCell[][];
+  _weeks: NgxMatCalendarCell[][] | null = null;
 
   /** The number of blank cells in the first row before the 1st of the month. */
-  _firstWeekOffset: number;
+  _firstWeekOffset: number = 0;
 
   /** Start value of the currently-shown date range. */
-  _rangeStart: number | null;
+  _rangeStart: number | null = null;
 
   /** End value of the currently-shown date range. */
-  _rangeEnd: number | null;
+  _rangeEnd: number | null = null;
 
   /** Start value of the currently-shown comparison date range. */
-  _comparisonRangeStart: number | null;
+  _comparisonRangeStart: number | null = null;
 
   /** End value of the currently-shown comparison date range. */
-  _comparisonRangeEnd: number | null;
+  _comparisonRangeEnd: number | null = null;
 
   /** Start of the preview range. */
-  _previewStart: number | null;
+  _previewStart: number | null = null;
 
   /** End of the preview range. */
-  _previewEnd: number | null;
+  _previewEnd: number | null = null;
 
   /** Whether the user is currently selecting a range of dates. */
-  _isRange: boolean;
+  _isRange: boolean = false;
 
   /** The date of the month that today falls on. Null if today is in another month. */
-  _todayDate: number | null;
+  _todayDate: number | null = null;
 
   /** The names of the weekdays. */
-  _weekdays: { long: string; narrow: string }[];
+  _weekdays: { long: string; narrow: string }[] | null = null;
 
   constructor(
     readonly _changeDetectorRef: ChangeDetectorRef,
@@ -415,12 +415,12 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
 
   /** Focuses the active cell after the microtask queue is empty. */
   _focusActiveCell(movePreview?: boolean) {
-    this._matCalendarBody()._focusActiveCell(movePreview);
+    this._matCalendarBody()?._focusActiveCell(movePreview);
   }
 
   /** Focuses the active cell after change detection has run and the microtask queue is empty. */
   _focusActiveCellAfterViewChecked() {
-    this._matCalendarBody()._scheduleFocusActiveCellAfterViewChecked();
+    this._matCalendarBody()?._scheduleFocusActiveCellAfterViewChecked();
   }
 
   /** Called when the user has activated a new cell and the preview needs to be updated. */
@@ -548,7 +548,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
       !!date &&
       (!this.minDate || this._dateAdapter.compareDate(date, this.minDate) >= 0) &&
       (!this.maxDate || this._dateAdapter.compareDate(date, this.maxDate) <= 0) &&
-      (!this.dateFilter() || this.dateFilter()(date))
+      (!this.dateFilter() || this.dateFilter()!(date))
     );
   }
 
@@ -573,7 +573,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   }
 
   /** Gets the value that will be used to one cell to another. */
-  private _getCellCompareValue(date: D | null): number | null {
+  private _getCellCompareValue(date: D | undefined | null): number | null {
     if (date) {
       // We use the time since the Unix epoch to compare dates in this view, rather than the
       // cell values, because we need to support ranges that span across multiple months/years.
@@ -608,7 +608,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
 
   /** Gets whether a date can be selected in the month view. */
   private _canSelect(date: D) {
-    return !this.dateFilter() || this.dateFilter()(date);
+    return !this.dateFilter() || this.dateFilter()!(date);
   }
 
   /** Clears out preview state. */

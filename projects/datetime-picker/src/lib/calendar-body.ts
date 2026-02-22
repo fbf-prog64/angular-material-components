@@ -78,7 +78,7 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
   label = input<string>();
 
   /** The cells to display in the table. */
-  rows = input<NgxMatCalendarCell[][]>();
+  rows = input<NgxMatCalendarCell[][] | null>();
 
   /** The value in the table that corresponds to today. */
   todayValue = input<number>();

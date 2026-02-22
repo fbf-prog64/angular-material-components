@@ -53,7 +53,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   private _rerenderSubscription = Subscription.EMPTY;
 
   /** Flag used to filter out space/enter keyup events that originated outside of the view. */
-  private _selectionKeyPressed: boolean;
+  private _selectionKeyPressed: boolean = false;
 
   /** The date to display in this year view (everything other than the year is ignored). */
   @Input()
@@ -86,7 +86,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
 
     this._setSelectedMonth(value);
   }
-  private _selected: NgxDateRange<D> | D | null;
+  private _selected: NgxDateRange<D> | D | null = null;
 
   /** The minimum selectable date. */
   @Input()
@@ -96,7 +96,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   set minDate(value: D | null) {
     this._minDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _minDate: D | null;
+  private _minDate: D | null = null;
 
   /** The maximum selectable date. */
   @Input()
@@ -106,7 +106,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   set maxDate(value: D | null) {
     this._maxDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
-  private _maxDate: D | null;
+  private _maxDate: D | null = null;
 
   /** A function used to filter which dates are selectable. */
   dateFilter = input<(date: D) => boolean>();
@@ -127,19 +127,19 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   _matCalendarBody = viewChild(NgxMatCalendarBody);
 
   /** Grid of calendar cells representing the months of the year. */
-  _months: NgxMatCalendarCell[][];
+  _months: NgxMatCalendarCell[][] | null = null;
 
   /** The label for this year (e.g. "2017"). */
-  _yearLabel: string;
+  _yearLabel: string = "";
 
   /** The month in this year that today falls on. Null if today is in a different year. */
-  _todayMonth: number | null;
+  _todayMonth: number | null = null;
 
   /**
    * The month in this year that the selected Date falls on.
    * Null if the selected Date is in a different year.
    */
-  _selectedMonth: number | null;
+  _selectedMonth: number | null = null;
 
   constructor(
     readonly _changeDetectorRef: ChangeDetectorRef,
@@ -305,12 +305,12 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
 
   /** Focuses the active cell after the microtask queue is empty. */
   _focusActiveCell() {
-    this._matCalendarBody()._focusActiveCell();
+    this._matCalendarBody()?._focusActiveCell();
   }
 
   /** Schedules the matCalendarBody to focus the active cell after change detection has run */
   _focusActiveCellAfterViewChecked() {
-    this._matCalendarBody()._scheduleFocusActiveCellAfterViewChecked();
+    this._matCalendarBody()?._scheduleFocusActiveCellAfterViewChecked();
   }
 
   /**
@@ -383,7 +383,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
       this._dateAdapter.getMonth(date) == month;
       date = this._dateAdapter.addCalendarDays(date, 1)
     ) {
-      if (this.dateFilter()(date)) {
+      if (this.dateFilter()!(date)) {
         return true;
       }
     }
