@@ -133,28 +133,28 @@ export class NgxMatColorCanvasComponent
   }
 
   public redrawIndicator(x: number, y: number) {
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = 'white';
-    this.ctx.arc(x, y, RADIUS_NOB, 0, 2 * Math.PI, false);
-    this.ctx.stroke();
-    this.ctx.closePath();
+    this.ctx?.beginPath();
+    this.ctx!.strokeStyle = 'white';
+    this.ctx?.arc(x, y, RADIUS_NOB, 0, 2 * Math.PI, false);
+    this.ctx?.stroke();
+    this.ctx?.closePath();
   }
 
   public fillGradient() {
-    this.ctx.fillStyle = this._baseColor ? this._baseColor.rgba : 'rgba(255,255,255,1)';
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx!.fillStyle = this._baseColor ? this._baseColor.rgba : 'rgba(255,255,255,1)';
+    this.ctx?.fillRect(0, 0, this.width, this.height);
 
-    const grdWhite = this.ctx.createLinearGradient(0, 0, this.width, 0);
-    grdWhite.addColorStop(0, 'rgba(255,255,255,1)');
-    grdWhite.addColorStop(1, 'rgba(255,255,255,0)');
-    this.ctx.fillStyle = grdWhite;
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    const grdWhite = this.ctx?.createLinearGradient(0, 0, this.width, 0);
+    grdWhite?.addColorStop(0, 'rgba(255,255,255,1)');
+    grdWhite?.addColorStop(1, 'rgba(255,255,255,0)');
+    this.ctx!.fillStyle = grdWhite!;
+    this.ctx?.fillRect(0, 0, this.width, this.height);
 
-    const grdBlack = this.ctx.createLinearGradient(0, 0, 0, this.height);
-    grdBlack.addColorStop(0, 'rgba(0,0,0,0)');
-    grdBlack.addColorStop(1, 'rgba(0,0,0,1)');
-    this.ctx.fillStyle = grdBlack;
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    const grdBlack = this.ctx?.createLinearGradient(0, 0, 0, this.height);
+    grdBlack?.addColorStop(0, 'rgba(0,0,0,0)');
+    grdBlack?.addColorStop(1, 'rgba(0,0,0,1)');
+    this.ctx!.fillStyle = grdBlack!;
+    this.ctx?.fillRect(0, 0, this.width, this.height);
   }
 
   public onSliderColorChanged(c: Color) {
@@ -169,7 +169,7 @@ export class NgxMatColorCanvasComponent
     this.y = e.offsetY;
     this._resetBaseColor = false;
     this.draw();
-    const { r, g, b } = getColorAtPosition(this.ctx, e.offsetX, e.offsetY);
+    const { r, g, b } = getColorAtPosition(this.ctx!, e.offsetX, e.offsetY);
     this.emitChange(new Color(r, g, b));
   }
 }
