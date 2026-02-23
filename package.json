@@ -57,15 +57,20 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "21.2.0",
     "@angular/build": "^21.1.4",
     "@angular/cdk": "^21.1.5",
     "@angular/cli": "^21.1.4",
     "@angular/compiler-cli": "^21.1.5",
+    "@eslint/js": "^9.39.2",
     "@types/node": "^24.10.13",
+    "angular-eslint": "21.2.0",
+    "eslint": "^9.39.2",
     "jsdom": "^27.1.0",
     "ng-packagr": "^21.1.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.50.1",
     "vitest": "^4.0.8"
   }
 }

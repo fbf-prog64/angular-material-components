@@ -71,6 +71,16 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/amc-docs/**/*.ts",
+              "projects/amc-docs/**/*.html"
+            ],
+            "eslintConfig": "projects/amc-docs/eslint.config.js"
+          }
         }
       }
     },
@@ -96,6 +106,16 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/color-picker/tsconfig.spec.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/color-picker/**/*.ts",
+              "projects/color-picker/**/*.html"
+            ],
+            "eslintConfig": "projects/color-picker/eslint.config.js"
           }
         }
       }
@@ -123,6 +143,16 @@
           "options": {
             "tsConfig": "projects/datetime-picker/tsconfig.spec.json"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/datetime-picker/**/*.ts",
+              "projects/datetime-picker/**/*.html"
+            ],
+            "eslintConfig": "projects/datetime-picker/eslint.config.js"
+          }
         }
       }
     },
@@ -148,6 +178,16 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/file-input/tsconfig.spec.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/file-input/**/*.ts",
+              "projects/file-input/**/*.html"
+            ],
+            "eslintConfig": "projects/file-input/eslint.config.js"
           }
         }
       }

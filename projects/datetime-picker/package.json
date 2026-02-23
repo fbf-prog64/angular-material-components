@@ -27,7 +27,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "build": "ng build -c=production"
+    "build": "ng build -c=production",
+    "lint": "ng lint"
   },
   "publishConfig": {
     "directory": "../../dist/datetime-picker",
