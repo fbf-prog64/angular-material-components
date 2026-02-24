@@ -23,7 +23,7 @@
     [dateClass]="datepicker!.dateClass()"
     [comparisonStart]="comparisonStart"
     [comparisonEnd]="comparisonEnd"
-    [@fadeInCalendar]="'enter'"
+    [class.calendar-fade-enter]="true"
     [startDateAccessibleName]="startDateAccessibleName"
     [endDateAccessibleName]="endDateAccessibleName"
     (yearSelected)="datepicker!._selectYear($event)"

@@ -1,4 +1,3 @@
-import { AnimationEvent } from '@angular/animations';
 import { CdkTrapFocus, ListKeyManagerModifierKey } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
 import { BooleanInput, coerceBooleanProperty, coerceStringArray } from '@angular/cdk/coercion';
@@ -72,7 +71,6 @@ import {
   NgxExtractDateTypeFromSelection,
   NgxMatDateSelectionModel,
 } from './date-selection-model';
-import { ngxMatDatepickerAnimations } from './datepicker-animations';
 import { createMissingDateImplError } from './datepicker-errors';
 import { NgxDateFilterFn } from './datepicker-input-base';
 import { NgxMatDatepickerIntl } from './datepicker-intl';
@@ -116,19 +114,13 @@ export const NGX_MAT_DATEPICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
 @Component({
   selector: 'ngx-mat-datepicker-content',
   templateUrl: 'datepicker-content.html',
-  styleUrls: ['datepicker-content.scss'],
+  styleUrls: ['../../../shared/base-animations.scss', 'datepicker-content.scss'],
   host: {
     class: 'mat-datepicker-content',
-    '[@transformPanel]': '_animationState',
-    '(@transformPanel.start)': '_handleAnimationEvent($event)',
-    '(@transformPanel.done)': '_handleAnimationEvent($event)',
     '[class.mat-datepicker-content-touch]': 'datepicker!.touchUi',
     '[class.mat-datepicker-content-touch-with-time]': '!datepicker!.hideTime',
+    '(animationend)': '_onAnimationEnd($event)'   // listen for native animation end
   },
-  animations: [
-    ngxMatDatepickerAnimations.transformPanel,
-    ngxMatDatepickerAnimations.fadeInCalendar,
-  ],
   exportAs: 'ngxMatDatepickerContent',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -171,13 +163,14 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   _isAbove: boolean = false;
 
   /** Current state of the animation. */
-  _animationState: 'enter-dropdown' | 'enter-dialog' | 'void' = 'void';
+  _isLeaving = false;
+  _panelEnterClass: 'enter-dropdown' | 'enter-dialog' | null = null;
 
   /** Emits when an animation has finished. */
   readonly _animationDone = new Subject<void>();
 
   /** Whether there is an in-progress animation. */
-  _isAnimating = false;
+  _isAnimating = false;    // used by parent to prevent overlapping
 
   /** Text for the close button. */
   _closeButtonText: string;
@@ -202,6 +195,22 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   }
   @HostBinding('class.mat-warn') get isWarn() {
     return this.color === 'warn';
+  }
+
+  // Host bindings for animation classes
+  @HostBinding('class.panel-enter-dropdown')
+  get isEnterDropdown() {
+    return !this._isLeaving && this._panelEnterClass === 'enter-dropdown';
+  }
+
+  @HostBinding('class.panel-enter-dialog')
+  get isEnterDialog() {
+    return !this._isLeaving && this._panelEnterClass === 'enter-dialog';
+  }
+
+  @HostBinding('class.panel-leave')
+  get isLeavingClass() {
+    return this._isLeaving;
   }
 
   get isViewMonth(): boolean {
@@ -231,7 +240,8 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   }
 
   ngOnInit() {
-    this._animationState = this.datepicker!.touchUi ? 'enter-dialog' : 'enter-dropdown';
+    // Set the appropriate enter class based on touchUI mode
+    this._panelEnterClass = this.datepicker!.touchUi ? 'enter-dialog' : 'enter-dropdown';
   }
 
   ngAfterViewInit() {
@@ -300,14 +310,15 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   }
 
   _startExitAnimation() {
-    this._animationState = 'void';
+    this._isAnimating = true;
+    this._isLeaving = true;
     this._changeDetectorRef.markForCheck();
   }
 
-  _handleAnimationEvent(event: AnimationEvent) {
-    this._isAnimating = event.phaseName === 'start';
-
-    if (!this._isAnimating) {
+  _onAnimationEnd(event: AnimationEvent) {
+    // When the leave animation finishes, emit that we're done
+    if (event.animationName === 'panelLeave') {
+      this._isAnimating = false;
       this._animationDone.next();
     }
   }
