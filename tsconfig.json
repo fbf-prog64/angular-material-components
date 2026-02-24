@@ -1,46 +1,62 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "paths": {
+      "@ngx-mce/color-picker": [
+        "./dist/color-picker"
+      ],
+      "@ngx-mce/datetime-picker": [
+        "./dist/datetime-picker"
+      ],
+      "@ngx-mce/file-input": [
+        "./dist/file-input"
+      ]
+    },
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node"
-    ],
-    "paths": {
-      "@ngx-mce/*": [
-        "dist/@ngx-mce/*"
-      ],
-      "@ngx-mce/color-picker": [
-        "dist/@ngx-mce/color-picker"
-      ],
-      "@ngx-mce/color-picker/*": [
-        "dist/@ngx-mce/color-picker/*"
-      ],
-      "@ngx-mce/datetime-picker": [
-        "dist/@ngx-mce/datetime-picker"
-      ],
-      "@ngx-mce/datetime-picker/*": [
-        "dist/@ngx-mce/datetime-picker/*"
-      ],
-      "file-input": [
-        "dist/@ngx-mce/file-input"
-      ],
-      "file-input/*": [
-        "dist/@ngx-mce/file-input/*"
-      ]
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/amc-docs/tsconfig.app.json"
     },
-    "useDefineForClassFields": false,
-    "skipLibCheck": true
-  }
+    {
+      "path": "./projects/amc-docs/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/color-picker/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/color-picker/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/datetime-picker/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/datetime-picker/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/file-input/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/file-input/tsconfig.spec.json"
+    }
+  ]
 }

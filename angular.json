@@ -1,237 +1,156 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "pnpm"
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "angular-material-components": {
-      "root": "",
-      "sourceRoot": "src",
+    "amc-docs": {
       "projectType": "application",
-      "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "sass"
+          "style": "scss"
         }
       },
+      "root": "projects/amc-docs",
+      "sourceRoot": "projects/amc-docs/src",
+      "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist/angular-material-components"
-            },
-            "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
-            "tsConfig": "src/tsconfig.app.json",
+            "browser": "projects/amc-docs/src/main.ts",
+            "tsConfig": "projects/amc-docs/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/.nojekyll"
+              {
+                "glob": "**/*",
+                "input": "projects/amc-docs/public"
+              }
             ],
             "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "extractLicenses": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true,
-            "allowedCommonJsDependencies": [
-              "highlight.js"
-            ],
-            "browser": "src/main.ts"
+              "projects/amc-docs/src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
-              ]
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "angular-material-components:build"
-          },
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-material-components:build:production"
+              "buildTarget": "amc-docs:build:production"
+            },
+            "development": {
+              "buildTarget": "amc-docs:build:development"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "angular-material-components:build"
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
-          }
-        },
-        "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "@angular/build:unit-test"
         }
       }
     },
-    "angular-material-components-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-material-components:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "angular-material-components:serve:production"
-            }
-          }
-        }
-      }
-    },
-    "NgxMatDatetimePicker": {
-      "root": "projects/datetime-picker",
-      "sourceRoot": "projects/datetime-picker/src",
+    "color-picker": {
       "projectType": "library",
-      "prefix": "NgxMat",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/datetime-picker/tsconfig.lib.json",
-            "project": "projects/datetime-picker/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/datetime-picker/src/test.ts",
-            "tsConfig": "projects/datetime-picker/tsconfig.spec.json",
-            "karmaConfig": "projects/datetime-picker/karma.conf.js"
-          }
-        }
-      }
-    },
-    "NgxMatColorPicker": {
       "root": "projects/color-picker",
       "sourceRoot": "projects/color-picker/src",
-      "projectType": "library",
-      "prefix": "NgxMat",
+      "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/color-picker/tsconfig.lib.json",
-            "project": "projects/color-picker/ng-package.json"
-          }
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/color-picker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/color-picker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/color-picker/src/test.ts",
-            "tsConfig": "projects/color-picker/tsconfig.spec.json",
-            "karmaConfig": "projects/color-picker/karma.conf.js"
+            "tsConfig": "projects/color-picker/tsconfig.spec.json"
           }
         }
       }
     },
-    "NgxMatFileInput": {
+    "datetime-picker": {
+      "projectType": "library",
+      "root": "projects/datetime-picker",
+      "sourceRoot": "projects/datetime-picker/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/datetime-picker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/datetime-picker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/datetime-picker/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "file-input": {
+      "projectType": "library",
       "root": "projects/file-input",
       "sourceRoot": "projects/file-input/src",
-      "projectType": "library",
-      "prefix": "NgxMat",
+      "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/file-input/tsconfig.lib.json",
-            "project": "projects/file-input/ng-package.json"
-          }
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/file-input/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/file-input/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/file-input/src/test.ts",
-            "tsConfig": "projects/file-input/tsconfig.spec.json",
-            "karmaConfig": "projects/file-input/karma.conf.js"
+            "tsConfig": "projects/file-input/tsconfig.spec.json"
           }
         }
       }
     }
-  },
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "ngx-mat",
-      "style": "scss",
-      "skipTests": true,
-      "standalone": true,
-      "changeDetection": "OnPush",
-      "type": "component"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "ngx-mat",
-      "skipTests": true,
-      "type": "directive"
-    },
-    "@schematics/angular:pipe": {
-      "prefix": "ngx-mat",
-      "skipTests": true,
-      "typeSeparator": "."
-    },
-    "@schematics/angular:service": {
-      "skipTests": true,
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
-    }
-  },
-  "cli": {
-    "analytics": false,
-    "packageManager": "pnpm"
   }
 }

@@ -5,6 +5,7 @@ import {
   forwardRef,
   inject,
   input,
+  InputSignal,
   linkedSignal,
   model,
   untracked,
@@ -89,15 +90,15 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
   public readonly meridian = linkedSignal(() => this.meridianInput());
 
   public readonly form = this.formBuilder.group({
-    hour: new FormControl(this.defaultTime()?.[0] ? String(this.defaultTime()[0]) : null, {
+    hour: new FormControl(this.defaultTime()?.[0] ? String(this.defaultTime()![0]) : null, {
       validators: [Validators.required, Validators.pattern(PATTERN_INPUT_HOUR)],
       nonNullable: true,
     }),
-    minute: new FormControl(this.defaultTime()?.[1] ? String(this.defaultTime()[1]) : null, {
+    minute: new FormControl(this.defaultTime()?.[1] ? String(this.defaultTime()![1]) : null, {
       validators: [Validators.required, Validators.pattern(PATTERN_INPUT_MINUTE)],
       nonNullable: true,
     }),
-    second: new FormControl(this.defaultTime()?.[2] ? String(this.defaultTime()[2]) : null, {
+    second: new FormControl(this.defaultTime()?.[2] ? String(this.defaultTime()![2]) : null, {
       validators: [Validators.required, Validators.pattern(PATTERN_INPUT_SECOND)],
       nonNullable: true,
     }),
@@ -189,13 +190,13 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
   }
 
   private _updateHourMinuteSecond(val: D) {
-    let _hour = this._dateAdapter.getHours(val);
-    const _minute = this._dateAdapter.getMinutes(val);
-    const _second = this._dateAdapter.getSeconds(val);
+    let _hour = this._dateAdapter?.getHours(val);
+    const _minute = this._dateAdapter?.getMinutes(val);
+    const _second = this._dateAdapter?.getSeconds(val);
 
     if (this.enableMeridian()) {
-      if (_hour >= LIMIT_TIMES.meridian) {
-        _hour = _hour - LIMIT_TIMES.meridian;
+      if (_hour! >= LIMIT_TIMES.meridian) {
+        _hour = _hour! - LIMIT_TIMES.meridian;
         this.meridian.set(MERIDIANS.PM);
       } else {
         this.meridian.set(MERIDIANS.AM);
@@ -207,9 +208,9 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
 
     this.form.patchValue(
       {
-        hour: formatTwoDigitTimeValue(_hour),
-        minute: formatTwoDigitTimeValue(_minute),
-        second: formatTwoDigitTimeValue(_second),
+        hour: formatTwoDigitTimeValue(_hour!),
+        minute: formatTwoDigitTimeValue(_minute!),
+        second: formatTwoDigitTimeValue(_second!),
       },
       { emitEvent: false },
     );
@@ -233,8 +234,8 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
 
     const val = this.value();
     if (val) {
-      let clonedModel = this._dateAdapter.clone(val);
-      clonedModel = this._dateAdapter.setTime(clonedModel, _hour, this.minute, this.second);
+      let clonedModel = this._dateAdapter?.clone(val);
+      clonedModel = this._dateAdapter?.setTime(clonedModel, _hour, this.minute, this.second);
 
       this.value.set(clonedModel);
       this._onChange(clonedModel);
@@ -242,27 +243,32 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     }
   }
 
+  private castKey(key: string): keyof NgxMatTimepickerComponent<D> {
+    return key as keyof NgxMatTimepickerComponent<D>;
+  }
+
   /**
    * Get next value by property
    */
   private _getNextValueByProp(prop: string, up?: boolean): number {
     const keyProp = prop[0].toUpperCase() + prop.slice(1);
-    const min = LIMIT_TIMES[`min${keyProp}`];
-    let max = LIMIT_TIMES[`max${keyProp}`];
+    const min = LIMIT_TIMES[`min${keyProp}` as keyof typeof LIMIT_TIMES];
+    let max = LIMIT_TIMES[`max${keyProp}` as keyof typeof LIMIT_TIMES];
 
     if (prop === 'hour' && this.enableMeridian()) {
       max = LIMIT_TIMES.meridian;
     }
 
+    const castedProp = this.castKey(prop);
     let next;
     if (up == null) {
-      next = this[prop] % max;
+      next = (this[castedProp] as unknown as number) % max;
       if (prop === 'hour' && this.enableMeridian()) {
         if (next === 0) next = max;
       }
     } else {
-      const step = this[`step${keyProp}`]();
-      next = up ? this[prop] + step : this[prop] - step;
+      const step = (this[this.castKey(`step${keyProp}`)] as unknown as InputSignal<any>)();
+      next = up ? (this[castedProp] as unknown as number) + step : (this[castedProp] as unknown as number) - step;
 
       if (prop === 'hour' && this.enableMeridian()) {
         next = next % (max + 1);
@@ -290,9 +296,9 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     } else {
       this.form.enable();
       if (disableMinute) {
-        this.form.get('minute').disable();
+        this.form.get('minute')?.disable();
         if (this.showSeconds()) {
-          this.form.get('second').disable();
+          this.form.get('second')?.disable();
         }
       }
     }

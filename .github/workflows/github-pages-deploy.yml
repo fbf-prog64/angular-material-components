@@ -79,7 +79,8 @@ jobs:
       - name: Build source
         working-directory: ./source
         run: |
-          pnpm run build \
+          pnpm -r build
+          pnpm build amc-docs \
             --base-href="/${{ github.event.repository.name }}/${{ steps.vars.outputs.folder }}/" \
             --output-path="../temp-build"
 

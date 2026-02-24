@@ -35,4 +35,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Verify that build succeeds
-        run: pnpm run build:gh-pages
+        run: |
+          pnpm -r build
+          pnpm build amc-docs

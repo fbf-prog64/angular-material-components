@@ -18,7 +18,7 @@ export class NgxMatColorCollectionComponent {
   readonly colorChanged = output<Color>();
 
   @Input()
-  set color(c: Color) {
+  set color(c: Color | undefined | null) {
     if (c) {
       this.selectedColor.set(c.toHexString());
     }
@@ -31,7 +31,9 @@ export class NgxMatColorCollectionComponent {
 
   select(hex: string) {
     this.selectedColor.set(hex);
-    const { r, g, b, a } = stringInputToObject(hex);
-    this.colorChanged.emit(new Color(r, g, b, a));
+    let rgba = stringInputToObject(hex);
+    if (rgba != null) {
+      this.colorChanged.emit(new Color(rgba.r, rgba.g, rgba.b, rgba.a));
+    }
   }
 }

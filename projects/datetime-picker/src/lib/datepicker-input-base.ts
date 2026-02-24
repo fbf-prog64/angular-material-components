@@ -76,7 +76,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy, Validator
 {
   /** Whether the component has been initialized. */
-  private _isInitialized: boolean;
+  private _isInitialized: boolean = false;
 
   /** The value of the input. */
   @Input()
@@ -113,7 +113,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
       element.blur();
     }
   }
-  private _disabled: boolean;
+  private _disabled: boolean = false;
 
   /** Emits when a `change` event is fired on this `<input>`. */
   readonly dateChange = output<NgxMatDatepickerInputEvent<D, S>>();
@@ -136,7 +136,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
    * we might get a value before we have a model. This property keeps track
    * of the value until we have somewhere to assign it.
    */
-  private _pendingValue: D | null;
+  private _pendingValue: D | null = null;
 
   /** The form control validator for whether the input parses. */
   private _parseValidator: ValidatorFn = (): ValidationErrors | null => {
@@ -220,7 +220,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   protected abstract _assignValueToModel(model: D | null): void;
 
   /** Converts a value from the model into a native value for the input. */
-  protected abstract _getValueFromModel(modelValue: S): D | null;
+  protected abstract _getValueFromModel(modelValue: S | null): D | null;
 
   /** Combined form control validator for this input. */
   protected abstract _validator: ValidatorFn | null;
@@ -312,9 +312,10 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
     }
   }
 
-  _onInput(value: string) {
+  _onInput(event: Event) {
     const lastValueWasValid = this._lastValueValid;
-    let date = this._dateAdapter.parse(value, this._dateFormats.parse.dateInput);
+    const target = event.target as HTMLInputElement;
+    let date = this._dateAdapter.parse(target.value, this._dateFormats.parse.dateInput);
     this._lastValueValid = this._isValidValue(date);
     date = this._dateAdapter.getValidDateOrNull(date);
 
@@ -331,7 +332,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
     } else {
       // Call the CVA change handler for invalid values
       // since this is what marks the control as dirty.
-      if (value && !this.value) {
+      if (target.value && !this.value) {
         this._cvaOnChange(date);
       }
 

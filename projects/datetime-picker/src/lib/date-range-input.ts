@@ -127,7 +127,7 @@ export class NgxMatDateRangeInput<D>
       this._registerModel(this._model!);
     }
   }
-  private _rangePicker: NgxMatDatepickerPanel<NgxMatDatepickerControl<D>, NgxDateRange<D>, D>;
+  private _rangePicker!: NgxMatDatepickerPanel<NgxMatDatepickerControl<D>, NgxDateRange<D>, D>;
 
   /** Whether the input is required. */
   @Input()
@@ -165,7 +165,7 @@ export class NgxMatDateRangeInput<D>
       end._validatorOnChange();
     }
   }
-  private _dateFilter: NgxDateFilterFn<D>;
+  private _dateFilter!: NgxDateFilterFn<D>;
 
   /** The minimum valid date. */
   @Input()
@@ -180,7 +180,7 @@ export class NgxMatDateRangeInput<D>
       this._revalidate();
     }
   }
-  private _min: D | null;
+  private _min: D | null = null;
 
   /** The maximum valid date. */
   @Input()
@@ -195,7 +195,7 @@ export class NgxMatDateRangeInput<D>
       this._revalidate();
     }
   }
-  private _max: D | null;
+  private _max: D | null = null;
 
   /** Whether the input is disabled. */
   @Input()
@@ -245,8 +245,8 @@ export class NgxMatDateRangeInput<D>
   /** End of the comparison range that should be shown in the calendar. */
   @Input() comparisonEnd: D | null = null;
 
-  @ContentChild(NgxMatStartDate) _startInput: NgxMatStartDate<D>;
-  @ContentChild(NgxMatEndDate) _endInput: NgxMatEndDate<D>;
+  @ContentChild(NgxMatStartDate) _startInput!: NgxMatStartDate<D>;
+  @ContentChild(NgxMatEndDate) _endInput!: NgxMatEndDate<D>;
   /**
    * Implemented as a part of `MatFormFieldControl`.
    * TODO(crisbeto): change type to `AbstractControlDirective` after #18206 lands.

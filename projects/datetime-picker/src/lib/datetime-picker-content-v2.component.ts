@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter } from '@angular/material/core';
+import { DateAdapter, ThemePalette } from '@angular/material/core';
 import { MatCalendar, MatCalendarView } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -19,7 +19,7 @@ import { NgxMatTimepickerComponent } from './timepicker.component';
 
 export interface NgxMatDatetimePickerContentData<D> {
   datepicker: any; // Reference to the main datepicker component
-  color?: string;
+  color?: ThemePalette;
   touchUi?: boolean;
   hideTime?: boolean;
   showSpinners?: boolean;
@@ -47,9 +47,9 @@ export interface NgxMatDatetimePickerContentData<D> {
       <mat-calendar
         #calendar
         [startView]="data.startView || 'month'"
-        [startAt]="selectedDate() || data.value"
-        [minDate]="data.minDate"
-        [maxDate]="data.maxDate"
+        [startAt]="selectedDate() || data.value!"
+        [minDate]="data.minDate!"
+        [maxDate]="data.maxDate!"
         [dateFilter]="data.dateFilter"
         [selected]="selectedDate()"
         (selectedChange)="onDateSelected($event)"
@@ -63,7 +63,7 @@ export interface NgxMatDatetimePickerContentData<D> {
             #timepicker
             [ngModel]="selectedDateTime()"
             (ngModelChange)="onTimeChanged($event)"
-            [color]="data.color"
+            [color]="data.color!"
             [showSpinners]="data.showSpinners ?? true"
             [showSeconds]="data.showSeconds ?? false"
             [stepHour]="data.stepHour ?? 1"
@@ -71,7 +71,7 @@ export interface NgxMatDatetimePickerContentData<D> {
             [stepSecond]="data.stepSecond ?? 1"
             [enableMeridian]="data.enableMeridian ?? false"
             [defaultTime]="data.defaultTime"
-            [disabled]="data.disabled">
+            [disabled]="data.disabled!">
           </ngx-mat-timepicker>
         </div>
       }
@@ -105,8 +105,8 @@ export interface NgxMatDatetimePickerContentData<D> {
   },
 })
 export class NgxMatDatetimePickerContentV2<D> implements OnInit, OnDestroy {
-  @ViewChild('calendar', { static: true }) calendar: MatCalendar<D>;
-  @ViewChild('timepicker', { static: false }) timepicker: NgxMatTimepickerComponent<D>;
+  @ViewChild('calendar', { static: true }) calendar!: MatCalendar<D>;
+  @ViewChild('timepicker', { static: false }) timepicker!: NgxMatTimepickerComponent<D>;
 
   readonly dialogRef = inject(MatDialogRef<NgxMatDatetimePickerContentV2<D>>);
   readonly data = inject<NgxMatDatetimePickerContentData<D>>(MAT_DIALOG_DATA);

@@ -60,7 +60,7 @@ export function rgbaToHex(
     pad2(mathRound(r).toString(16)),
     pad2(mathRound(g).toString(16)),
     pad2(mathRound(b).toString(16)),
-    pad2(convertDecimalToHex(a)),
+    pad2(convertDecimalToHex(a.toString(16))),
   ];
 
   // Return a 4 character hex if possible
@@ -78,22 +78,22 @@ export function rgbaToHex(
 }
 
 // Force a hex value to have 2 characters
-export function pad2(c): string {
+export function pad2(c: string): string {
   return c.length == 1 ? '0' + c : '' + c;
 }
 
 // Converts a decimal to a hex value
-export function convertDecimalToHex(d) {
+export function convertDecimalToHex(d: string) {
   return Math.round(parseFloat(d) * 255).toString(16);
 }
 
 // Converts a hex value to a decimal
-function convertHexToDecimal(h) {
+function convertHexToDecimal(h: string) {
   return parseIntFromHex(h) / 255;
 }
 
 // Parse a base-16 hex value into a base-10 integer
-function parseIntFromHex(val) {
+function parseIntFromHex(val: string) {
   return parseInt(val, 16);
 }
 
@@ -162,7 +162,7 @@ export function stringInputToObject(color: string): {
   g: number;
   b: number;
   a: number;
-} {
+} | null {
   color = color.replace(trimLeft, '').replace(trimRight, '').toLowerCase();
 
   // Try to match string input using regular expressions.
@@ -172,10 +172,20 @@ export function stringInputToObject(color: string): {
   let match;
   let obj;
   if ((match = matchers.rgb.exec(color))) {
-    return { r: match[1], g: match[2], b: match[3], a: 1 };
+    return {
+      r: parseFloat(match[1]),
+      g: parseFloat(match[2]),
+      b: parseFloat(match[3]),
+      a: 1
+    };
   }
   if ((match = matchers.rgba.exec(color))) {
-    return { r: match[1], g: match[2], b: match[3], a: match[4] };
+    return {
+      r: parseFloat(match[1]),
+      g: parseFloat(match[2]),
+      b: parseFloat(match[3]),
+      a: parseFloat(match[4])
+    };
   }
 
   if ((match = matchers.hex8.exec(color))) {
