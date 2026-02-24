@@ -289,6 +289,9 @@ export class NgxMatColorPickerComponent implements OnDestroy {
     if (this._opened || this.disabled || this._isAnimating) {
       return;
     }
+
+    this._isAnimating = true;
+
     if (!this._pickerInput) {
       throw Error('Attempted to open an ColorPicker with no associated input.');
     }
@@ -320,6 +323,8 @@ export class NgxMatColorPickerComponent implements OnDestroy {
     this._dialogRef.afterClosed().subscribe(() => this.close());
     this._dialogRef.componentInstance.picker = this;
     this._setColor();
+
+    this._isAnimating = false;
   }
 
   /** Open the calendar as a popup. */
@@ -415,12 +420,10 @@ export class NgxMatColorPickerComponent implements OnDestroy {
         this._portal.detach();
       }
 
-      if (this._opened) {
-        this._opened = false;
-        this._isAnimating = false;
-        this.closedStream.emit();
-        this._focusedElementBeforeOpen = null;
-      }
+      this._opened = false;
+      this._isAnimating = false;
+      this.closedStream.emit();
+      this._focusedElementBeforeOpen = null;
     };
 
     if (contentInstance) {
