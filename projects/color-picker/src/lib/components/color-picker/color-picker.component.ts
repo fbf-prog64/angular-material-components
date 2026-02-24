@@ -27,6 +27,7 @@ import {
   ViewEncapsulation,
   viewChild,
   DOCUMENT,
+  OnInit,
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -60,8 +61,8 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
   styleUrls: ['color-picker-content.component.scss'],
   host: {
     class: 'ngx-mat-colorpicker-content',
-    '[@transformPanel]': '"enter"',
     '[class.ngx-mat-colorpicker-content-touch]': 'picker?.touchUi',
+    '(animationend)': '_onAnimationEnd($event)',
   },
   exportAs: 'ngxMatColorPickerContent',
   encapsulation: ViewEncapsulation.None,
@@ -69,15 +70,54 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
   inputs: ['color'],
   imports: [NgxMatColorPaletteComponent],
 })
-export class NgxMatColorPickerContentComponent {
+export class NgxMatColorPickerContentComponent implements OnInit {
   /** Reference to the internal calendar component. */
   _palette = viewChild(NgxMatColorPaletteComponent);
 
   picker: NgxMatColorPickerComponent | null = null;
-  _isAbove: boolean = false;
   color: ThemePalette;
 
-  constructor() {}
+  _isAbove: boolean = false;
+
+  /** Whether the content is currently leaving (exit animation active). */
+  _isLeaving = false;
+
+  /** Which enter animation to use (based on touchUi). */
+  _panelEnterClass: 'enter-dropdown' | 'enter-dialog' | null = null;
+
+  /** Emits when the leave animation has finished. */
+  @Output() readonly _animationDone = new EventEmitter<void>();
+
+  @HostBinding('class.panel-enter-dropdown')
+  get isEnterDropdown() {
+    return !this._isLeaving && this._panelEnterClass === 'enter-dropdown';
+  }
+
+  @HostBinding('class.panel-enter-dialog')
+  get isEnterDialog() {
+    return !this._isLeaving && this._panelEnterClass === 'enter-dialog';
+  }
+
+  @HostBinding('class.panel-leave')
+  get isLeaving() {
+    return this._isLeaving;
+  }
+
+  ngOnInit() {
+    // Set the appropriate enter class based on the picker's touchUi mode
+    this._panelEnterClass = this.picker?.touchUi ? 'enter-dialog' : 'enter-dropdown';
+  }
+
+  /** Starts the exit animation. */
+  _startExitAnimation() {
+    this._isLeaving = true;
+  }
+
+  _onAnimationEnd(event: AnimationEvent) {
+    if (event.animationName === 'panelLeave') {
+      this._animationDone.emit();
+    }
+  }
 }
 
 @Component({
@@ -195,6 +235,9 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   /** Emits new selected date when selected date changes. */
   readonly _selectedChanged = new Subject<Color>();
 
+  /** Whether an animation is currently in progress. */
+  private _isAnimating = false;
+
   constructor(
     private _dialog: MatDialog,
     private _overlay: Overlay,
@@ -243,7 +286,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   }
 
   public open(): void {
-    if (this._opened || this.disabled) {
+    if (this._opened || this.disabled || this._isAnimating) {
       return;
     }
     if (!this._pickerInput) {
@@ -343,43 +386,69 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   }
 
   close(): void {
-    if (!this._opened) {
+    if (!this._opened || this._isAnimating) {
       return;
     }
-    if (this._popupRef && this._popupRef.hasAttached()) {
-      this._popupRef.detach();
-    }
-    if (this._dialogRef) {
-      this._dialogRef.close();
-      this._dialogRef = null;
-    }
-    if (this._portal && this._portal.isAttached) {
-      this._portal.detach();
+
+    // Determine which content instance to animate out
+    let contentInstance: NgxMatColorPickerContentComponent | null = null;
+    if (this._popupComponentRef) {
+      contentInstance = this._popupComponentRef.instance;
+    } else if (this._dialogRef) {
+      contentInstance = this._dialogRef.componentInstance;
     }
 
+    const canRestoreFocus =
+      this._focusedElementBeforeOpen &&
+      typeof this._focusedElementBeforeOpen.focus === 'function';
+
     const completeClose = () => {
-      // The `_opened` could've been reset already if
-      // we got two events in quick succession.
+      // Detach/destroy the overlay or dialog
+      if (this._popupRef && this._popupRef.hasAttached()) {
+        this._popupRef.detach();
+      }
+      if (this._dialogRef) {
+        this._dialogRef.close();
+        this._dialogRef = null;
+      }
+      if (this._portal && this._portal.isAttached) {
+        this._portal.detach();
+      }
+
       if (this._opened) {
         this._opened = false;
+        this._isAnimating = false;
         this.closedStream.emit();
         this._focusedElementBeforeOpen = null;
       }
     };
 
-    if (
-      this._focusedElementBeforeOpen &&
-      typeof this._focusedElementBeforeOpen.focus === 'function'
-    ) {
-      // Because IE moves focus asynchronously, we can't count on it being restored before we've
-      // marked the datepicker as closed. If the event fires out of sequence and the element that
-      // we're refocusing opens the datepicker on focus, the user could be stuck with not being
-      // able to close the calendar at all. We work around it by making the logic, that marks
-      // the datepicker as closed, async as well.
-      this._focusedElementBeforeOpen.focus();
-      setTimeout(completeClose);
+    if (contentInstance) {
+      // Start the leave animation
+      this._isAnimating = true;
+      contentInstance._startExitAnimation();
+
+      // Wait for animation to finish, then complete close
+      const animationDoneSub = contentInstance._animationDone.pipe(take(1)).subscribe(() => {
+        if (canRestoreFocus) {
+          this._focusedElementBeforeOpen!.focus();
+        }
+        // Use setTimeout to avoid potential change detection issues
+        setTimeout(completeClose);
+      });
+
+      // Ensure subscription is cleaned up if the content is destroyed early
+      contentInstance._animationDone.pipe(take(1)).subscribe({
+        next: () => animationDoneSub.unsubscribe(),
+      });
     } else {
-      completeClose();
+      // No content to animate, close immediately
+      if (canRestoreFocus) {
+        this._focusedElementBeforeOpen!.focus();
+        setTimeout(completeClose);
+      } else {
+        completeClose();
+      }
     }
   }
 
