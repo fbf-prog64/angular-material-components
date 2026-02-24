@@ -60,7 +60,6 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
   styleUrls: ['color-picker-content.component.scss'],
   host: {
     class: 'ngx-mat-colorpicker-content',
-    '[@transformPanel]': '"enter"',
     '[class.ngx-mat-colorpicker-content-touch]': 'picker?.touchUi',
   },
   exportAs: 'ngxMatColorPickerContent',
