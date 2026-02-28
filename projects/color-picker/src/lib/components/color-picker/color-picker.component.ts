@@ -27,6 +27,10 @@ import {
   ViewEncapsulation,
   viewChild,
   DOCUMENT,
+  ChangeDetectorRef,
+  inject,
+  OnInit,
+  ElementRef,
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -57,10 +61,11 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
 @Component({
   selector: 'ngx-mat-color-picker-content',
   templateUrl: './color-picker-content.component.html',
-  styleUrls: ['color-picker-content.component.scss'],
+  styleUrls: ['../../../../../shared/base-animations.scss', 'color-picker-content.component.scss'],
   host: {
     class: 'ngx-mat-colorpicker-content',
     '[class.ngx-mat-colorpicker-content-touch]': 'picker?.touchUi',
+    '(animationend)': '_onAnimationEnd($event)',
   },
   exportAs: 'ngxMatColorPickerContent',
   encapsulation: ViewEncapsulation.None,
@@ -68,15 +73,50 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
   inputs: ['color'],
   imports: [NgxMatColorPaletteComponent],
 })
-export class NgxMatColorPickerContentComponent {
+export class NgxMatColorPickerContentComponent implements OnInit {
   /** Reference to the internal calendar component. */
   _palette = viewChild(NgxMatColorPaletteComponent);
 
   picker: NgxMatColorPickerComponent | null = null;
-  _isAbove: boolean = false;
   color: ThemePalette;
 
-  constructor() {}
+  _isLeaving = false;
+  _panelEnterClass: 'enter-dropdown' | 'enter-dialog' | null = null;
+
+  @Output() readonly _animationDone = new Subject<void>();
+
+  private _cdr = inject(ChangeDetectorRef);
+
+  @HostBinding('class.panel-enter-dropdown')
+  get isEnterDropdown() {
+    return !this._isLeaving && this._panelEnterClass === 'enter-dropdown';
+  }
+
+  @HostBinding('class.panel-enter-dialog')
+  get isEnterDialog() {
+    return !this._isLeaving && this._panelEnterClass === 'enter-dialog';
+  }
+
+  @HostBinding('class.panel-leave')
+  get isLeaving() {
+    return this._isLeaving;
+  }
+
+  ngOnInit(): void {
+    this._panelEnterClass = this.picker?.touchUi ? 'enter-dialog' : 'enter-dropdown';
+    this._cdr.markForCheck(); // ensure initial class is applied
+  }
+
+  _startExitAnimation() {
+    this._isLeaving = true;
+    this._cdr.markForCheck(); // trigger class update
+  }
+
+  _onAnimationEnd(event: AnimationEvent) {
+    if (event.animationName === 'panelLeave') {
+      this._animationDone.next();
+    }
+  }
 }
 
 @Component({
@@ -194,6 +234,9 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   /** Emits new selected date when selected date changes. */
   readonly _selectedChanged = new Subject<Color>();
 
+  /** Whether an animation is currently in progress. */
+  private _isAnimating = false;
+
   constructor(
     private _dialog: MatDialog,
     private _overlay: Overlay,
@@ -242,7 +285,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   }
 
   public open(): void {
-    if (this._opened || this.disabled) {
+    if (this._opened || this.disabled || this._isAnimating) {
       return;
     }
     if (!this._pickerInput) {
@@ -273,9 +316,20 @@ export class NgxMatColorPickerComponent implements OnDestroy {
       },
     );
 
-    this._dialogRef.afterClosed().subscribe(() => this.close());
+    this._dialogRef.afterClosed().subscribe(() => this._handleDialogClosed());
     this._dialogRef.componentInstance.picker = this;
     this._setColor();
+  }
+
+  private _handleDialogClosed(): void {
+    this._opened = false;
+    this._isAnimating = false;
+    this.closedStream.emit();
+    if (this._focusedElementBeforeOpen) {
+      this._focusedElementBeforeOpen.focus();
+      this._focusedElementBeforeOpen = null;
+    }
+    this._dialogRef = null;
   }
 
   /** Open the calendar as a popup. */
@@ -342,43 +396,63 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   }
 
   close(): void {
-    if (!this._opened) {
+    if (!this._opened || this._isAnimating) {
       return;
     }
-    if (this._popupRef && this._popupRef.hasAttached()) {
-      this._popupRef.detach();
-    }
-    if (this._dialogRef) {
-      this._dialogRef.close();
-      this._dialogRef = null;
-    }
-    if (this._portal && this._portal.isAttached) {
-      this._portal.detach();
-    }
 
-    const completeClose = () => {
-      // The `_opened` could've been reset already if
-      // we got two events in quick succession.
-      if (this._opened) {
-        this._opened = false;
-        this.closedStream.emit();
-        this._focusedElementBeforeOpen = null;
+    if (this.touchUi) {
+      // Dialog mode – close the dialog, state reset happens in afterClosed
+      if (this._dialogRef) {
+        this._dialogRef.close();
       }
-    };
-
-    if (
-      this._focusedElementBeforeOpen &&
-      typeof this._focusedElementBeforeOpen.focus === 'function'
-    ) {
-      // Because IE moves focus asynchronously, we can't count on it being restored before we've
-      // marked the datepicker as closed. If the event fires out of sequence and the element that
-      // we're refocusing opens the datepicker on focus, the user could be stuck with not being
-      // able to close the calendar at all. We work around it by making the logic, that marks
-      // the datepicker as closed, async as well.
-      this._focusedElementBeforeOpen.focus();
-      setTimeout(completeClose);
     } else {
-      completeClose();
+      // Popup mode – animate out then clean up
+      let contentInstance: NgxMatColorPickerContentComponent | null = null;
+      if (this._popupComponentRef) {
+        contentInstance = this._popupComponentRef.instance;
+      }
+
+      const canRestoreFocus =
+        this._focusedElementBeforeOpen &&
+        typeof this._focusedElementBeforeOpen.focus === 'function';
+
+      const completeClose = () => {
+        if (this._popupRef && this._popupRef.hasAttached()) {
+          this._popupRef.detach();
+        }
+        if (this._portal && this._portal.isAttached) {
+          this._portal.detach();
+        }
+        this._opened = false;
+        this._isAnimating = false;
+        this.closedStream.emit();
+        if (canRestoreFocus) {
+          this._focusedElementBeforeOpen!.focus();
+        }
+        this._focusedElementBeforeOpen = null;
+      };
+
+      if (contentInstance) {
+        this._isAnimating = true;
+        contentInstance._startExitAnimation();
+
+        contentInstance._animationDone.pipe(take(1)).subscribe(() => {
+          // Restore focus before the timeout to ensure it happens even if the
+          // overlay is removed synchronously.
+          if (canRestoreFocus) {
+            this._focusedElementBeforeOpen!.focus();
+          }
+          setTimeout(completeClose);
+        });
+      } else {
+        // No content to animate – close immediately
+        if (canRestoreFocus) {
+          this._focusedElementBeforeOpen!.focus();
+          setTimeout(completeClose);
+        } else {
+          completeClose();
+        }
+      }
     }
   }
 
