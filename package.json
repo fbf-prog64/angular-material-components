@@ -26,7 +26,7 @@
     "test": "ng test",
     "start": "ng serve",
     "build": "ng build -c=production",
-    "watch": "ng build -c=development --watch"
+    "build-dev": "ng build -c=development"
   },
   "prettier": {
     "printWidth": 100,
