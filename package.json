@@ -62,7 +62,7 @@
     "@angular/compiler-cli": "^21.1.5",
     "@types/node": "^25.3.3",
     "jsdom": "^28.1.0",
-    "ng-packagr": "^21.1.0",
+    "ng-packagr": "^21.2.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
