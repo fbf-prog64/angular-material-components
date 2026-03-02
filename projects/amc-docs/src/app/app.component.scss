@@ -1,35 +1,32 @@
-.app-content {
-  padding: 20px;
-}
+.sidenav {
+  padding: 0;
 
-:host {
-  ::ng-deep mat-sidenav-container {
-    height: 100%;
+  &.container {
+    height: calc(100vh - var(--mat-toolbar-standard-height, 64px));
+  }
 
-    mat-sidenav {
-      .mat-mdc-nav-list {
-        padding: 0;
+  & .left {
+    width: calc(100% - 16px);
+    padding: 0;
 
-        .sidebar-item {
-          .mdc-list-item__content {
-            .mdc-list-item__primary-text {
-              display: flex;
-              align-items: center;
-              column-gap: 8px;
-            }
-          }
+    & .item {
+      margin: 8px;
 
-          &.active {
-            background-color: #009B77;
+      &.active {
+        background-color: #009B77;
 
-            .mdc-list-item__content {
-              .mdc-list-item__primary-text {
-                color: white;
-              }
-            }
-          }
+        & .content > * {
+          color: white;
         }
       }
     }
   }
+}
+
+.app-content {
+  padding: 20px;
+}
+
+.img-btn {
+  line-height: normal;
 }
