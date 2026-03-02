@@ -14,6 +14,12 @@ body {
   height: 100%;
 }
 
+.flex-row {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
 pre {
   background: rgba(0, 0, 0, 0.01);
   border: 0.5px solid rgba(0, 155, 119, 0.03);
