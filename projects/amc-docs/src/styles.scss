@@ -14,6 +14,11 @@ body {
   height: 100%;
 }
 
+app-root {
+  display: block;
+  height: 100%;
+}
+
 .flex-row {
   display: flex;
   align-items: center;
