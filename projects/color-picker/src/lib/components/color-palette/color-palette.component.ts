@@ -17,7 +17,7 @@ import { NgxMatColorCollectionComponent } from '../color-collection/color-collec
 export class NgxMatColorPaletteComponent {
   readonly colorChanged = output<Color>();
 
-  readonly color = input<Color>();
+  readonly color = input<Color | undefined | null>();
   readonly theme = input<ThemePalette>();
 
   public handleColorChanged(color: Color) {

@@ -43,7 +43,7 @@ export class NgxMatCalendarCell<D = any> {
 /** Event emitted when a date inside the calendar is triggered as a result of a user action. */
 export interface NgxMatCalendarUserEvent<D> {
   value: D;
-  event: Event;
+  event: Event | null;
 }
 
 let calendarBodyId = 1;
@@ -67,7 +67,7 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
    * Used to skip the next focus event when rendering the preview range.
    * We need a flag like this, because some browsers fire focus events asynchronously.
    */
-  private _skipNextFocus: boolean;
+  private _skipNextFocus: boolean = false;
 
   /**
    * Used to focus the active cell after change detection has run.
@@ -78,7 +78,7 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
   label = input<string>();
 
   /** The cells to display in the table. */
-  rows = input<NgxMatCalendarCell[][]>();
+  rows = input<NgxMatCalendarCell[][] | null>();
 
   /** The value in the table that corresponds to today. */
   todayValue = input<number>();
@@ -269,22 +269,22 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
 
   /** Gets whether a value is the start of the main range. */
   _isRangeStart(value: number) {
-    return isStart(value, this.startValue(), this.endValue());
+    return isStart(value, this.startValue()!, this.endValue()!);
   }
 
   /** Gets whether a value is the end of the main range. */
   _isRangeEnd(value: number) {
-    return isEnd(value, this.startValue(), this.endValue());
+    return isEnd(value, this.startValue()!, this.endValue()!);
   }
 
   /** Gets whether a value is within the currently-selected range. */
   _isInRange(value: number): boolean {
-    return isInRange(value, this.startValue(), this.endValue(), this.isRange());
+    return isInRange(value, this.startValue()!, this.endValue()!, this.isRange());
   }
 
   /** Gets whether a value is the start of the comparison range. */
   _isComparisonStart(value: number) {
-    return isStart(value, this.comparisonStart(), this.comparisonEnd());
+    return isStart(value, this.comparisonStart()!, this.comparisonEnd()!);
   }
 
   /** Whether the cell is a start bridge cell between the main and comparison ranges. */
@@ -293,10 +293,10 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
       return false;
     }
 
-    let previousCell: NgxMatCalendarCell | undefined = this.rows()[rowIndex][colIndex - 1];
+    let previousCell: NgxMatCalendarCell | undefined = this.rows()![rowIndex][colIndex - 1];
 
     if (!previousCell) {
-      const previousRow = this.rows()[rowIndex - 1];
+      const previousRow = this.rows()![rowIndex - 1];
       previousCell = previousRow && previousRow[previousRow.length - 1];
     }
 
@@ -309,10 +309,10 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
       return false;
     }
 
-    let nextCell: NgxMatCalendarCell | undefined = this.rows()[rowIndex][colIndex + 1];
+    let nextCell: NgxMatCalendarCell | undefined = this.rows()![rowIndex][colIndex + 1];
 
     if (!nextCell) {
-      const nextRow = this.rows()[rowIndex + 1];
+      const nextRow = this.rows()![rowIndex + 1];
       nextCell = nextRow && nextRow[0];
     }
 
@@ -321,12 +321,12 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
 
   /** Gets whether a value is the end of the comparison range. */
   _isComparisonEnd(value: number) {
-    return isEnd(value, this.comparisonStart(), this.comparisonEnd());
+    return isEnd(value, this.comparisonStart()!, this.comparisonEnd()!);
   }
 
   /** Gets whether a value is within the current comparison range. */
   _isInComparisonRange(value: number) {
-    return isInRange(value, this.comparisonStart(), this.comparisonEnd(), this.isRange());
+    return isInRange(value, this.comparisonStart()!, this.comparisonEnd()!, this.isRange());
   }
 
   _isComparisonIdentical(value: number) {
@@ -499,7 +499,7 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
       const col = cell.getAttribute('data-mat-col');
 
       if (row && col) {
-        return this.rows()[parseInt(row)][parseInt(col)];
+        return this.rows()![parseInt(row)][parseInt(col)];
       }
     }
 

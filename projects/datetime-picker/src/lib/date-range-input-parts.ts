@@ -66,13 +66,13 @@ abstract class NgxMatDateRangeInputPartBase<D>
   extends NgxMatDatepickerInputBase<NgxDateRange<D>>
   implements OnInit, DoCheck
 {
-  @Input() errorStateMatcher: ErrorStateMatcher;
+  @Input() errorStateMatcher: ErrorStateMatcher | null = null;
 
   /**
    * Form control bound to this input part.
    * @docs-private
    */
-  ngControl: NgControl;
+  ngControl: NgControl | null = null;
 
   errorState = false;
 
@@ -155,8 +155,8 @@ abstract class NgxMatDateRangeInputPartBase<D>
   }
 
   /** Handles `input` events on the input element. */
-  override _onInput(value: string) {
-    super._onInput(value);
+  override _onInput(event: Event) {
+    super._onInput(event);
     this._rangeInput._handleChildValueChange();
   }
 
@@ -212,13 +212,13 @@ abstract class NgxMatDateRangeInputPartBase<D>
   host: {
     class: 'mat-start-date mat-date-range-input-inner',
     '[disabled]': 'disabled',
-    '(input)': '_onInput($event.target.value)',
+    '(input)': '_onInput($event)',
     '(change)': '_onChange()',
     '(keydown)': '_onKeydown($event)',
     '[attr.aria-haspopup]': '_rangeInput.rangePicker ? "dialog" : null',
     '[attr.aria-owns]': '(_rangeInput.rangePicker?.opened && _rangeInput.rangePicker.id) || null',
-    '[attr.min]': '_getMinDate() ? _dateAdapter.toIso8601(_getMinDate()) : null',
-    '[attr.max]': '_getMaxDate() ? _dateAdapter.toIso8601(_getMaxDate()) : null',
+    '[attr.min]': '_getMinDate() ? _dateAdapter.toIso8601(_getMinDate()!) : null',
+    '[attr.max]': '_getMaxDate() ? _dateAdapter.toIso8601(_getMaxDate()!) : null',
     '(blur)': '_onBlur()',
     type: 'text',
   },
@@ -268,8 +268,8 @@ export class NgxMatStartDate<D> extends NgxMatDateRangeInputPartBase<D> {
 
   protected _validator = Validators.compose([...super._getValidators(), this._startValidator]);
 
-  protected _getValueFromModel(modelValue: NgxDateRange<D>) {
-    return modelValue.start;
+  protected _getValueFromModel(modelValue: NgxDateRange<D> | null) {
+    return modelValue!.start;
   }
 
   protected override _shouldHandleChangeEvent(
@@ -279,9 +279,9 @@ export class NgxMatStartDate<D> extends NgxMatDateRangeInputPartBase<D> {
       return false;
     } else {
       return !change.oldValue?.start
-        ? !!change.selection.start
-        : !change.selection.start ||
-            !!this._dateAdapter.compareDate(change.oldValue.start, change.selection.start);
+        ? !!change.selection!.start
+        : !change.selection!.start ||
+            !!this._dateAdapter.compareDate(change.oldValue.start, change.selection!.start);
     }
   }
 
@@ -326,13 +326,13 @@ export class NgxMatStartDate<D> extends NgxMatDateRangeInputPartBase<D> {
   host: {
     class: 'mat-end-date mat-date-range-input-inner',
     '[disabled]': 'disabled',
-    '(input)': '_onInput($event.target.value)',
+    '(input)': '_onInput($event)',
     '(change)': '_onChange()',
     '(keydown)': '_onKeydown($event)',
     '[attr.aria-haspopup]': '_rangeInput.rangePicker ? "dialog" : null',
     '[attr.aria-owns]': '(_rangeInput.rangePicker?.opened && _rangeInput.rangePicker.id) || null',
-    '[attr.min]': '_getMinDate() ? _dateAdapter.toIso8601(_getMinDate()) : null',
-    '[attr.max]': '_getMaxDate() ? _dateAdapter.toIso8601(_getMaxDate()) : null',
+    '[attr.min]': '_getMinDate() ? _dateAdapter.toIso8601(_getMinDate()!) : null',
+    '[attr.max]': '_getMaxDate() ? _dateAdapter.toIso8601(_getMaxDate()!) : null',
     '(blur)': '_onBlur()',
     type: 'text',
   },
@@ -380,8 +380,8 @@ export class NgxMatEndDate<D> extends NgxMatDateRangeInputPartBase<D> {
 
   protected _validator = Validators.compose([...super._getValidators(), this._endValidator]);
 
-  protected _getValueFromModel(modelValue: NgxDateRange<D>) {
-    return modelValue.end;
+  protected _getValueFromModel(modelValue: NgxDateRange<D> | null) {
+    return modelValue!.end;
   }
 
   protected override _shouldHandleChangeEvent(
@@ -391,9 +391,9 @@ export class NgxMatEndDate<D> extends NgxMatDateRangeInputPartBase<D> {
       return false;
     } else {
       return !change.oldValue?.end
-        ? !!change.selection.end
-        : !change.selection.end ||
-            !!this._dateAdapter.compareDate(change.oldValue.end, change.selection.end);
+        ? !!change.selection!.end
+        : !change.selection!.end ||
+            !!this._dateAdapter.compareDate(change.oldValue.end, change.selection!.end);
     }
   }
 

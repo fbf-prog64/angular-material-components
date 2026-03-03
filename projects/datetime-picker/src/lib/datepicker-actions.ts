@@ -82,7 +82,7 @@ export class NgxMatDatepickerCancel {
 })
 export class NgxMatDatepickerActions implements AfterViewInit, OnDestroy {
   _template = viewChild<TemplateRef<unknown>>(TemplateRef);
-  private _portal: TemplatePortal;
+  private _portal: TemplatePortal | null = null;
 
   constructor(
     private _datepicker: NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>,
@@ -90,12 +90,12 @@ export class NgxMatDatepickerActions implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
-    this._portal = new TemplatePortal(this._template(), this._viewContainerRef);
+    this._portal = new TemplatePortal(this._template()!, this._viewContainerRef);
     this._datepicker.registerActions(this._portal);
   }
 
   ngOnDestroy() {
-    this._datepicker.removeActions(this._portal);
+    this._datepicker.removeActions(this._portal!);
 
     // Needs to be null checked since we initialize it in `ngAfterViewInit`.
     if (this._portal && this._portal.isAttached) {

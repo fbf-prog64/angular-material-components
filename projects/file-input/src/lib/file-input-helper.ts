@@ -6,4 +6,5 @@ export function calculFileSize(number: number): string {
   } else if (number >= 1048576) {
     return (number / 1048576).toFixed(1) + 'MB';
   }
+  return `${number}`;
 }

@@ -4,7 +4,7 @@
   @switch (currentView()) {
     @case ('month') {
       <ngx-mat-month-view
-        [(activeDate)]="activeDate"
+        [(activeDate)!]="activeDate"
         [selected]="selected"
         [dateFilter]="dateFilter()"
         [maxDate]="maxDate"
@@ -21,7 +21,7 @@
     }
     @case ('year') {
       <ngx-mat-year-view
-        [(activeDate)]="activeDate"
+        [(activeDate)!]="activeDate"
         [selected]="selected"
         [dateFilter]="dateFilter()"
         [maxDate]="maxDate"
@@ -32,7 +32,7 @@
     }
     @case ('multi-year') {
       <ngx-mat-multi-year-view
-        [(activeDate)]="activeDate"
+        [(activeDate)!]="activeDate"
         [selected]="selected"
         [dateFilter]="dateFilter()"
         [maxDate]="maxDate"

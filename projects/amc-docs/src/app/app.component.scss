@@ -1,0 +1,32 @@
+.sidenav {
+  padding: 0;
+
+  &.container {
+    height: calc(100vh - var(--mat-toolbar-standard-height, 64px));
+  }
+
+  & .left {
+    width: calc(100% - 16px);
+    padding: 0;
+
+    & .item {
+      margin: 8px;
+
+      &.active {
+        background-color: #009B77;
+
+        & .content > * {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.app-content {
+  padding: 20px;
+}
+
+.img-btn {
+  line-height: normal;
+}

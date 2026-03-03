@@ -50,14 +50,14 @@ export const NGX_MAT_DATEPICKER_VALIDATORS = {
   host: {
     class: 'mat-datepicker-input',
     '[attr.aria-haspopup]': '_datepicker ? "dialog" : null',
-    '[attr.aria-owns]': '(_datepicker?.opened && _datepicker.id) || null',
+    '[attr.aria-owns]': '(_datepicker?.opened && _datepicker?.id) || null',
     '[attr.min]': 'min ? _dateAdapter.toIso8601(min) : null',
     '[attr.max]': 'max ? _dateAdapter.toIso8601(max) : null',
     // Used by the test harness to tie this input to its calendar. We can't depend on
     // `aria-owns` for this, because it's only defined while the calendar is open.
     '[attr.data-mat-calendar]': '_datepicker ? _datepicker.id : null',
     '[disabled]': 'disabled',
-    '(input)': '_onInput($event.target.value)',
+    '(input)': '_onInput($event)',
     '(change)': '_onChange()',
     '(blur)': '_onBlur()',
     '(keydown)': '_onKeydown($event)',
@@ -81,7 +81,7 @@ export class NgxMatDatepickerInput<D>
       this._registerModel(datepicker.registerInput(this));
     }
   }
-  _datepicker: NgxMatDatepickerPanel<NgxMatDatepickerControl<D>, D | null, D>;
+  _datepicker: NgxMatDatepickerPanel<NgxMatDatepickerControl<D>, D | null, D> | null = null;
 
   /** The minimum valid date. */
   @Input()
@@ -96,7 +96,7 @@ export class NgxMatDatepickerInput<D>
       this._validatorOnChange();
     }
   }
-  private _min: D | null;
+  private _min: D | null = null;
 
   /** The maximum valid date. */
   @Input()
@@ -111,12 +111,12 @@ export class NgxMatDatepickerInput<D>
       this._validatorOnChange();
     }
   }
-  private _max: D | null;
+  private _max: D | null = null;
 
   /** Function that can be used to filter out dates within the datepicker. */
   @Input('matDatepickerFilter')
   get dateFilter() {
-    return this._dateFilter;
+    return this._dateFilter!;
   }
   set dateFilter(value: NgxDateFilterFn<D | null>) {
     const wasMatchingValue = this._matchesFilter(this.value);
@@ -126,7 +126,7 @@ export class NgxMatDatepickerInput<D>
       this._validatorOnChange();
     }
   }
-  private _dateFilter: NgxDateFilterFn<D | null>;
+  private _dateFilter: NgxDateFilterFn<D | null> | null = null;
 
   /** The combined form control validator for this input. */
   protected _validator: ValidatorFn | null;
@@ -204,7 +204,7 @@ export class NgxMatDatepickerInput<D>
 
   /** Gets the input's date filtering function. */
   protected _getDateFilter() {
-    return this._dateFilter;
+    return this._dateFilter!;
   }
 
   protected _shouldHandleChangeEvent(event: NgxDateSelectionModelChange<D>) {

@@ -41,7 +41,7 @@ export class NgxMatDatetimePickerV2<D> implements OnDestroy {
   readonly id = `ngx-mat-datetime-picker-${datepickerUid++}`;
 
   /** The input element this datepicker is associated with. */
-  datepickerInput: NgxMatDatepickerControl<D>;
+  datepickerInput: NgxMatDatepickerControl<D> | null = null;
 
   /** Emits when the datepicker is disabled. */
   readonly stateChanges = new Subject<void>();

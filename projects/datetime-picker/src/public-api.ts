@@ -1,4 +1,4 @@
 /*
- * Public API Surface of ngx-mat-datetime-picker
+ * Public API Surface of datetime-picker
  */
 export * from './lib';

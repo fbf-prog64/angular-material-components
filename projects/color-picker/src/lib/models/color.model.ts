@@ -51,7 +51,7 @@ export class Color {
           ')';
   }
 
-  public toHex8(allow4Char): string {
+  public toHex8(allow4Char?: boolean): string {
     return rgbaToHex(this.r, this.g, this.b, this.a, allow4Char);
   }
 

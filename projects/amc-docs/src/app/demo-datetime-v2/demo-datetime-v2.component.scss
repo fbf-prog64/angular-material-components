@@ -1,0 +1,113 @@
+@use '@angular/material' as mat;
+
+.control-panel {
+  margin-top: 8px;
+  display: grid;
+  grid-template-rows: 1fr 1fr auto;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "examples"
+    "viewer"
+    "actions";
+  height: calc(100vh - 64px - 48px - 40px - 10px);
+  row-gap: 8px;
+
+  .panel {
+    padding: 8px;
+    overflow-x: auto;
+    
+    &.one {
+      grid-area: examples;
+      border: 1px dotted black;
+    }
+
+    &.two {
+      grid-area: viewer;
+      border: 1px dotted black;
+    }
+
+    &.three {
+      grid-area: actions;
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  @media (orientation: landscape) {
+    .control-panel {
+      grid-template-rows: 1fr auto;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "examples viewer"
+        "examples actions";
+      column-gap: 8px;
+    }
+
+    .panel {
+      overflow-y: auto;      
+    }
+  }
+}
+
+mat-card {
+  max-width: 100%;
+
+  &.example, &.inspector {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+
+  &.example h3 {
+    color: #1976d2;
+  }
+
+  &.inspector {
+    & .title > * {
+      margin-bottom: 0.25em;
+    }
+
+    & h3, & h4 {
+      color: green;
+    }
+  }
+
+  & .title > * {
+    padding-left: 16px;
+  }
+}
+
+.demo-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.actions-section {
+  display: flex;
+  column-gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.debug-info {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.debug-info h4 {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.debug-info pre {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  overflow-x: auto;
+}

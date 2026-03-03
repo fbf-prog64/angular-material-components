@@ -32,11 +32,11 @@ export class NgxMatDatepickerToggleIcon {}
   host: {
     class: 'mat-datepicker-toggle',
     '[attr.tabindex]': 'null',
-    '[class.mat-datepicker-toggle-active]': 'datepicker && datepicker()?.opened',
-    '[class.mat-accent]': 'datepicker && datepicker()?.color === "accent"',
-    '[class.mat-warn]': 'datepicker && datepicker()?.color === "warn"',
+    '[class.mat-datepicker-toggle-active]': 'datepicker()?.opened',
+    '[class.mat-accent]': 'datepicker()?.color === "accent"',
+    '[class.mat-warn]': 'datepicker()?.color === "warn"',
     // Used by the test harness to tie this toggle to its datepicker.
-    '[attr.data-mat-calendar]': 'datepicker ? datepicker()?.id : null',
+    '[attr.data-mat-calendar]': 'datepicker()?.id',
     // Bind the `click` on the host, rather than the inner `button`, so that we can call
     // `stopPropagation` on it without affecting the user's `click` handlers. We need to stop
     // it so that the input doesn't get focused automatically by the form field (See #21836).
@@ -66,7 +66,7 @@ export class NgxMatDatepickerToggle<D> implements AfterContentInit, OnDestroy {
   @Input()
   get disabled(): boolean {
     if (this._disabled === undefined && this.datepicker()) {
-      return this.datepicker().disabled;
+      return this.datepicker()!.disabled;
     }
 
     return !!this._disabled;
@@ -74,7 +74,7 @@ export class NgxMatDatepickerToggle<D> implements AfterContentInit, OnDestroy {
   set disabled(value: BooleanInput) {
     this._disabled = coerceBooleanProperty(value);
   }
-  private _disabled: boolean;
+  private _disabled: boolean = false;
 
   /** Whether ripples on the toggle should be disabled. */
   disableRipple = input<boolean>();
@@ -106,7 +106,7 @@ export class NgxMatDatepickerToggle<D> implements AfterContentInit, OnDestroy {
 
   _open(event: Event): void {
     if (this.datepicker() && !this.disabled) {
-      this.datepicker().open();
+      this.datepicker()?.open();
       event.stopPropagation();
     }
   }

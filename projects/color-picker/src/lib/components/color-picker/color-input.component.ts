@@ -67,9 +67,9 @@ export const MAT_COLORPICKER_VALIDATORS: any = {
   ],
   host: {
     '[attr.aria-haspopup]': '_picker ? "dialog" : null',
-    '[attr.aria-owns]': '(_picker?.opened && _picker.id) || null',
+    '[attr.aria-owns]': '(_picker?.opened && _picker?.id) || null',
     '[disabled]': 'disabled',
-    '(input)': '_onInput($event.target.value)',
+    '(input)': '_onInput($event)',
     '(change)': '_onChange()',
     '(blur)': '_onBlur()',
     '(keydown)': '_onKeydown($event)',
@@ -95,7 +95,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
       this.colorChange.emit(new NgxMatColorPickerInputEvent(this, this._elementRef.nativeElement));
     });
   }
-  _picker: NgxMatColorPickerComponent;
+  _picker: NgxMatColorPickerComponent | null = null;
 
   /** Whether the colorpicker-input is disabled. */
   @Input()
@@ -119,7 +119,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
       element.blur();
     }
   }
-  private _disabled: boolean;
+  private _disabled: boolean = false;
 
   /** The value of the input. */
   @Input()
@@ -131,11 +131,11 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
     this._value = value;
     this._formatValue(value);
 
-    if (!this._adapter.sameColor(oldValue, value)) {
+    if (!this._adapter.sameColor(oldValue!, value!)) {
       this._valueChange.emit(value);
     }
   }
-  private _value: Color | null;
+  private _value: Color | null = null;
 
   /** Emits when a `change` event is fired on this `<input>`. */
   readonly colorChange = output<NgxMatColorPickerInputEvent>();
@@ -147,7 +147,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
   _disabledChange = new EventEmitter<boolean>();
 
   /** Emits when the value changes (either due to user input or programmatic change). */
-  _valueChange = new EventEmitter<Color>();
+  _valueChange = new EventEmitter<Color | null>();
 
   _onTouched = () => {};
 
@@ -263,11 +263,12 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
       : '';
   }
 
-  _onInput(value: string) {
+  _onInput(event?: Event) {
     const lastValueWasValid = this._lastValueValid;
-    const nextValue = this._adapter.parse(value);
+    const target = event?.target as HTMLInputElement;
+    const nextValue = this._adapter.parse(target.value);
 
-    if (!this._adapter.sameColor(nextValue, this._value)) {
+    if (!this._adapter.sameColor(nextValue!, this._value!)) {
       this._value = nextValue;
       this._cvaOnChange(nextValue);
       this._valueChange.emit(nextValue);

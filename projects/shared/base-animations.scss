@@ -1,0 +1,58 @@
+// ====== Native CSS animations (replacing @angular/animations) ======
+
+@keyframes panelDropdownEnter {
+  0% {
+    opacity: 0;
+    transform: scale(1, 0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes panelDialogEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes panelLeave {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.panel-enter-dropdown {
+  animation: panelDropdownEnter 120ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.panel-enter-dialog {
+  animation: panelDialogEnter 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.panel-leave {
+  animation: panelLeave 100ms linear forwards;
+  pointer-events: none; /* prevent interaction during exit */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.calendar-fade-enter {
+  animation: fadeIn 120ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2) forwards;
+}
