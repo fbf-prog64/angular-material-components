@@ -28,7 +28,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ["./demo-datetime-v2.component.scss"]
 })
 export class DemoDatetimeV2Component {
-  datetimeControl = new FormControl<Date>(new Date());
+  datetimeControl = new FormControl<Date | null>(null);
   dateOnlyControl = new FormControl<Date | null>(null);
   fullDatetimeControl = new FormControl<Date | null>(null);
 
@@ -69,6 +69,7 @@ export class DemoDatetimeV2Component {
   protected readonly minDate = toSignal(this.datetimeControl.valueChanges, { initialValue: new Date() });
   protected readonly maxDate = computed(() => {
     const minDate = this.minDate();
+    if (!minDate) return null;
     return new Date(
       minDate!.getFullYear(), minDate!.getMonth(), minDate!.getDate() + 32,
       minDate!.getHours(), minDate!.getMinutes(), minDate!.getSeconds()
