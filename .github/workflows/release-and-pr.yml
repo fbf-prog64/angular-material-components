@@ -6,6 +6,7 @@ on:
       - nightly
       - dev
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
