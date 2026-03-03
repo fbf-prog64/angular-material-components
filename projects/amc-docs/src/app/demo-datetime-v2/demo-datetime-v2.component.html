@@ -1,0 +1,149 @@
+<mat-tab-group [mat-stretch-tabs]="false">
+  <mat-tab label="API">
+    <div class="demo-container">
+      <h1>NgxMatDatetimePicker V2 Demo</h1>
+      <h2>@ngx-mce/datetime-picker</h2>
+
+      <p>This is the new implementation that uses native Angular Material with integrated timepicker.</p>
+
+      <pre>
+        <code ngxMatHighlight class="language-typescript">{{code1}}</code>
+        <code ngxMatHighlight class="language-html">{{code2}}</code>
+      </pre>
+    </div>
+  </mat-tab>
+  <mat-tab label="Example">
+    <div class="control-panel">
+      <div class="panel one">
+        <mat-card class="example">
+          <mat-card-title class="title">
+            <h3>Basic Example</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field appearance="outline">
+              <mat-label>Date and Time</mat-label>
+              <input
+                matInput
+                [formControl]="datetimeControl"
+                [ngxMatDatetimePicker]="datetimePicker"
+                placeholder="Select date and time">
+              <ngx-mat-datetime-picker
+                #datetimePicker
+                [hideTime]="false"
+                [showSpinners]="true"
+                [showSeconds]="false"
+                [stepHour]="1"
+                [stepMinute]="15">
+              </ngx-mat-datetime-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="example">
+          <mat-card-title class="title">
+            <h3>Basic Example with Min/Max Dates</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field appearance="outline">
+              <mat-label>Date and Time</mat-label>
+              <input
+                matInput
+                [formControl]="datetimeControl"
+                [ngxMatDatetimePicker]="datetimePickerWithMinMax"
+                [min]="minDate()"
+                [max]="maxDate()"
+                placeholder="Select date and time">
+              <ngx-mat-datetime-picker
+                #datetimePickerWithMinMax
+                [hideTime]="false"
+                [showSpinners]="true"
+                [showSeconds]="false"
+                [stepHour]="1"
+                [stepMinute]="15">
+              </ngx-mat-datetime-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="example">
+          <mat-card-title class="title">
+            <h3>Date Only (no time)</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field appearance="outline">
+              <mat-label>Date</mat-label>
+              <input
+                matInput
+                [formControl]="dateOnlyControl"
+                [ngxMatDatetimePicker]="dateOnlyPicker"
+                placeholder="Select date only">
+              <ngx-mat-datetime-picker
+                #dateOnlyPicker
+                [hideTime]="true">
+              </ngx-mat-datetime-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="example">
+          <mat-card-title class="title">
+            <h3>With Seconds and 12-hour Format</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field appearance="outline">
+              <mat-label>Full Date and Time</mat-label>
+              <input
+                matInput
+                [formControl]="fullDatetimeControl"
+                [ngxMatDatetimePicker]="fullDatetimePicker"
+                placeholder="Date with seconds and AM/PM">
+              <ngx-mat-datetime-picker
+                #fullDatetimePicker
+                [hideTime]="false"
+                [showSpinners]="true"
+                [showSeconds]="true"
+                [enableMeridian]="true"
+                [stepHour]="1"
+                [stepMinute]="5"
+                [stepSecond]="10">
+              </ngx-mat-datetime-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="panel two">
+        <mat-card class="inspector">
+          <mat-card-title class="title">
+            <h3>Current Values</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <ul>
+              <li><strong>Basic datetime:</strong><br /><span>{{ datetimeControl.value | date:'short' }}</span><br /><br /></li>
+              <li><strong>Date only:</strong><br /><span>{{ dateOnlyControl.value | date:'mediumDate' }}</span><br /><br /></li>
+              <li><strong>Full datetime:</strong><br /><span>{{ fullDatetimeControl.value | date:'full' }}</span><br /><br /></li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="inspector">
+          <mat-card-title class="title">
+            <h4>Debug Info (check console for logs)</h4>
+          </mat-card-title>
+          <mat-card-content>
+            <p><strong>Form Status:</strong> {{ datetimeControl.status }}</p>
+            <p><strong>Raw Values:</strong></p>
+            <pre>{{ getDebugInfo() }}</pre>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="panel three">
+        <mat-card>
+          <mat-card-content class="actions-section">
+            <button mat-raised-button color="primary" (click)="setCurrentDateTime()">
+              Set Current
+            </button>
+            <button mat-raised-button (click)="clearValues()">
+              Clear
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group> 

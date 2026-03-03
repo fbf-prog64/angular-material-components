@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { NgxMatTimepickerComponent } from '@ngx-mce/datetime-picker';
 import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-demo-time',
@@ -29,6 +30,7 @@ import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
     MatInputModule,
     MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
     NgxMatHighlightDirective,
     NgxMatTimepickerComponent,
     ReactiveFormsModule,

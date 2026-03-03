@@ -32,19 +32,26 @@
 
 <h2>List of components</h2>
 <mat-nav-list>
-  <a mat-list-item [routerLink]="['/datetimepicker']">
-    <mat-icon matListIcon>date_range</mat-icon>
-    Datetime Picker &nbsp;
-    <img src="https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg" />
+  <a mat-list-item routerLink="/datetimepicker">
+    <div class="flex-row">
+      <mat-icon matListIcon>date_range</mat-icon>
+      <span>Datetime Picker</span>
+      <img src="https://badge.fury.io/js/%40ngx-mce%2Fdatetime-picker.svg" />
+    </div>
+      
   </a>
-  <a mat-list-item [routerLink]="['/colorpicker']">
-    <mat-icon matListIcon>colorize</mat-icon>
-    Color Picker &nbsp;
-    <img src="https://badge.fury.io/js/%40angular-material-components%2Fcolor-picker.svg" />
+  <a mat-list-item routerLink="/colorpicker">
+    <div class="flex-row">
+      <mat-icon matListIcon>colorize</mat-icon>
+      <span>Color Picker</span>
+      <img src="https://badge.fury.io/js/%40ngx-mce%2Fdatetime-picker.svg" />
+    </div>
   </a>
-  <a mat-list-item [routerLink]="['/fileinput']">
-    <mat-icon matListIcon>attach_file</mat-icon>
-    File Input &nbsp;
-    <img src="https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg" />
+  <a mat-list-item routerLink="/fileinput">
+    <div class="flex-row">
+      <mat-icon matListIcon>attach_file</mat-icon>
+      <span>File Input</span>
+      <img src="https://badge.fury.io/js/%40ngx-mce%2Fdatetime-picker.svg" />
+    </div>
   </a>
 </mat-nav-list>
