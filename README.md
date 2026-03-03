@@ -4,7 +4,7 @@
 
 Forked from [**GNURub/angular-material-components**](https://github.com/GNURub/angular-material-components).
 
-[![License](https://img.shields.io/npm/l/angular-material-components.svg)](https://www.npmjs.com/package/@ngx-mce/angular-material-components)
+[![License](https://img.shields.io/npm/l/%40ngx-mce%2Fdatetime-picker)](https://www.npmjs.com/package/@ngx-mce/angular-material-components)
 
 ## 🚀 Live Demo
 
@@ -40,8 +40,8 @@ These are the components included with this project.
 
 You can details about this component [**here**](https://fbf-prog64.github.io/angular-material-components/)
 
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngx-mce/datetime-picker)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/datetime-picker.svg)]()
+[![npm version](https://badge.fury.io/js/%40ngx-mce%2Fdatetime-picker.svg)](https://www.npmjs.com/package/@ngx-mce/datetime-picker)
+[![Github All Releases](https://img.shields.io/npm/dt/%40ngx-mce%2Fdatetime-picker.svg)]()
 
 #### How to install
 
@@ -60,8 +60,8 @@ Online demos for old versions:
 
 You can see details about this component [**here**](https://fbf-prog64.github.io/angular-material-components/)
 
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Fcolor-picker.svg)](https://www.npmjs.com/package/@ngx-mce/color-picker)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/color-picker.svg)]()
+[![npm version](https://badge.fury.io/js/%40ngx-mce%2Fcolor-picker.svg)](https://www.npmjs.com/package/@ngx-mce/color-picker)
+[![Github All Releases](https://img.shields.io/npm/dt/%40ngx-mce%2Fcolor-picker.svg)]()
 
 #### How to install
 
@@ -77,8 +77,8 @@ Online demo: [here](https://stackblitz.com/edit/demo-ngx-mat-color-picker).
 
 You can see details about this component [**here**](https://fbf-prog64.github.io/angular-material-components/)
 
-[![npm version](https://badge.fury.io/js/%40angular-material-components%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
-[![Github All Releases](https://img.shields.io/npm/dt/@ngx-mce/file-input.svg)]()
+[![npm version](https://badge.fury.io/js/%40ngx-mce%2Ffile-input.svg)](https://www.npmjs.com/package/@ngx-mce/file-input)
+[![Github All Releases](https://img.shields.io/npm/dt/%40ngx-mce%2Ffile-input.svg)]()
 
 #### How to install
 
