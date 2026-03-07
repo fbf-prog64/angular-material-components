@@ -109,15 +109,17 @@ export class NgxMatColorCanvasComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['color'] && changes['color'].currentValue) {
-      this.updateForm(changes['color'].currentValue);
+    const key = "setColor";
+    
+    if (changes[key] && changes[key].currentValue) {
+      this.updateForm(changes[key].currentValue);
       if (this._resetBaseColor) {
-        this._baseColor = changes['color'].currentValue;
+        this._baseColor = changes[key].currentValue;
       }
 
       this._resetBaseColor = true;
 
-      if (!changes['color'].firstChange) {
+      if (!changes[key].firstChange) {
         this.draw();
       }
     }
@@ -125,6 +127,7 @@ export class NgxMatColorCanvasComponent
 
   private updateForm(val: Color): void {
     const config = { emitEvent: false };
+    
     this.rCtrl?.setValue(val.r, config);
     this.gCtrl?.setValue(val.g, config);
     this.bCtrl?.setValue(val.b, config);
