@@ -358,8 +358,8 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
    * The current active date. This determines which time period is shown and which date is
    * highlighted when using keyboard navigation.
    */
-  get activeDate(): D | null {
-    return this._clampedActiveDate;
+  get activeDate(): D {
+    return this._clampedActiveDate ?? this._dateAdapter.today();
   }
   set activeDate(value: D) {
     this._clampedActiveDate = this._dateAdapter.clampDate(value, this.minDate, this.maxDate);
