@@ -102,24 +102,11 @@ npm install --save  @ngx-mce/file-input
 
 ## 🚀 Deployment
 
-This project is automatically deployed to GitHub Pages using GitHub Actions. You can also deploy
-manually:
+This project is automatically deployed to GitHub Pages using GitHub Actions.
 
-### Automatic Deployment
-
-- Pushes to the `main` branch automatically trigger deployment.
+- Pushes to either `dev` or `main` automatically trigger deployment.
 - GitHub Actions workflow builds and deploys to `gh-pages` branch.
 - Site is available at: [https://fbf-prog64.github.io/angular-material-components/](https://fbf-prog64.github.io/angular-material-components/)
-
-### Manual Deployment
-
-```bash
-# Build for GitHub Pages
-pnpm run build:gh-pages
-
-# Deploy to GitHub Pages
-pnpm run deploy:gh-pages
-```
 
 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
