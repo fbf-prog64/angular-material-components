@@ -65,6 +65,6 @@
     "ng-packagr": "^21.2.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.9.2",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.1"
   }
 }
