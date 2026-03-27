@@ -1,25 +1,46 @@
 {
   "branches": [
     { "name": "main" },
-    { "name": "dev", "channel": "next", "prerelease": "next" },
-    { "name": "nightly", "channel": "nightly", "prerelease": "nightly" }
+    { "name": "dev", "channel": "next", "prerelease": "next" }
   ],
   "plugins": [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer", {
+        "releaseRules": [
+          { "type": "refactor", "release": "patch" },
+          { "type": "chore", "scope": "update", "release": "patch" }
+        ]
+      }
+    ],
     "@semantic-release/release-notes-generator",
-    ["@semantic-release/exec", {
-      "prepareCmd": "./scripts/update-versions.sh ${nextRelease.version}",
-      "publishCmd": "./scripts/publish-components.sh ${nextRelease.version}"
-    }],
-    ["@semantic-release/github", {
-      "successComment": false
-    }],
-    ["@semantic-release/git", {
-      "assets": [
-        "package.json",
-        "projects/*/package.json"
-      ],
-      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-    }]
+    [
+      "@semantic-release/exec", {
+        "prepareCmd": "./scripts/update-versions.sh ${nextRelease.version}",
+        "publishCmd": "./scripts/publish-components.sh ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/github", {
+        "successComment": false
+      }
+    ],
+    [
+      "@semantic-release/git", {
+        "assets": [
+          "package.json",
+          "projects/*/package.json"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    [
+      "@cleyrop-org/semantic-release-backmerge", {
+        "backmergeBranches": [
+          { "from": "main", "to": "dev" }
+        ],
+        "message": "chore(release): prepare for next release [skip ci]",
+        "clearWorkspace": true
+      }
+    ]
   ]
 }
