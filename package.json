@@ -1,6 +1,6 @@
 {
   "name": "@ngx-mce/amc",
-  "version": "21.2.4",
+  "version": "21.2.5-next.4",
   "description": "Angular Material Components Example Application",
   "author": "Felipe B.",
   "repository": {
@@ -56,15 +56,16 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.3",
+    "@angular/build": "^21.2.5",
     "@angular/cdk": "^21.1.5",
-    "@angular/cli": "^21.2.3",
+    "@angular/cli": "^21.2.5",
     "@angular/compiler-cli": "^21.1.5",
+    "@cleyrop-org/semantic-release-backmerge": "^5.2.4",
     "@types/node": "^25.5.0",
     "jsdom": "^29.0.1",
-    "ng-packagr": "^21.2.1",
+    "ng-packagr": "^21.2.2",
     "ts-node": "~10.9.2",
     "typescript": "~5.9.2",
-    "vitest": "^4.1.1"
+    "vitest": "^4.1.2"
   }
 }
