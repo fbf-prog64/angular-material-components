@@ -12,7 +12,24 @@
         ]
       }
     ],
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator", {
+        "presetConfig": {
+          "types": [
+            {
+              "type": "chore",
+              "section": "Chores",
+              "hidden": false
+            },
+            {
+              "type": "refactor",
+              "section": "Code Refactoring",
+              "hidden": false
+            }
+          ]
+        }
+      }
+    ],
     [
       "@semantic-release/exec", {
         "prepareCmd": "./scripts/update-versions.sh ${nextRelease.version}",
