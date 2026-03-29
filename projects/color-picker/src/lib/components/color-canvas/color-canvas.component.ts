@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  inject,
   NgZone,
   OnChanges,
   OnDestroy,
@@ -66,10 +67,12 @@ export class NgxMatColorCanvasComponent
 
   formGroup: FormGroup;
 
-  rgba: string = "";
+  rgba = "";
 
-  constructor(override zone: NgZone) {
-    super(zone, 'color-block');
+  protected override zone = inject(NgZone);
+
+  constructor() {
+    super('color-block');
     this.formGroup = new FormGroup({
       r: new FormControl(null, [Validators.required]),
       g: new FormControl(null, [Validators.required]),

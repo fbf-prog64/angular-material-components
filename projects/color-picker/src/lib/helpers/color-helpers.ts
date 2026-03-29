@@ -1,10 +1,6 @@
 const trimLeft = /^\s+/;
 const trimRight = /\s+$/;
-const tinyCounter = 0;
 const mathRound = Math.round;
-const mathMin = Math.min;
-const mathMax = Math.max;
-const mathRandom = Math.random;
 
 export const NUMERIC_REGEX = /[^0-9]/g;
 export const MAX_RGB = 255;
@@ -56,7 +52,7 @@ export function rgbaToHex(
   a: number,
   allow4Char?: boolean,
 ): string {
-  var hex = [
+  const hex = [
     pad2(mathRound(r).toString(16)),
     pad2(mathRound(g).toString(16)),
     pad2(mathRound(b).toString(16)),
@@ -102,7 +98,7 @@ function parseIntFromHex(val: string) {
 // Assumes r, g, and b are contained in the set [0, 255]
 // Returns a 3 or 6 character hex
 export function rgbToHex(r: number, g: number, b: number, allow3Char?: boolean) {
-  var hex = [
+  const hex = [
     pad2(mathRound(r).toString(16)),
     pad2(mathRound(g).toString(16)),
     pad2(mathRound(b).toString(16)),
@@ -170,7 +166,6 @@ export function stringInputToObject(color: string): {
   // Just return an object and let the conversion functions handle that.
   // This way the result will be the same whether the tinycolor is initialized with string or object.
   let match;
-  let obj;
   if ((match = matchers.rgb.exec(color))) {
     return {
       r: parseFloat(match[1]),

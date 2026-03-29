@@ -60,11 +60,11 @@ export class Color {
   }
 
   public toString(format: ColorInputFormat): string {
-    let formatSet = !!format;
+    const formatSet = !!format;
 
     let formattedString;
-    let hasAlpha = this.a < 1 && this.a >= 0;
-    let needsAlphaFormat =
+    const hasAlpha = this.a < 1 && this.a >= 0;
+    const needsAlphaFormat =
       !formatSet &&
       hasAlpha &&
       (format === 'hex' ||
