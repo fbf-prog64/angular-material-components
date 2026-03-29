@@ -8,6 +8,7 @@ import {
   OnDestroy,
   ViewEncapsulation,
   effect,
+  inject,
   input,
   untracked,
   viewChild,
@@ -55,14 +56,16 @@ export class NgxMatColorToggleComponent implements AfterContentInit, OnDestroy {
   set disabled(value: boolean) {
     this._disabled = value;
   }
-  private _disabled: boolean = false;
+  private _disabled = false;
 
   /** Whether ripples on the toggle should be disabled. */
   disableRipple = input<boolean>();
 
   _button = viewChild<MatButton>('button');
 
-  constructor(private _cd: ChangeDetectorRef) {
+  private _cd = inject(ChangeDetectorRef);
+
+  constructor() {
     effect(() => {
       this.picker();
 

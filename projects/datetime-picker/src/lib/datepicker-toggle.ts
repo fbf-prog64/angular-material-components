@@ -74,7 +74,7 @@ export class NgxMatDatepickerToggle<D> implements AfterContentInit, OnDestroy {
   set disabled(value: BooleanInput) {
     this._disabled = coerceBooleanProperty(value);
   }
-  private _disabled: boolean = false;
+  private _disabled = false;
 
   /** Whether ripples on the toggle should be disabled. */
   disableRipple = input<boolean>();

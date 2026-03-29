@@ -25,7 +25,8 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build -c=production",
-    "build-dev": "ng build -c=development"
+    "build-dev": "ng build -c=development",
+    "lint": "ng lint"
   },
   "publishConfig": {
     "directory": "../../dist/file-input",

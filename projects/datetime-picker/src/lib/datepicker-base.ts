@@ -160,7 +160,7 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   endDateAccessibleName: string | null = null;
 
   /** Whether the datepicker is above or below the input. */
-  _isAbove: boolean = false;
+  _isAbove = false;
 
   /** Current state of the animation. */
   _isLeaving = false;
@@ -176,7 +176,7 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
   _closeButtonText: string;
 
   /** Whether the close button currently has focus. */
-  _closeButtonFocused: boolean = false;
+  _closeButtonFocused = false;
 
   /** Portal with projected action buttons. */
   _actionsPortal: TemplatePortal | null = null;
@@ -497,7 +497,7 @@ export abstract class NgxMatDatepickerBase<
     }
   }
 
-  public _disabled: boolean = false;
+  public _disabled = false;
 
   /** Preferred position of the datepicker in the X axis. */
   readonly xPosition = input<NgxDatepickerDropdownPositionX>('start');
@@ -644,7 +644,7 @@ export abstract class NgxMatDatepickerBase<
     this._enableMeridian = value;
   }
 
-  public _enableMeridian: boolean = false;
+  public _enableMeridian = false;
 
   /** disable minute */
   @Input()
@@ -656,7 +656,7 @@ export abstract class NgxMatDatepickerBase<
     this._disableMinute = value;
   }
 
-  public _disableMinute: boolean = false;
+  public _disableMinute = false;
 
   /** Step second */
   @Input()
@@ -671,7 +671,7 @@ export abstract class NgxMatDatepickerBase<
   public _defaultTime: number[] | null = null;
 
   /** The id for the datepicker calendar. */
-  id: string = `mat-datepicker-${datepickerUid++}`;
+  id = `mat-datepicker-${datepickerUid++}`;
 
   /** The minimum selectable date. */
   _getMinDate(): D | null {

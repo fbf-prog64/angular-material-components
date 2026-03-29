@@ -16,7 +16,7 @@ import {
 import { take } from 'rxjs/operators';
 
 /** Extra CSS classes that can be associated with a calendar cell. */
-export type NgxMatCalendarCellCssClasses = string | string[] | Set<string> | { [key: string]: any };
+export type NgxMatCalendarCellCssClasses = string | string[] | Set<string> | Record<string, any>;
 
 /** Function that can generate the extra classes that should be added to a calendar cell. */
 export type NgxMatCalendarCellClassFunction<D> = (
@@ -67,7 +67,7 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
    * Used to skip the next focus event when rendering the preview range.
    * We need a flag like this, because some browsers fire focus events asynchronously.
    */
-  private _skipNextFocus: boolean = false;
+  private _skipNextFocus = false;
 
   /**
    * Used to focus the active cell after change detection has run.

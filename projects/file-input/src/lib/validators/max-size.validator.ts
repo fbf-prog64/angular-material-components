@@ -16,7 +16,7 @@ export function MaxSizeValidator(max: number): ValidatorFn {
       files = [ctrl.value];
     }
     if (!files.length) return null;
-    const add = (a: any, b: any): number => a + b;
+    const add = (a: number, b: number): number => a + b;
     const sumSize = files.map((x) => x.size).reduce(add);
     if (sumSize > max) {
       return {

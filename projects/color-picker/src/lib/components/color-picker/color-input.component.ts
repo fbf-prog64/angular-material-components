@@ -5,12 +5,11 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Inject,
+  inject,
   Input,
   OnDestroy,
-  OnInit,
-  Optional,
   output,
+  Provider,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -28,7 +27,7 @@ import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { createMissingDateImplError } from '../../helpers';
 import { Color } from '../../models';
-import { ColorAdapter, MAT_COLOR_FORMATS, MatColorFormats } from '../../services';
+import { ColorAdapter, MAT_COLOR_FORMATS } from '../../services';
 import { NgxMatColorPickerComponent } from './color-picker.component';
 
 export class NgxMatColorPickerInputEvent {
@@ -45,13 +44,13 @@ export class NgxMatColorPickerInputEvent {
   }
 }
 
-export const MAT_COLORPICKER_VALUE_ACCESSOR: any = {
+export const MAT_COLORPICKER_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgxMatColorPickerInput),
   multi: true,
 };
 
-export const MAT_COLORPICKER_VALIDATORS: any = {
+export const MAT_COLORPICKER_VALIDATORS: Provider = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => NgxMatColorPickerInput),
   multi: true,
@@ -76,7 +75,7 @@ export const MAT_COLORPICKER_VALIDATORS: any = {
   },
   exportAs: 'ngxMatColorPickerInput',
 })
-export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnDestroy, Validator {
+export class NgxMatColorPickerInput implements ControlValueAccessor, OnDestroy, Validator {
   @Input()
   set ngxMatColorPicker(value: NgxMatColorPickerComponent) {
     if (!value) {
@@ -119,7 +118,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
       element.blur();
     }
   }
-  private _disabled: boolean = false;
+  private _disabled = false;
 
   /** The value of the input. */
   @Input()
@@ -149,11 +148,17 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
   /** Emits when the value changes (either due to user input or programmatic change). */
   _valueChange = new EventEmitter<Color | null>();
 
-  _onTouched = () => {};
+  _onTouched = () => {
+    // Intentionally empty.
+  };
 
-  private _cvaOnChange: (value: any) => void = () => {};
+  private _cvaOnChange: (value: any) => void = () => {
+    // Intentionally empty.
+  };
 
-  private _validatorOnChange = () => {};
+  private _validatorOnChange = () => {
+    // Intentionally empty.
+  };
 
   private _pickerSubscription = Subscription.EMPTY;
 
@@ -163,14 +168,12 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
   /** Whether the last value set on the input was valid. */
   private _lastValueValid = false;
 
-  constructor(
-    private _elementRef: ElementRef<HTMLInputElement>,
-    @Optional() private _formField: MatFormField,
-    @Optional()
-    @Inject(MAT_COLOR_FORMATS)
-    private _colorFormats: MatColorFormats,
-    private _adapter: ColorAdapter,
-  ) {
+  private _elementRef = inject(ElementRef<HTMLInputElement>);
+  private _formField = inject(MatFormField, { optional: true });
+  private _colorFormats = inject(MAT_COLOR_FORMATS, { optional: true });
+  private _adapter = inject(ColorAdapter);
+
+  constructor() {
     if (!this._colorFormats) {
       throw createMissingDateImplError('MAT_COLOR_FORMATS');
     }
@@ -204,8 +207,6 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
   getConnectedOverlayOrigin(): ElementRef {
     return this._formField ? this._formField.getConnectedOverlayOrigin() : this._elementRef;
   }
-
-  ngOnInit() {}
 
   ngOnDestroy(): void {
     this._pickerSubscription.unsubscribe();
@@ -258,7 +259,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnInit, OnD
 
   /** Formats a value and sets it on the input element. */
   private _formatValue(value: Color | null) {
-    this._elementRef.nativeElement.value = value
+    this._elementRef.nativeElement.value = this._colorFormats && value
       ? this._adapter.format(value, this._colorFormats.display.colorInput)
       : '';
   }

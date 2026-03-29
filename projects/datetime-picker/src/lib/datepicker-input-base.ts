@@ -76,7 +76,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   implements ControlValueAccessor, AfterViewInit, OnChanges, OnDestroy, Validator
 {
   /** Whether the component has been initialized. */
-  private _isInitialized: boolean = false;
+  private _isInitialized = false;
 
   /** The value of the input. */
   @Input()
@@ -113,7 +113,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
       element.blur();
     }
   }
-  private _disabled: boolean = false;
+  private _disabled = false;
 
   /** Emits when a `change` event is fired on this `<input>`. */
   readonly dateChange = output<NgxMatDatepickerInputEvent<D, S>>();
@@ -418,7 +418,7 @@ export function dateInputsHaveChanged(
 ): boolean {
   const keys = Object.keys(changes);
 
-  for (let key of keys) {
+  for (const key of keys) {
     const { previousValue, currentValue } = changes[key];
 
     if (adapter.isDateInstance(previousValue) && adapter.isDateInstance(currentValue)) {
