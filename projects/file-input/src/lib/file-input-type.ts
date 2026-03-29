@@ -1,1 +1,1 @@
-export type FileOrArrayFile = File | Array<File> | File[];
+export type FileOrArrayFile = File | File[];
