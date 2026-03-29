@@ -63,7 +63,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   private _rerenderSubscription = Subscription.EMPTY;
 
   /** Flag used to filter out space/enter keyup events that originated outside of the view. */
-  private _selectionKeyPressed: boolean = false;
+  private _selectionKeyPressed = false;
 
   /**
    * The date to display in this month view (everything other than the month and year is ignored).
@@ -163,13 +163,13 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   _matCalendarBody = viewChild(NgxMatCalendarBody);
 
   /** The label for this month (e.g. "January 2017"). */
-  _monthLabel: string = "";
+  _monthLabel = "";
 
   /** Grid of calendar cells representing the dates of the month. */
   _weeks: NgxMatCalendarCell[][] | null = null;
 
   /** The number of blank cells in the first row before the 1st of the month. */
-  _firstWeekOffset: number = 0;
+  _firstWeekOffset = 0;
 
   /** Start value of the currently-shown date range. */
   _rangeStart: number | null = null;
@@ -190,7 +190,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
   _previewEnd: number | null = null;
 
   /** Whether the user is currently selecting a range of dates. */
-  _isRange: boolean = false;
+  _isRange = false;
 
   /** The date of the month that today falls on. Null if today is in another month. */
   _todayDate: number | null = null;
@@ -397,7 +397,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
           .getMonthNames('short')
           [this._dateAdapter.getMonth(this.activeDate)].toLocaleUpperCase();
 
-    let firstOfMonth = this._dateAdapter.createDate(
+    const firstOfMonth = this._dateAdapter.createDate(
       this._dateAdapter.getYear(this.activeDate),
       this._dateAdapter.getMonth(this.activeDate),
       1,
@@ -503,7 +503,7 @@ export class NgxMatMonthView<D> implements AfterContentInit, OnChanges, OnDestro
     const longWeekdays = this._dateAdapter.getDayOfWeekNames('long');
 
     // Rotate the labels for days of the week based on the configured first day of the week.
-    let weekdays = longWeekdays.map((long, i) => {
+    const weekdays = longWeekdays.map((long, i) => {
       return { long, narrow: narrowWeekdays[i] };
     });
     this._weekdays = weekdays.slice(firstDayOfWeek).concat(weekdays.slice(0, firstDayOfWeek));

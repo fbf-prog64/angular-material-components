@@ -335,7 +335,7 @@ export class NgxMatDatetimePickerInputV2<D>
     const target = event?.target as HTMLInputElement;
     const parsedDate = this._dateAdapter?.parse(target.value, this._dateFormats!.display.dateInput);
     this._lastValueValid = this._dateAdapter?.isValid(parsedDate)!;
-    let date = this._dateAdapter?.getValidDateOrNull(parsedDate);
+    const date = this._dateAdapter?.getValidDateOrNull(parsedDate);
 
     // Update internal value
     this._value.set(date);

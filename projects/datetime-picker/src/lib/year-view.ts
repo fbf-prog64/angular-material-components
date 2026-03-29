@@ -53,7 +53,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   private _rerenderSubscription = Subscription.EMPTY;
 
   /** Flag used to filter out space/enter keyup events that originated outside of the view. */
-  private _selectionKeyPressed: boolean = false;
+  private _selectionKeyPressed = false;
 
   /** The date to display in this year view (everything other than the year is ignored). */
   @Input()
@@ -61,7 +61,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
     return this._activeDate;
   }
   set activeDate(value: D) {
-    let oldActiveDate = this._activeDate;
+    const oldActiveDate = this._activeDate;
     const validDate =
       this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value)) ||
       this._dateAdapter.today();
@@ -130,7 +130,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
   _months: NgxMatCalendarCell[][] | null = null;
 
   /** The label for this year (e.g. "2017"). */
-  _yearLabel: string = "";
+  _yearLabel = "";
 
   /** The month in this year that today falls on. Null if today is in a different year. */
   _todayMonth: number | null = null;
@@ -293,7 +293,7 @@ export class NgxMatYearView<D> implements AfterContentInit, OnDestroy {
     this._todayMonth = this._getMonthInCurrentYear(this._dateAdapter.today());
     this._yearLabel = this._dateAdapter.getYearName(this.activeDate);
 
-    let monthNames = this._dateAdapter.getMonthNames('short');
+    const monthNames = this._dateAdapter.getMonthNames('short');
     // First row of months only contains 5 elements so we can fit the year label on the same row.
     this._months = [
       [0, 1, 2, 3],

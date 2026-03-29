@@ -56,7 +56,7 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   private _rerenderSubscription = Subscription.EMPTY;
 
   /** Flag used to filter out space/enter keyup events that originated outside of the view. */
-  private _selectionKeyPressed: boolean = false;
+  private _selectionKeyPressed = false;
 
   /** The date to display in this multi-year view (everything other than the year is ignored). */
   @Input()
@@ -64,7 +64,7 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
     return this._activeDate;
   }
   set activeDate(value: D) {
-    let oldActiveDate = this._activeDate;
+    const oldActiveDate = this._activeDate;
     const validDate =
       this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value)) ||
       this._dateAdapter.today();
@@ -142,7 +142,7 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   _years: NgxMatCalendarCell[][] | null = null;
 
   /** The year that today falls on. */
-  _todayYear: number = 0;
+  _todayYear = 0;
 
   /** The year of the selected date. Null if the selected date is null. */
   _selectedYear: number | null = null;

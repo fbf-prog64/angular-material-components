@@ -42,7 +42,7 @@ export class NgxMatDatepickerClear {
   @Input({
     transform: booleanAttribute,
   })
-  close: boolean = false;
+  close = false;
 
   _clearSelection() {
     this._datepicker._clearSelection();
