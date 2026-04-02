@@ -130,7 +130,7 @@ export class NgxMatDatetimePickerV2<D> implements OnDestroy {
   }
 
   /** Applies the current pending selection on the overlay to the model. */
-  select(date: D): void {
+  select(_: D): void {
     // This will be handled by the content component
   }
 

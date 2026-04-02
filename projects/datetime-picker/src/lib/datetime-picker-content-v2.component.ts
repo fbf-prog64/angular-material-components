@@ -171,11 +171,11 @@ export class NgxMatDatetimePickerContentV2<D> implements OnInit, OnDestroy {
     }
   }
 
-  onYearSelected(year: D): void {
+  onYearSelected(_: D): void {
     // Let the calendar handle year selection
   }
 
-  onMonthSelected(month: D): void {
+  onMonthSelected(_: D): void {
     // Let the calendar handle month selection
   }
 

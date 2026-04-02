@@ -367,7 +367,7 @@ export class NgxMatDatetimePickerInputV2<D>
     this.stateChanges.next();
   }
 
-  _onClick(event: MouseEvent): void {
+  _onClick(_: MouseEvent): void {
     // Open the datepicker when clicking on the input
     if (this.ngxMatDatetimePicker && !this.disabled) {
       this.ngxMatDatetimePicker.open();
@@ -426,7 +426,7 @@ export class NgxMatDatetimePickerInputV2<D>
   }
 
   // MatFormFieldControl methods
-  setDescribedByIds(ids: string[]): void {
+  setDescribedByIds(_: string[]): void {
     // Implementation for accessibility
   }
 
