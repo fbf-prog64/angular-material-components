@@ -36,14 +36,12 @@ import {
   ElementRef,
   EventEmitter,
   HostBinding,
-  Inject,
   InjectionToken,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   ViewContainerRef,
@@ -64,7 +62,6 @@ import { NgxMatCalendar, NgxMatCalendarView } from './calendar';
 import { NgxMatCalendarCellClassFunction, NgxMatCalendarUserEvent } from './calendar-body';
 import {
   NGX_MAT_DATE_RANGE_SELECTION_STRATEGY,
-  NgxMatDateRangeSelectionStrategy,
 } from './date-range-selection-strategy';
 import {
   NgxDateRange,
@@ -220,16 +217,14 @@ export class NgxMatDatepickerContent<S, D = NgxExtractDateTypeFromSelection<S>>
 
   _modelTime: D | null = null;
 
-  constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _globalModel: NgxMatDateSelectionModel<S, D>,
-    private _dateAdapter: DateAdapter<D>,
-    @Optional()
-    @Inject(NGX_MAT_DATE_RANGE_SELECTION_STRATEGY)
-    private _rangeSelectionStrategy: NgxMatDateRangeSelectionStrategy<D>,
-    intl: NgxMatDatepickerIntl,
-  ) {
-    this._closeButtonText = intl.closeCalendarLabel;
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _globalModel = inject(NgxMatDateSelectionModel<S, D>);
+  private _dateAdapter = inject(DateAdapter<D>);
+  private _rangeSelectionStrategy = inject(NGX_MAT_DATE_RANGE_SELECTION_STRATEGY, { optional: true });
+  private _intl = inject(NgxMatDatepickerIntl);
+
+  constructor() {
+    this._closeButtonText = this._intl.closeCalendarLabel;
 
     effect(() => {
       const calendar = this._calendar();
@@ -416,7 +411,6 @@ export abstract class NgxMatDatepickerBase<
   >
   implements NgxMatDatepickerPanel<C, S, D>, OnDestroy, OnChanges
 {
-  private _scrollStrategy: () => ScrollStrategy;
   private _inputStateChanges = Subscription.EMPTY;
   private _document = inject(DOCUMENT);
 
@@ -432,7 +426,9 @@ export abstract class NgxMatDatepickerBase<
   }
 
   set startAt(value: D | null) {
-    this._startAt = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
+    this._startAt = (this._dateAdapter)
+      ? this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value))
+      : null;
   }
 
   private _startAt: D | null = null;
@@ -708,20 +704,18 @@ export abstract class NgxMatDatepickerBase<
   /** Emits when the datepicker's state changes. */
   readonly stateChanges = new Subject<void>();
 
-  constructor(
-    private _overlay: Overlay,
-    private _ngZone: NgZone,
-    private _viewContainerRef: ViewContainerRef,
-    @Inject(NGX_MAT_DATEPICKER_SCROLL_STRATEGY) scrollStrategy: any,
-    @Optional() private _dateAdapter: DateAdapter<D>,
-    @Optional() private _dir: Directionality,
-    private _model: NgxMatDateSelectionModel<S, D>,
-  ) {
+  private _overlay = inject(Overlay);
+  private _ngZone = inject(NgZone);
+  private _viewContainerRef = inject(ViewContainerRef);
+  private _scrollStrategy = inject(NGX_MAT_DATEPICKER_SCROLL_STRATEGY);
+  private _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  private _dir = inject(Directionality, { optional: true });
+  private _model = inject(NgxMatDateSelectionModel<S, D>);
+
+  constructor() {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
-
-    this._scrollStrategy = scrollStrategy;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -915,7 +909,7 @@ export abstract class NgxMatDatepickerBase<
           isDialog ? 'cdk-overlay-dark-backdrop' : 'mat-overlay-transparent-backdrop',
           this._backdropHarnessClass,
         ],
-        direction: this._dir,
+        direction: this._dir ?? "ltr",
         scrollStrategy: isDialog ? this._overlay.scrollStrategies.block() : this._scrollStrategy(),
         panelClass: `mat-datepicker-${isDialog ? 'dialog' : 'popup'}`,
       }),
