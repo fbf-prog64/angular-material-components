@@ -10,6 +10,7 @@ import {
   OnDestroy,
   ViewEncapsulation,
   effect,
+  inject,
   input,
   untracked,
   viewChild,
@@ -82,9 +83,10 @@ export class NgxMatDatepickerToggle<D> implements AfterContentInit, OnDestroy {
   /** Underlying button element. */
   _button = viewChild<MatButton>('button');
 
+  public _intl = inject(NgxMatDatepickerIntl);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+
   constructor(
-    public _intl: NgxMatDatepickerIntl,
-    private _changeDetectorRef: ChangeDetectorRef,
     @Attribute('tabindex') defaultTabIndex: string,
   ) {
     const parsedTabIndex = Number(defaultTabIndex);

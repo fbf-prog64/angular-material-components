@@ -1,4 +1,4 @@
-import { FactoryProvider, Injectable, InjectionToken, Optional, SkipSelf } from '@angular/core';
+import { FactoryProvider, inject, Injectable, InjectionToken, Optional, SkipSelf } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { NgxDateRange } from './date-selection-model';
 
@@ -51,8 +51,8 @@ export interface NgxMatDateRangeSelectionStrategy<D> {
 /** Provides the default date range selection behavior. */
 @Injectable()
 export class DefaultNgxMatCalendarRangeStrategy<D> implements NgxMatDateRangeSelectionStrategy<D> {
-  constructor(private _dateAdapter: DateAdapter<D>) {}
-
+  private _dateAdapter = inject(DateAdapter<D>);
+  
   selectionFinished(date: D, currentRange: NgxDateRange<D>) {
     let { start, end } = currentRange;
 
@@ -126,9 +126,8 @@ export class DefaultNgxMatCalendarRangeStrategy<D> implements NgxMatDateRangeSel
 /** @docs-private */
 export function NGX_MAT_CALENDAR_RANGE_STRATEGY_PROVIDER_FACTORY(
   parent: NgxMatDateRangeSelectionStrategy<unknown>,
-  adapter: DateAdapter<unknown>,
 ) {
-  return parent || new DefaultNgxMatCalendarRangeStrategy(adapter);
+  return parent || new DefaultNgxMatCalendarRangeStrategy();
 }
 
 export const NGX_MAT_CALENDAR_RANGE_STRATEGY_PROVIDER: FactoryProvider = {
