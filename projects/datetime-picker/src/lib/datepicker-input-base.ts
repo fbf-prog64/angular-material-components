@@ -5,12 +5,11 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
-  Optional,
   SimpleChanges,
+  inject,
   output,
 } from '@angular/core';
 import {
@@ -23,7 +22,6 @@ import {
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
-  MatDateFormats,
   ThemePalette,
 } from '@angular/material/core';
 import { Subject, Subscription } from 'rxjs';
@@ -147,6 +145,9 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
 
   /** The form control validator for the date filter. */
   private _filterValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if (!this._dateAdapter)
+      return null;
+
     const controlValue = this._dateAdapter.getValidDateOrNull(
       this._dateAdapter.deserialize(control.value),
     );
@@ -157,6 +158,9 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
 
   /** The form control validator for the min date. */
   private _minValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if (!this._dateAdapter)
+      return null;
+
     const controlValue = this._dateAdapter.getValidDateOrNull(
       this._dateAdapter.deserialize(control.value),
     );
@@ -168,6 +172,9 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
 
   /** The form control validator for the max date. */
   private _maxValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if (!this._dateAdapter)
+      return null;
+
     const controlValue = this._dateAdapter.getValidDateOrNull(
       this._dateAdapter.deserialize(control.value),
     );
@@ -231,13 +238,11 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   /** Whether the last value set on the input was valid. */
   protected _lastValueValid = false;
 
-  constructor(
-    protected _elementRef: ElementRef<HTMLInputElement>,
-    @Optional() public _dateAdapter: DateAdapter<D>,
-    @Optional()
-    @Inject(MAT_DATE_FORMATS)
-    private _dateFormats: MatDateFormats,
-  ) {
+  protected _elementRef = inject(ElementRef<HTMLInputElement>);
+  public _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  protected _dateFormats = inject(MAT_DATE_FORMATS, { optional: true });
+
+  constructor() {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
@@ -246,7 +251,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
     }
 
     // Update the displayed date when the locale changes.
-    this._localeSubscription = _dateAdapter.localeChanges.subscribe(() => {
+    this._localeSubscription = this._dateAdapter.localeChanges.subscribe(() => {
       this._assignValueProgrammatically(this.value);
     });
   }
@@ -256,7 +261,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (dateInputsHaveChanged(changes, this._dateAdapter)) {
+    if (this._dateAdapter && dateInputsHaveChanged(changes, this._dateAdapter)) {
       this.stateChanges.next(undefined);
     }
   }
@@ -313,6 +318,9 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   }
 
   _onInput(event: Event) {
+    if (!this._dateAdapter || !this._dateFormats)
+      return;
+
     const lastValueWasValid = this._lastValueValid;
     const target = event.target as HTMLInputElement;
     let date = this._dateAdapter.parse(target.value, this._dateFormats.parse.dateInput);
@@ -363,8 +371,9 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
 
   /** Formats a value and sets it on the input element. */
   protected _formatValue(value: D | null) {
-    this._elementRef.nativeElement.value =
-      value != null ? this._dateAdapter.format(value, this._dateFormats.display.dateInput) : '';
+    this._elementRef.nativeElement.value = (this._dateAdapter && this._dateFormats && value != null)
+      ? this._dateAdapter.format(value, this._dateFormats.display.dateInput)
+      : '';
   }
 
   /** Assigns a value to the model. */
@@ -381,7 +390,13 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
 
   /** Whether a value is considered valid. */
   private _isValidValue(value: D | null): boolean {
-    return !value || this._dateAdapter.isValid(value);
+    if (value) {
+      return (this._dateAdapter)
+        ? this._dateAdapter.isValid(value)
+        : false;
+    }
+
+    return true;
   }
 
   /**
@@ -394,9 +409,13 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
 
   /** Programmatically assigns a value to the input. */
   protected _assignValueProgrammatically(value: D | null) {
-    value = this._dateAdapter.deserialize(value);
+    value = this._dateAdapter
+      ? this._dateAdapter.deserialize(value)
+      : null;
     this._lastValueValid = this._isValidValue(value);
-    value = this._dateAdapter.getValidDateOrNull(value);
+    value = this._dateAdapter
+      ? this._dateAdapter.getValidDateOrNull(value)
+      : null;
     this._assignValue(value);
     this._formatValue(value);
   }
