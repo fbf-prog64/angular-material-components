@@ -162,10 +162,16 @@ export class NgxMatDatetimePickerInputV2<D>
   /** Emits when the internal state has changed */
   readonly stateChanges = new Subject<void>();
 
-  _onTouched = () => {};
-  _validatorOnChange = () => {};
+  _onTouched = () => {
+    // Intentionally left empty.
+  };
+  _validatorOnChange = () => {
+    // Intentionally left empty.
+  };
 
-  private _cvaOnChange: (value: any) => void = () => {};
+  private _cvaOnChange: (value: any) => void = () => {
+    // Intentionally left empty.
+  };
   private _valueChangesSubscription = Subscription.EMPTY;
   private _localeSubscription = Subscription.EMPTY;
 
