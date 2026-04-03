@@ -7,12 +7,10 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  Inject,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
-  Optional,
-  Self,
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
@@ -173,6 +171,11 @@ export class NgxMatDateRangeInput<D>
     return this._min;
   }
   set min(value: D | null) {
+    if (!this._dateAdapter) {
+      this._min = null;
+      return;
+    }
+
     const validValue = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
 
     if (!this._dateAdapter.sameDate(validValue, this._min)) {
@@ -188,6 +191,11 @@ export class NgxMatDateRangeInput<D>
     return this._max;
   }
   set max(value: D | null) {
+    if (!this._dateAdapter) {
+      this._max = null;
+      return;
+    }
+
     const validValue = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
 
     if (!this._dateAdapter.sameDate(validValue, this._max)) {
@@ -257,23 +265,21 @@ export class NgxMatDateRangeInput<D>
   /** Emits when the input's state has changed. */
   readonly stateChanges = new Subject<void>();
 
-  constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _elementRef: ElementRef<HTMLElement>,
-    @Optional() @Self() control: ControlContainer,
-    @Optional() private _dateAdapter: DateAdapter<D>,
-    @Optional()
-    @Inject(MAT_FORM_FIELD)
-    private _formField?: _NgxMatFormFieldPartial,
-  ) {
-    if (!_dateAdapter) {
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _elementRef = inject(ElementRef<HTMLElement>);
+  control = inject(ControlContainer, { optional: true, self: true });
+  private _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  private _formField = inject(MAT_FORM_FIELD, { optional: true });
+
+  constructor() {
+    if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
 
     // The datepicker module can be used both with MDC and non-MDC form fields. We have
     // to conditionally add the MDC input class so that the range picker looks correctly.
-    if (_formField?._elementRef.nativeElement.classList.contains('mat-mdc-form-field')) {
-      _elementRef.nativeElement.classList.add(
+    if (this._formField?._elementRef.nativeElement.classList.contains('mat-mdc-form-field')) {
+      this._elementRef.nativeElement.classList.add(
         'mat-mdc-input-element',
         'mat-mdc-form-field-input-control',
         'mdc-text-field__input',
@@ -281,7 +287,7 @@ export class NgxMatDateRangeInput<D>
     }
 
     // TODO(crisbeto): remove `as any` after #18206 lands.
-    this.ngControl = control as any;
+    this.ngControl = this.control as any;
   }
 
   /**
@@ -327,7 +333,7 @@ export class NgxMatDateRangeInput<D>
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (dateInputsHaveChanged(changes, this._dateAdapter)) {
+    if (this._dateAdapter && dateInputsHaveChanged(changes, this._dateAdapter)) {
       this.stateChanges.next(undefined);
     }
   }

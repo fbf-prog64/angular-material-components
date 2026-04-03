@@ -29,7 +29,7 @@
     [previewEnd]="_previewEnd"
     [isRange]="_isRange"
     [labelMinRequiredCells]="3"
-    [activeCell]="_dateAdapter.getDate(activeDate) - 1"
+    [activeCell]="_dateAdapter ? _dateAdapter.getDate(activeDate) - 1 : 0"
     [startDateAccessibleName]="startDateAccessibleName()"
     [endDateAccessibleName]="endDateAccessibleName()"
     (selectedValueChange)="_dateSelected($event)"

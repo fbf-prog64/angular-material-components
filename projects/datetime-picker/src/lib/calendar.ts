@@ -6,15 +6,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
-  Optional,
   SimpleChange,
   SimpleChanges,
   ViewEncapsulation,
   forwardRef,
+  inject,
   input,
   linkedSignal,
   output,
@@ -22,7 +21,7 @@ import {
 } from '@angular/core';
 import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { Subject, Subscription } from 'rxjs';
 import { NgxMatCalendarCellClassFunction, NgxMatCalendarUserEvent } from './calendar-body';
 import { NGX_MAT_SINGLE_DATE_SELECTION_MODEL_PROVIDER, NgxDateRange } from './date-selection-model';
@@ -55,21 +54,21 @@ export type NgxMatCalendarView = 'month' | 'year' | 'multi-year';
   imports: [MatButton, MatIconButton],
 })
 export class NgxMatCalendarHeader<D> {
-  constructor(
-    private _intl: NgxMatDatepickerIntl,
-    @Inject(forwardRef(() => NgxMatCalendar))
-    public calendar: NgxMatCalendar<D>,
-    @Optional() private _dateAdapter: DateAdapter<D>,
-    @Optional()
-    @Inject(MAT_DATE_FORMATS)
-    private _dateFormats: MatDateFormats,
-    changeDetectorRef: ChangeDetectorRef,
-  ) {
-    this.calendar.stateChanges.subscribe(() => changeDetectorRef.markForCheck());
+  private _intl = inject(NgxMatDatepickerIntl);
+  public calendar: NgxMatCalendar<D> = inject(forwardRef(() => NgxMatCalendar<D>));
+  private _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  private _dateFormats = inject(MAT_DATE_FORMATS, { optional: true });
+  changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
+    this.calendar.stateChanges.subscribe(() => this.changeDetectorRef.markForCheck());
   }
 
   /** The display text for the current calendar view. */
   get periodButtonText(): string {
+    if (!this._dateAdapter || !this._dateFormats)
+      return "";
+
     if (this.calendar.currentView() == 'month') {
       return this._dateAdapter
         .format(this.calendar.activeDate!, this._dateFormats.display.monthYearLabel)
@@ -84,6 +83,9 @@ export class NgxMatCalendarHeader<D> {
 
   /** The aria description for the current calendar view. */
   get periodButtonDescription(): string {
+    if (!this._dateAdapter || !this._dateFormats)
+      return "";
+
     if (this.calendar.currentView() == 'month') {
       return this._dateAdapter
         .format(this.calendar.activeDate!, this._dateFormats.display.monthYearLabel)
@@ -130,6 +132,9 @@ export class NgxMatCalendarHeader<D> {
 
   /** Handles user clicks on the previous button. */
   previousClicked(): void {
+    if (!this._dateAdapter)
+      return;
+
     this.calendar.activeDate =
       this.calendar.currentView() == 'month'
         ? this._dateAdapter.addCalendarMonths(this.calendar.activeDate!, -1)
@@ -141,6 +146,9 @@ export class NgxMatCalendarHeader<D> {
 
   /** Handles user clicks on the next button. */
   nextClicked(): void {
+    if (!this._dateAdapter)
+      return;
+
     this.calendar.activeDate =
       this.calendar.currentView() == 'month'
         ? this._dateAdapter.addCalendarMonths(this.calendar.activeDate!, 1)
@@ -169,6 +177,9 @@ export class NgxMatCalendarHeader<D> {
 
   /** Whether the two dates represent the same view in the current view mode (month or year). */
   private _isSameView(date1: D, date2: D): boolean {
+    if (!this._dateAdapter)
+      return false;
+
     if (this.calendar.currentView() == 'month') {
       return (
         this._dateAdapter.getYear(date1) == this._dateAdapter.getYear(date2) &&
@@ -194,6 +205,9 @@ export class NgxMatCalendarHeader<D> {
    * for the minimum year, and the second string is the formatted label for the maximum year.
    */
   private _formatMinAndMaxYearLabels(): [minYearLabel: string, maxYearLabel: string] {
+    if (!this._dateAdapter)
+      return ["", ""];
+
     // The offset from the active year to the "slot" for the starting year is the
     // *actual* first rendered year in the multi-year view, and the last year is
     // just yearsPerPage - 1 away.
@@ -258,7 +272,9 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     return this._startAt;
   }
   set startAt(value: D | null) {
-    this._startAt = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
+    this._startAt = this._dateAdapter
+      ? this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value))
+      : null;
   }
   private _startAt: D | null = null;
 
@@ -271,7 +287,7 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     return this._selected;
   }
   set selected(value: NgxDateRange<D> | D | null) {
-    if (value instanceof NgxDateRange) {
+    if (!this._dateAdapter || value instanceof NgxDateRange) {
       this._selected = value;
     } else {
       this._selected = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
@@ -285,6 +301,11 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     return this._minDate;
   }
   set minDate(value: D | null) {
+    if (!this._dateAdapter) {
+      this._minDate = null;
+      return;
+    }
+
     this._minDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
   private _minDate: D | null = null;
@@ -295,6 +316,11 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     return this._maxDate;
   }
   set maxDate(value: D | null) {
+    if (!this._dateAdapter) {
+      this._maxDate = null;
+      return;
+    }
+
     this._maxDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
   private _maxDate: D | null = null;
@@ -359,9 +385,12 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
    * highlighted when using keyboard navigation.
    */
   get activeDate(): D {
-    return this._clampedActiveDate ?? this._dateAdapter.today();
+    return this._clampedActiveDate ?? this._dateAdapter?.today();
   }
   set activeDate(value: D) {
+    if (!this._dateAdapter)
+      return;
+
     this._clampedActiveDate = this._dateAdapter.clampDate(value, this.minDate, this.maxDate);
     this.stateChanges.next();
     this._changeDetectorRef.markForCheck();
@@ -376,14 +405,12 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
    */
   readonly stateChanges = new Subject<void>();
 
-  constructor(
-    _intl: NgxMatDatepickerIntl,
-    @Optional() private _dateAdapter: DateAdapter<D>,
-    @Optional()
-    @Inject(MAT_DATE_FORMATS)
-    private _dateFormats: MatDateFormats,
-    private _changeDetectorRef: ChangeDetectorRef,
-  ) {
+  _intl = inject(NgxMatDatepickerIntl);
+  private _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  private _dateFormats = inject(MAT_DATE_FORMATS, { optional: true });
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
@@ -392,13 +419,16 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
       throw createMissingDateImplError('MAT_DATE_FORMATS');
     }
 
-    this._intlChanges = _intl.changes.subscribe(() => {
-      _changeDetectorRef.markForCheck();
+    this._intlChanges = this._intl.changes.subscribe(() => {
+      this._changeDetectorRef.markForCheck();
       this.stateChanges.next();
     });
   }
 
   ngAfterContentInit() {
+    if (!this._dateAdapter)
+      return;
+
     this._calendarHeaderPortal = new ComponentPortal(
       this.headerComponent() || NgxMatCalendarHeader,
     );
@@ -423,12 +453,12 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
     // the calendar re-renders when there is no meaningful change to [minDate] or [maxDate]
     // (#24435).
     const minDateChange: SimpleChange | undefined =
-      changes['minDate'] &&
+      this._dateAdapter && changes['minDate'] &&
       !this._dateAdapter.sameDate(changes['minDate'].previousValue, changes['minDate'].currentValue)
         ? changes['minDate']
         : undefined;
     const maxDateChange: SimpleChange | undefined =
-      changes['maxDate'] &&
+      this._dateAdapter && changes['maxDate'] &&
       !this._dateAdapter.sameDate(changes['maxDate'].previousValue, changes['maxDate'].currentValue)
         ? changes['maxDate']
         : undefined;
@@ -462,6 +492,9 @@ export class NgxMatCalendar<D> implements AfterContentInit, AfterViewChecked, On
 
   /** Handles date selection in the month view. */
   _dateSelected(event: NgxMatCalendarUserEvent<D | null>): void {
+    if (!this._dateAdapter)
+      return;
+
     let date = event.value as D;
     if (date && this.selected) {
       const selected = this.selected as D;

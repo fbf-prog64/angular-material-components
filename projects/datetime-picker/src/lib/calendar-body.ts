@@ -169,12 +169,12 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
 
   private _didDragSinceMouseDown = false;
 
-  constructor(
-    private _elementRef: ElementRef<HTMLElement>,
-    private _ngZone: NgZone,
-  ) {
-    _ngZone.runOutsideAngular(() => {
-      const element = _elementRef.nativeElement;
+  private _elementRef = inject(ElementRef<HTMLElement>);
+  private _ngZone = inject(NgZone);
+
+  constructor() {
+    this._ngZone.runOutsideAngular(() => {
+      const element = this._elementRef.nativeElement;
       element.addEventListener('mouseenter', this._enterHandler, true);
       element.addEventListener('touchmove', this._touchmoveHandler, true);
       element.addEventListener('focus', this._enterHandler, true);

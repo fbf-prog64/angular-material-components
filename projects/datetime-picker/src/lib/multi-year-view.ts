@@ -18,8 +18,8 @@ import {
   Component,
   Input,
   OnDestroy,
-  Optional,
   ViewEncapsulation,
+  inject,
   input,
   output,
   viewChild,
@@ -64,6 +64,9 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
     return this._activeDate;
   }
   set activeDate(value: D) {
+    if (!this._dateAdapter)
+      return;
+
     const oldActiveDate = this._activeDate;
     const validDate =
       this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value)) ||
@@ -90,7 +93,7 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
     return this._selected;
   }
   set selected(value: NgxDateRange<D> | D | null) {
-    if (value instanceof NgxDateRange) {
+    if (!this._dateAdapter || value instanceof NgxDateRange) {
       this._selected = value;
     } else {
       this._selected = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
@@ -106,6 +109,11 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
     return this._minDate;
   }
   set minDate(value: D | null) {
+    if (!this._dateAdapter) {
+      this._minDate = null;
+      return;
+    }
+
     this._minDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
   private _minDate: D | null = null;
@@ -116,6 +124,11 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
     return this._maxDate;
   }
   set maxDate(value: D | null) {
+    if (!this._dateAdapter) {
+      this._maxDate = null;
+      return;
+    }
+
     this._maxDate = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
   }
   private _maxDate: D | null = null;
@@ -147,11 +160,11 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   /** The year of the selected date. Null if the selected date is null. */
   _selectedYear: number | null = null;
 
-  constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    @Optional() public _dateAdapter: DateAdapter<D>,
-    @Optional() private _dir?: Directionality,
-  ) {
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  public _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  private _dir = inject(Directionality, { optional: true });
+
+  constructor() {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
@@ -160,6 +173,9 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit() {
+    if (!this._dateAdapter)
+      return;
+
     this._rerenderSubscription = this._dateAdapter.localeChanges
       .pipe(startWith(null))
       .subscribe(() => this._init());
@@ -171,6 +187,9 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
 
   /** Initializes this multi-year view. */
   _init() {
+    if (!this._dateAdapter)
+      return;
+
     this._todayYear = this._dateAdapter.getYear(this._dateAdapter.today());
 
     // We want a range years such that we maximize the number of
@@ -187,7 +206,11 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
     for (let i = 0, row: number[] = []; i < yearsPerPage; i++) {
       row.push(minYearOfPage + i);
       if (row.length == yearsPerRow) {
-        this._years.push(row.map((year) => this._createCellForYear(year)));
+        this._years.push(
+          row
+            .map(y => this._createCellForYear(y))
+            .filter(y => y != null)
+        );
         row = [];
       }
     }
@@ -196,12 +219,15 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
 
   /** Handles when a new year is selected. */
   _yearSelected(event: NgxMatCalendarUserEvent<number>) {
+    if (!this._dateAdapter)
+      return;
+
     const year = event.value;
     const selectedYear = this._dateAdapter.createDate(year, 0, 1);
     const selectedDate = this._getDateFromYear(year);
 
     this.yearSelected.emit(selectedYear);
-    this.selectedChange.emit(selectedDate);
+    this.selectedChange.emit(selectedDate!);
   }
 
   /**
@@ -217,9 +243,10 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   _updateActiveDate(event: NgxMatCalendarUserEvent<number>) {
     const year = event.value;
     const oldActiveDate = this._activeDate;
+    const dateToUse = this._getDateFromYear(year);
 
-    this.activeDate = this._getDateFromYear(year);
-    if (this._dateAdapter.compareDate(oldActiveDate, this.activeDate)) {
+    if (this._dateAdapter && dateToUse && this._dateAdapter.compareDate(oldActiveDate, this.activeDate)) {
+      this.activeDate = dateToUse
       this.activeDateChange.emit(this.activeDate);
     }
   }
@@ -231,25 +258,25 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
 
     switch (event.keyCode) {
       case LEFT_ARROW:
-        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, isRtl ? 1 : -1);
+        this.activeDate = this._dateAdapter?.addCalendarYears(this._activeDate, isRtl ? 1 : -1);
         break;
       case RIGHT_ARROW:
-        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, isRtl ? -1 : 1);
+        this.activeDate = this._dateAdapter?.addCalendarYears(this._activeDate, isRtl ? -1 : 1);
         break;
       case UP_ARROW:
-        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, -yearsPerRow);
+        this.activeDate = this._dateAdapter?.addCalendarYears(this._activeDate, -yearsPerRow);
         break;
       case DOWN_ARROW:
-        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, yearsPerRow);
+        this.activeDate = this._dateAdapter?.addCalendarYears(this._activeDate, yearsPerRow);
         break;
       case HOME:
-        this.activeDate = this._dateAdapter.addCalendarYears(
+        this.activeDate = this._dateAdapter?.addCalendarYears(
           this._activeDate,
           -getActiveOffset(this._dateAdapter, this.activeDate, this.minDate, this.maxDate),
         );
         break;
       case END:
-        this.activeDate = this._dateAdapter.addCalendarYears(
+        this.activeDate = this._dateAdapter?.addCalendarYears(
           this._activeDate,
           yearsPerPage -
             getActiveOffset(this._dateAdapter, this.activeDate, this.minDate, this.maxDate) -
@@ -257,13 +284,13 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
         );
         break;
       case PAGE_UP:
-        this.activeDate = this._dateAdapter.addCalendarYears(
+        this.activeDate = this._dateAdapter?.addCalendarYears(
           this._activeDate,
           event.altKey ? -yearsPerPage * 10 : -yearsPerPage,
         );
         break;
       case PAGE_DOWN:
-        this.activeDate = this._dateAdapter.addCalendarYears(
+        this.activeDate = this._dateAdapter?.addCalendarYears(
           this._activeDate,
           event.altKey ? yearsPerPage * 10 : yearsPerPage,
         );
@@ -280,7 +307,7 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
         // Don't prevent default or focus active cell on keys that we don't explicitly handle.
         return;
     }
-    if (this._dateAdapter.compareDate(oldActiveDate, this.activeDate)) {
+    if (this._dateAdapter && this._dateAdapter.compareDate(oldActiveDate, this.activeDate)) {
       this.activeDateChange.emit(this.activeDate);
     }
 
@@ -292,7 +319,7 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   /** Handles keyup events on the calendar body when calendar is in multi-year view. */
   _handleCalendarBodyKeyup(event: KeyboardEvent): void {
     if (event.keyCode === SPACE || event.keyCode === ENTER) {
-      if (this._selectionKeyPressed) {
+      if (this._dateAdapter && this._selectionKeyPressed) {
         this._yearSelected({
           value: this._dateAdapter.getYear(this._activeDate),
           event,
@@ -321,7 +348,10 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
    * Takes a year and returns a new date on the same day and month as the currently active date
    *  The returned date will have the same year as the argument date.
    */
-  private _getDateFromYear(year: number) {
+  private _getDateFromYear(year: number): D | null {
+    if (!this._dateAdapter)
+      return null;
+
     const activeMonth = this._dateAdapter.getMonth(this.activeDate);
     const daysInMonth = this._dateAdapter.getNumDaysInMonth(
       this._dateAdapter.createDate(year, activeMonth, 1),
@@ -335,7 +365,10 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   }
 
   /** Creates an MatCalendarCell for the given year. */
-  private _createCellForYear(year: number) {
+  private _createCellForYear(year: number): NgxMatCalendarCell | null {
+    if (!this._dateAdapter)
+      return null;
+
     const date = this._dateAdapter.createDate(year, 0, 1);
     const yearName = this._dateAdapter.getYearName(date);
     const cellClasses = this.dateClass() ? this.dateClass()!(date, 'multi-year') : undefined;
@@ -350,7 +383,10 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
   }
 
   /** Whether the given year is enabled. */
-  private _shouldEnableYear(year: number) {
+  private _shouldEnableYear(year: number): boolean {
+    if (!this._dateAdapter)
+      return false;
+
     // disable if the year is greater than maxDate lower than minDate
     if (
       year === undefined ||
@@ -389,6 +425,9 @@ export class NgxMatMultiYearView<D> implements AfterContentInit, OnDestroy {
 
   /** Sets the currently-highlighted year based on a model value. */
   private _setSelectedYear(value: NgxDateRange<D> | D | null) {
+    if (!this._dateAdapter)
+      return;
+
     this._selectedYear = null;
 
     if (value instanceof NgxDateRange) {
@@ -425,11 +464,14 @@ export function isSameMultiYearView<D>(
  * "startingYear" will render when paged into view.
  */
 export function getActiveOffset<D>(
-  dateAdapter: DateAdapter<D>,
+  dateAdapter: DateAdapter<D> | null,
   activeDate: D,
   minDate: D | null,
   maxDate: D | null,
 ): number {
+  if (!dateAdapter)
+    return 0;
+
   const activeYear = dateAdapter.getYear(activeDate);
   return euclideanModulo(activeYear - getStartingYear(dateAdapter, minDate, maxDate), yearsPerPage);
 }

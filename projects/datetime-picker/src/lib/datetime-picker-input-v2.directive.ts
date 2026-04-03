@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Provider,
   forwardRef,
   inject,
   signal,
@@ -30,13 +31,13 @@ import { NgxMatDatepickerControl } from './datepicker-base';
 import { createMissingDateImplError } from './datepicker-errors';
 import { NgxMatDatetimePickerV2 } from './datetime-picker-v2.component';
 
-export const NGX_MAT_DATETIME_PICKER_VALUE_ACCESSOR: any = {
+export const NGX_MAT_DATETIME_PICKER_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgxMatDatetimePickerInputV2),
   multi: true,
 };
 
-export const NGX_MAT_DATETIME_PICKER_VALIDATORS: any = {
+export const NGX_MAT_DATETIME_PICKER_VALIDATORS: Provider = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => NgxMatDatetimePickerInputV2),
   multi: true,
@@ -162,10 +163,16 @@ export class NgxMatDatetimePickerInputV2<D>
   /** Emits when the internal state has changed */
   readonly stateChanges = new Subject<void>();
 
-  _onTouched = () => {};
-  _validatorOnChange = () => {};
+  _onTouched = () => {
+    // Intentionally left empty.
+  };
+  _validatorOnChange = () => {
+    // Intentionally left empty.
+  };
 
-  private _cvaOnChange: (value: any) => void = () => {};
+  private _cvaOnChange: (value: any) => void = () => {
+    // Intentionally left empty.
+  };
   private _valueChangesSubscription = Subscription.EMPTY;
   private _localeSubscription = Subscription.EMPTY;
 
@@ -334,7 +341,7 @@ export class NgxMatDatetimePickerInputV2<D>
   _onInput(event: Event): void {
     const target = event?.target as HTMLInputElement;
     const parsedDate = this._dateAdapter?.parse(target.value, this._dateFormats!.display.dateInput);
-    this._lastValueValid = this._dateAdapter?.isValid(parsedDate)!;
+    this._lastValueValid = this._dateAdapter ? this._dateAdapter.isValid(parsedDate) : false;
     const date = this._dateAdapter?.getValidDateOrNull(parsedDate);
 
     // Update internal value
@@ -361,7 +368,7 @@ export class NgxMatDatetimePickerInputV2<D>
     this.stateChanges.next();
   }
 
-  _onClick(event: MouseEvent): void {
+  _onClick(_: MouseEvent): void {
     // Open the datepicker when clicking on the input
     if (this.ngxMatDatetimePicker && !this.disabled) {
       this.ngxMatDatetimePicker.open();
@@ -420,7 +427,7 @@ export class NgxMatDatetimePickerInputV2<D>
   }
 
   // MatFormFieldControl methods
-  setDescribedByIds(ids: string[]): void {
+  setDescribedByIds(_: string[]): void {
     // Implementation for accessibility
   }
 
