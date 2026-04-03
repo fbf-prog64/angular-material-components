@@ -30,18 +30,19 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
   elementId: string;
 
   ctx: CanvasRenderingContext2D | null = null;
-  width: number = 0;
-  height: number = 0;
+  width = 0;
+  height = 0;
 
-  x: number = 0;
-  y: number = 0;
+  x = 0;
+  y = 0;
 
   drag = false;
 
   protected _destroyed: Subject<void> = new Subject<void>();
 
+  protected zone: NgZone | null = null;
+
   constructor(
-    protected zone: NgZone,
     elementId: string,
   ) {
     this.elementId = elementId;
@@ -53,7 +54,7 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
   }
 
   ngAfterViewInit(): void {
-    this.canvas = <HTMLCanvasElement>document.getElementById(this.elementId);
+    this.canvas = document.getElementById(this.elementId) as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d');
     this.width = this.canvas.width;
     this.height = this.canvas.height;
@@ -73,20 +74,20 @@ export abstract class NgxMatBaseColorCanvas implements OnDestroy, AfterViewInit 
     this.drag = true;
     this.changeColor(e);
 
-    this.zone.runOutsideAngular(() => {
+    this.zone?.runOutsideAngular(() => {
       this.canvas?.addEventListener('mousemove', this.onMousemove.bind(this));
     });
   }
 
   public onMousemove(e: MouseEvent) {
     if (this.drag) {
-      this.zone.run(() => {
+      this.zone?.run(() => {
         this.changeColor(e);
       });
     }
   }
 
-  public onMouseup(e: MouseEvent) {
+  public onMouseup(_: MouseEvent) {
     this.drag = false;
     this.canvas?.removeEventListener('mousemove', this.onMousemove);
   }

@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, inject, NgZone } from '@angular/core';
 import { getColorAtPosition } from '../../../helpers';
 import { Color } from '../../../models';
 import { NgxMatBaseColorCanvas } from '../base-color-canvas';
@@ -9,8 +9,10 @@ import { NgxMatBaseColorCanvas } from '../base-color-canvas';
   styleUrls: ['./color-slider.component.scss'],
 })
 export class NgxMatColorSliderComponent extends NgxMatBaseColorCanvas {
-  constructor(override zone: NgZone) {
-    super(zone, 'color-strip');
+  protected override zone = inject(NgZone);
+
+  constructor() {
+    super('color-strip');
   }
 
   override ngAfterViewInit(): void {

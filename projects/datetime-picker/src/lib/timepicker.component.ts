@@ -104,8 +104,12 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     }),
   });
 
-  private _onChange: any = () => {};
-  private _onTouched: any = () => {};
+  private _onChange: any = () => {
+    // Intentionally left empty.
+  };
+  private _onTouched: any = () => {
+    // Intentionally left empty.
+  };
   public readonly value = model<D>();
 
   /** Hour */
@@ -156,11 +160,11 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: (_: any) => {}): void {
+  registerOnChange(fn: (_: any) => void): void {
     this._onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: () => void): void {
     this._onTouched = fn;
   }
 

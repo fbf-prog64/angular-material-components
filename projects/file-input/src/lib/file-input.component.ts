@@ -8,11 +8,11 @@ import {
   DoCheck,
   ElementRef,
   forwardRef,
+  inject,
   Input,
   input,
+  OnChanges,
   OnDestroy,
-  Optional,
-  Self,
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -27,15 +27,14 @@ import { FileOrArrayFile } from './file-input-type';
 let nextUniqueId = 0;
 
 class NgxMatInputMixinBase {
+
   readonly stateChanges = new Subject<void>();
 
-  constructor(
-    public _defaultErrorStateMatcher: ErrorStateMatcher,
-    public _parentForm: NgForm,
-    public _parentFormGroup: FormGroupDirective,
-    /** @docs-private */
-    public ngControl: NgControl,
-  ) {}
+  protected ngControl: NgControl | null = null;
+  protected _parentForm: NgForm | null = null;
+  protected _parentFormGroup: FormGroupDirective | null = null;
+  protected _defaultErrorStateMatcher: ErrorStateMatcher | null = null;
+
 }
 
 @Directive({
@@ -62,30 +61,33 @@ export class NgxMatFileInputIcon {}
 })
 export class NgxMatFileInputComponent
   extends NgxMatInputMixinBase
-  implements MatFormFieldControl<FileOrArrayFile>, OnDestroy, DoCheck, ControlValueAccessor
+  implements MatFormFieldControl<FileOrArrayFile>, OnChanges, OnDestroy, DoCheck, ControlValueAccessor
 {
   private _inputFileRef = viewChild<ElementRef>('inputFile');
   private _inputValueRef = viewChild<ElementRef>('inputValue');
 
   readonly color = input<ThemePalette>('primary');
 
-  public fileNames: string = "";
+  public fileNames = "";
 
   protected _uid = `ngx-mat-fileinput-${nextUniqueId++}`;
-  protected _previousNativeValue: any;
-  _ariaDescribedby: string = "";
+  _ariaDescribedby = "";
 
   override stateChanges: Subject<void> = new Subject<void>();
-  focused: boolean = false;
-  errorState: boolean = false;
-  controlType: string = 'ngx-mat-file-input';
-  autofilled: boolean = false;
+  focused = false;
+  errorState = false;
+  controlType = 'ngx-mat-file-input';
+  autofilled = false;
 
   /** Function when touched */
-  _onTouched = () => {};
+  _onTouched = () => {
+    // Intentionally empty.
+  };
 
   /** Function when changed */
-  _onChange: (value: FileOrArrayFile) => void = () => {};
+  _onChange: (value: FileOrArrayFile) => void = () => {
+    // Intentionally empty.
+  };
 
   @Input()
   get disabled(): boolean {
@@ -110,7 +112,7 @@ export class NgxMatFileInputComponent
   set id(value: string) {
     this._id = value || this._uid;
   }
-  protected _id: string = "";
+  protected _id = "";
 
   @Input()
   get multiple(): boolean {
@@ -165,20 +167,19 @@ export class NgxMatFileInputComponent
   set accept(value: string) {
     this._accept = value;
   }
-  private _accept: string = "";
+  private _accept = "";
 
-  constructor(
-    protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-    protected _platform: Platform,
-    private _cd: ChangeDetectorRef,
-    @Optional() @Self() override ngControl: NgControl,
-    @Optional() _parentForm: NgForm,
-    @Optional() _parentFormGroup: FormGroupDirective,
-    _defaultErrorStateMatcher: ErrorStateMatcher,
-  ) {
-    super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
+  protected _elementRef = inject(ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>);
+  protected _platform = inject(Platform);
+  private _cd = inject(ChangeDetectorRef);
 
-    this.id = this.id;
+  override ngControl = inject(NgControl, { optional: true, self: true });
+  protected override _parentForm = inject(NgForm, { optional: true });
+  protected override _parentFormGroup = inject(FormGroupDirective, { optional: true });
+  protected override _defaultErrorStateMatcher = inject(ErrorStateMatcher);
+
+  constructor() {
+    super();
 
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
@@ -214,7 +215,7 @@ export class NgxMatFileInputComponent
   }
 
   // Implemented as part of ControlValueAccessor.
-  registerOnChange(fn: (value: any) => void): void {
+  registerOnChange(fn: (value: FileOrArrayFile) => void): void {
     this._onChange = fn;
   }
 
@@ -249,7 +250,7 @@ export class NgxMatFileInputComponent
   }
 
   protected _isBadInput() {
-    let validity = (this._inputValueRef()?.nativeElement as HTMLInputElement).validity;
+    const validity = (this._inputValueRef()?.nativeElement as HTMLInputElement).validity;
     return validity && validity.badInput;
   }
 
@@ -276,7 +277,7 @@ export class NgxMatFileInputComponent
 
   handleFiles(filelist: FileList) {
     if (filelist.length > 0) {
-      const files: Array<File> = new Array();
+      const files: File[] = [];
       for (let i = 0; i < filelist.length; i++) {
         const f = filelist.item(i);
         if (f)
@@ -289,7 +290,9 @@ export class NgxMatFileInputComponent
   }
 
   /** Handles a click on the control's container. */
-  onContainerClick(event: MouseEvent) {}
+  onContainerClick(_: MouseEvent) {
+    // Intentionally empty.
+  }
 
   private _resetInputFile() {
     this._inputFileRef()!.nativeElement.value = '';

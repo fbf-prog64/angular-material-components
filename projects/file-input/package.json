@@ -1,6 +1,6 @@
 {
   "name": "@ngx-mce/file-input",
-  "version": "21.2.5",
+  "version": "21.2.6-next.6",
   "description": "Angular Material File Input",
   "author": "Felipe B.",
   "repository": {
@@ -25,7 +25,8 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build -c=production",
-    "build-dev": "ng build -c=development"
+    "build-dev": "ng build -c=development",
+    "lint": "ng lint"
   },
   "publishConfig": {
     "directory": "../../dist/file-input",

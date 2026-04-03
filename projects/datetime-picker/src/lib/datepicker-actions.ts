@@ -10,6 +10,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
   booleanAttribute,
+  inject,
   viewChild,
 } from '@angular/core';
 import { NgxMatDatepickerBase, NgxMatDatepickerControl } from './datepicker-base';
@@ -20,9 +21,7 @@ import { NgxMatDatepickerBase, NgxMatDatepickerControl } from './datepicker-base
   host: { '(click)': '_applySelection()' },
 })
 export class NgxMatDatepickerApply {
-  constructor(
-    public readonly _datepicker: NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>,
-  ) {}
+  public readonly _datepicker = inject(NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>);
 
   _applySelection() {
     this._datepicker._applyPendingSelection();
@@ -35,14 +34,12 @@ export class NgxMatDatepickerApply {
   host: { '(click)': '_clearSelection()' },
 })
 export class NgxMatDatepickerClear {
-  constructor(
-    public readonly _datepicker: NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>,
-  ) {}
-
+  public readonly _datepicker = inject(NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>);
+  
   @Input({
     transform: booleanAttribute,
   })
-  close: boolean = false;
+  close = false;
 
   _clearSelection() {
     this._datepicker._clearSelection();
@@ -58,9 +55,7 @@ export class NgxMatDatepickerClear {
   host: { '(click)': '_datepicker.close()' },
 })
 export class NgxMatDatepickerCancel {
-  constructor(
-    public readonly _datepicker: NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>,
-  ) {}
+  public readonly _datepicker = inject(NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>);
 }
 
 /**
@@ -84,10 +79,8 @@ export class NgxMatDatepickerActions implements AfterViewInit, OnDestroy {
   _template = viewChild<TemplateRef<unknown>>(TemplateRef);
   private _portal: TemplatePortal | null = null;
 
-  constructor(
-    private _datepicker: NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>,
-    private _viewContainerRef: ViewContainerRef,
-  ) {}
+  private _datepicker = inject(NgxMatDatepickerBase<NgxMatDatepickerControl<any>, unknown>);
+  private _viewContainerRef = inject(ViewContainerRef);
 
   ngAfterViewInit() {
     this._portal = new TemplatePortal(this._template()!, this._viewContainerRef);

@@ -2,16 +2,12 @@ import {
   Directive,
   ElementRef,
   forwardRef,
-  Inject,
+  inject,
   Input,
   OnDestroy,
-  Optional,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidatorFn, Validators } from '@angular/forms';
 import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MatDateFormats,
   ThemePalette,
 } from '@angular/material/core';
 import { MAT_FORM_FIELD } from '@angular/material/form-field';
@@ -51,8 +47,8 @@ export const NGX_MAT_DATEPICKER_VALIDATORS = {
     class: 'mat-datepicker-input',
     '[attr.aria-haspopup]': '_datepicker ? "dialog" : null',
     '[attr.aria-owns]': '(_datepicker?.opened && _datepicker?.id) || null',
-    '[attr.min]': 'min ? _dateAdapter.toIso8601(min) : null',
-    '[attr.max]': 'max ? _dateAdapter.toIso8601(max) : null',
+    '[attr.min]': '_dateAdapter && min ? _dateAdapter.toIso8601(min) : null',
+    '[attr.max]': '_dateAdapter && max ? _dateAdapter.toIso8601(max) : null',
     // Used by the test harness to tie this input to its calendar. We can't depend on
     // `aria-owns` for this, because it's only defined while the calendar is open.
     '[attr.data-mat-calendar]': '_datepicker ? _datepicker.id : null',
@@ -89,6 +85,11 @@ export class NgxMatDatepickerInput<D>
     return this._min;
   }
   set min(value: D | null) {
+    if (!this._dateAdapter) {
+      this._min = null;
+      return;
+    }
+
     const validValue = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
 
     if (!this._dateAdapter.sameDate(validValue, this._min)) {
@@ -104,6 +105,11 @@ export class NgxMatDatepickerInput<D>
     return this._max;
   }
   set max(value: D | null) {
+    if (!this._dateAdapter) {
+      this._max = null;
+      return;
+    }
+
     const validValue = this._dateAdapter.getValidDateOrNull(this._dateAdapter.deserialize(value));
 
     if (!this._dateAdapter.sameDate(validValue, this._max)) {
@@ -131,15 +137,10 @@ export class NgxMatDatepickerInput<D>
   /** The combined form control validator for this input. */
   protected _validator: ValidatorFn | null;
 
-  constructor(
-    elementRef: ElementRef<HTMLInputElement>,
-    @Optional() dateAdapter: DateAdapter<D>,
-    @Optional() @Inject(MAT_DATE_FORMATS) dateFormats: MatDateFormats,
-    @Optional()
-    @Inject(MAT_FORM_FIELD)
-    private _formField?: _NgxMatFormFieldPartial,
-  ) {
-    super(elementRef, dateAdapter, dateFormats);
+  private _formField = inject(MAT_FORM_FIELD, { optional: true });
+
+  constructor() {
+    super();
     this._validator = Validators.compose(super._getValidators());
   }
 

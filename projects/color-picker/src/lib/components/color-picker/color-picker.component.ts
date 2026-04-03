@@ -16,12 +16,10 @@ import {
   ComponentRef,
   EventEmitter,
   HostBinding,
-  Inject,
   InjectionToken,
   Input,
   NgZone,
   OnDestroy,
-  Optional,
   Output,
   ViewContainerRef,
   ViewEncapsulation,
@@ -30,7 +28,6 @@ import {
   ChangeDetectorRef,
   inject,
   OnInit,
-  ElementRef,
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -70,7 +67,6 @@ export const NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER = {
   exportAs: 'ngxMatColorPickerContent',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  inputs: ['color'],
   imports: [NgxMatColorPaletteComponent],
 })
 export class NgxMatColorPickerContentComponent implements OnInit {
@@ -78,7 +74,8 @@ export class NgxMatColorPickerContentComponent implements OnInit {
   _palette = viewChild(NgxMatColorPaletteComponent);
 
   picker: NgxMatColorPickerComponent | null = null;
-  color: ThemePalette;
+
+  @Input() color: ThemePalette;
 
   _isLeaving = false;
   _panelEnterClass: 'enter-dropdown' | 'enter-dialog' | null = null;
@@ -128,9 +125,7 @@ export class NgxMatColorPickerContentComponent implements OnInit {
   providers: [ColorAdapter, NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY_FACTORY_PROVIDER],
 })
 export class NgxMatColorPickerComponent implements OnDestroy {
-  @Input() id: string = `ngx-mat-color-picker-${Math.floor(Math.random() * 1000000)}`;
-
-  private _scrollStrategy: () => ScrollStrategy;
+  @Input() id = `ngx-mat-color-picker-${Math.floor(Math.random() * 1000000)}`;
 
   /** Emits when the datepicker has been opened. */
   @Output('opened') openedStream: EventEmitter<void> = new EventEmitter<void>();
@@ -151,7 +146,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
       this._disabledChange.next(newValue);
     }
   }
-  private _disabled: boolean = false;
+  private _disabled = false;
 
   @Input()
   get touchUi(): boolean {
@@ -168,7 +163,10 @@ export class NgxMatColorPickerComponent implements OnDestroy {
     return this._opened;
   }
   set opened(value: boolean) {
-    value ? this.open() : this.close();
+    if (value)
+      this.open();
+    else
+      this.close();
   }
   private _opened = false;
 
@@ -237,18 +235,14 @@ export class NgxMatColorPickerComponent implements OnDestroy {
   /** Whether an animation is currently in progress. */
   private _isAnimating = false;
 
-  constructor(
-    private _dialog: MatDialog,
-    private _overlay: Overlay,
-    private _zone: NgZone,
-    private _adapter: ColorAdapter,
-    @Optional() private _dir: Directionality,
-    @Inject(NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY) scrollStrategy: any,
-    @Optional() @Inject(DOCUMENT) private _document: any,
-    private _viewContainerRef: ViewContainerRef,
-  ) {
-    this._scrollStrategy = scrollStrategy;
-  }
+  private _dialog = inject(MatDialog);
+  private _overlay = inject(Overlay);
+  private _zone = inject(NgZone);
+  private _adapter = inject(ColorAdapter);
+  private _dir = inject(Directionality, { optional: true });
+  private _scrollStrategy = inject(NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY);
+  private _document = inject(DOCUMENT, { optional: true });
+  private _viewContainerRef = inject(ViewContainerRef);
 
   ngOnDestroy() {
     this.close();
@@ -263,7 +257,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
 
   /** Selects the given date */
   select(nextVal: Color): void {
-    let oldValue = this._selected;
+    const oldValue = this._selected;
     this._selected = nextVal;
     if (!this._adapter.sameColor(oldValue!, this._selected)) {
       this._selectedChanged.next(nextVal);
@@ -293,10 +287,14 @@ export class NgxMatColorPickerComponent implements OnDestroy {
     }
 
     if (this._document) {
-      this._focusedElementBeforeOpen = this._document.activeElement;
+      this._focusedElementBeforeOpen = this._document.activeElement as HTMLElement | null;
     }
 
-    this.touchUi ? this._openAsDialog() : this._openAsPopup();
+    if (this.touchUi)
+      this._openAsDialog();
+    else
+      this._openAsPopup();
+
     this._opened = true;
     this.openedStream.emit();
   }
@@ -366,7 +364,7 @@ export class NgxMatColorPickerComponent implements OnDestroy {
       positionStrategy: this._createPopupPositionStrategy(),
       hasBackdrop: true,
       backdropClass: 'mat-overlay-transparent-backdrop',
-      direction: this._dir,
+      direction: this._dir ?? "ltr",
       scrollStrategy: this._scrollStrategy(),
       panelClass: 'mat-colorpicker-popup',
     });
