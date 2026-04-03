@@ -6,16 +6,20 @@
   "plugins": [
     [
       "@semantic-release/commit-analyzer", {
+	    "preset": "angular",
         "releaseRules": [
-          { "type": "refactor", "release": "patch" },
+          { "type": "refactor", "scope": "*", "release": "patch" },
           { "type": "chore", "scope": "update", "release": "patch" }
         ]
       }
     ],
     [
       "@semantic-release/release-notes-generator", {
+	    "preset": "angular",
         "presetConfig": {
           "types": [
+		    { "type": "feat", "section": "Features" },
+            { "type": "fix", "section": "Bug Fixes" },
             {
               "type": "chore",
               "section": "Chores",
