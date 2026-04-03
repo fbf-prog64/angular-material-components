@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Provider,
   forwardRef,
   inject,
   signal,
@@ -30,13 +31,13 @@ import { NgxMatDatepickerControl } from './datepicker-base';
 import { createMissingDateImplError } from './datepicker-errors';
 import { NgxMatDatetimePickerV2 } from './datetime-picker-v2.component';
 
-export const NGX_MAT_DATETIME_PICKER_VALUE_ACCESSOR: any = {
+export const NGX_MAT_DATETIME_PICKER_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgxMatDatetimePickerInputV2),
   multi: true,
 };
 
-export const NGX_MAT_DATETIME_PICKER_VALIDATORS: any = {
+export const NGX_MAT_DATETIME_PICKER_VALIDATORS: Provider = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => NgxMatDatetimePickerInputV2),
   multi: true,
@@ -340,7 +341,7 @@ export class NgxMatDatetimePickerInputV2<D>
   _onInput(event: Event): void {
     const target = event?.target as HTMLInputElement;
     const parsedDate = this._dateAdapter?.parse(target.value, this._dateFormats!.display.dateInput);
-    this._lastValueValid = this._dateAdapter?.isValid(parsedDate)!;
+    this._lastValueValid = this._dateAdapter ? this._dateAdapter.isValid(parsedDate) : false;
     const date = this._dateAdapter?.getValidDateOrNull(parsedDate);
 
     // Update internal value

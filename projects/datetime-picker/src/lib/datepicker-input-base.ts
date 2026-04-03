@@ -81,7 +81,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   get value(): D | null {
     return this._model ? this._getValueFromModel(this._model.selection) : this._pendingValue;
   }
-  set value(value: any) {
+  set value(value: D | null) {
     this._assignValueProgrammatically(value);
   }
   protected _model: NgxMatDateSelectionModel<S, D> | undefined;

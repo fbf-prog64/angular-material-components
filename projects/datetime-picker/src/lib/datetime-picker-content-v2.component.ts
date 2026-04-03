@@ -18,7 +18,6 @@ import { takeUntil } from 'rxjs/operators';
 import { NgxMatTimepickerComponent } from './timepicker.component';
 
 export interface NgxMatDatetimePickerContentData<D> {
-  datepicker: any; // Reference to the main datepicker component
   color?: ThemePalette;
   touchUi?: boolean;
   hideTime?: boolean;

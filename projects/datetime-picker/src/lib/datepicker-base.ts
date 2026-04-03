@@ -565,7 +565,10 @@ export abstract class NgxMatDatepickerBase<
   }
 
   set opened(value: BooleanInput) {
-    coerceBooleanProperty(value) ? this.open() : this.close();
+    if (coerceBooleanProperty(value))
+      this.open();
+    else
+      this.close();
   }
 
   private _opened = false;
