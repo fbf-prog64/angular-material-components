@@ -6,7 +6,7 @@
   "plugins": [
     [
       "@semantic-release/commit-analyzer", {
-	    "preset": "angular",
+	    "preset": "conventionalcommits",
         "releaseRules": [
           { "type": "refactor", "scope": "*", "release": "patch" },
           { "type": "chore", "scope": "update", "release": "patch" }
@@ -15,7 +15,7 @@
     ],
     [
       "@semantic-release/release-notes-generator", {
-	    "preset": "angular",
+	    "preset": "conventionalcommits",
         "presetConfig": {
           "types": [
 		    { "type": "feat", "section": "Features" },
