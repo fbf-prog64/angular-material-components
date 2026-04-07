@@ -59,7 +59,7 @@
     "@angular/build": "^21.2.6",
     "@angular-eslint/builder": "21.3.1",
     "@angular/cdk": "^21.1.5",
-    "@angular/cli": "^21.2.5",
+    "@angular/cli": "^21.2.6",
     "@angular/compiler-cli": "^21.1.5",
     "@cleyrop-org/semantic-release-backmerge": "^5.2.4",
     "@eslint/js": "^9.39.2",
