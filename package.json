@@ -63,7 +63,7 @@
     "@angular/compiler-cli": "^21.1.5",
     "@cleyrop-org/semantic-release-backmerge": "^5.2.4",
     "@eslint/js": "^9.39.2",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "angular-eslint": "21.3.1",
     "conventional-changelog-conventionalcommits": "^9.3.1",
     "eslint": "^9.39.2",
