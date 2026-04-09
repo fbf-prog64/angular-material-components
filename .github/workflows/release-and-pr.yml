@@ -44,8 +44,10 @@ jobs:
         uses: cycjimmy/semantic-release-action@v6
         with:
           extra_plugins: |
+            conventional-changelog-conventionalcommits
             @semantic-release/exec
             @semantic-release/git
+            @cleyrop-org/semantic-release-backmerge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
