@@ -30,8 +30,8 @@ importers:
         specifier: ^21.1.5
         version: 21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@21.2.6)(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2)))
       '@angular/router':
-        specifier: ^21.1.5
-        version: 21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2)))(rxjs@7.8.2)
+        specifier: ^21.2.14
+        version: 21.2.14(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2)))(rxjs@7.8.2)
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
@@ -474,13 +474,13 @@ packages:
       '@angular/animations':
         optional: true
 
-  '@angular/router@21.2.6':
-    resolution: {integrity: sha512-0ajhkKYeOqHQEEH88+Q0HrheR3helwTvdTqD/0gTaapCe+HOoC+SYwmzzsYP2zwAxBNQEg4JHOGKQ30X9/gwgw==}
+  '@angular/router@21.2.14':
+    resolution: {integrity: sha512-Yo3LdgcqkfMu2/Ycl8o/4QjCBqZhtA+a7B8JVdW5cWdrpFTxKCOrzm+YRUMuIFmH5nzSv9oGnUuz64uk1+7r5Q==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
-      '@angular/common': 21.2.6
-      '@angular/core': 21.2.6
-      '@angular/platform-browser': 21.2.6
+      '@angular/common': 21.2.14
+      '@angular/core': 21.2.14
+      '@angular/platform-browser': 21.2.14
       rxjs: ^6.5.3 || ^7.4.0
 
   '@asamuzakjp/css-color@5.1.11':
@@ -4247,7 +4247,7 @@ snapshots:
       '@angular/core': 21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@angular/router@21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/router@21.2.14(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
       '@angular/common': 21.2.6(@angular/core@21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.2.13(@angular/compiler@21.2.6)(rxjs@7.8.2)
