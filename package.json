@@ -43,7 +43,7 @@
   "private": true,
   "packageManager": "pnpm@11.4.0",
   "dependencies": {
-    "@angular/common": "^21.1.5",
+    "@angular/common": "^22.0.0",
     "@angular/compiler": "^21.2.14",
     "@angular/core": "^21.2.13",
     "@angular/forms": "^21.2.13",
