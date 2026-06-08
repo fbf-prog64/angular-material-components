@@ -53,10 +53,9 @@ export abstract class NgxMatDateSelectionModel<S, D = NgxExtractDateTypeFromSele
   /** Emits when the selection has changed. */
   selectionChanged: Observable<NgxDateSelectionModelChange<S>> = this._selectionChanged;
 
-  protected _adapter = inject(DateAdapter<D>);
-
+  /** The current selection. */
   protected constructor(
-    /** The current selection. */
+    protected _adapter: DateAdapter<D>,
     readonly selection: S
   ) {
     this.selection = selection;
@@ -100,8 +99,8 @@ export abstract class NgxMatDateSelectionModel<S, D = NgxExtractDateTypeFromSele
  */
 @Injectable()
 export class NgxMatSingleDateSelectionModel<D> extends NgxMatDateSelectionModel<D | null, D> {
-  constructor() {
-    super(null);
+  constructor(adapter: DateAdapter<D>) {
+    super(adapter, null);
   }
 
   /**
@@ -127,7 +126,7 @@ export class NgxMatSingleDateSelectionModel<D> extends NgxMatDateSelectionModel<
 
   /** Clones the selection model. */
   clone() {
-    const clone = new NgxMatSingleDateSelectionModel<D>();
+    const clone = new NgxMatSingleDateSelectionModel<D>(this._adapter);
     clone.updateSelection(this.selection, this);
     return clone;
   }
@@ -139,8 +138,8 @@ export class NgxMatSingleDateSelectionModel<D> extends NgxMatDateSelectionModel<
  */
 @Injectable()
 export class NgxMatRangeDateSelectionModel<D> extends NgxMatDateSelectionModel<NgxDateRange<D>, D> {
-  constructor() {
-    super(new NgxDateRange<D>(null, null));
+  constructor(adapter: DateAdapter<D>) {
+    super(adapter, new NgxDateRange<D>(null, null));
   }
 
   /**
@@ -198,7 +197,7 @@ export class NgxMatRangeDateSelectionModel<D> extends NgxMatDateSelectionModel<N
 
   /** Clones the selection model. */
   clone() {
-    const clone = new NgxMatRangeDateSelectionModel<D>();
+    const clone = new NgxMatRangeDateSelectionModel<D>(this._adapter);
     clone.updateSelection(this.selection, this);
     return clone;
   }
@@ -206,9 +205,10 @@ export class NgxMatRangeDateSelectionModel<D> extends NgxMatDateSelectionModel<N
 
 /** @docs-private */
 export function NGX_MAT_SINGLE_DATE_SELECTION_MODEL_FACTORY(
-  parent: NgxMatSingleDateSelectionModel<unknown>,
+  parent: NgxMatSingleDateSelectionModel<unknown> | null,
+  dateAdapter: DateAdapter<unknown>
 ) {
-  return parent || new NgxMatSingleDateSelectionModel();
+  return parent || new NgxMatSingleDateSelectionModel(dateAdapter);
 }
 
 /**
@@ -224,8 +224,9 @@ export const NGX_MAT_SINGLE_DATE_SELECTION_MODEL_PROVIDER: FactoryProvider = {
 /** @docs-private */
 export function NGX_MAT_RANGE_DATE_SELECTION_MODEL_FACTORY(
   parent: NgxMatSingleDateSelectionModel<unknown>,
+  dateAdapter: DateAdapter<unknown>
 ) {
-  return parent || new NgxMatRangeDateSelectionModel();
+  return parent || new NgxMatRangeDateSelectionModel(dateAdapter);
 }
 
 /**
