@@ -34,12 +34,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@angular/platform-browser": "^21",
-    "@angular/common": "^21",
-    "@angular/core": "^21",
-    "@angular/forms": "^21",
-    "@angular/material": "^21",
-    "@angular/cdk": "^21"
+    "@angular/platform-browser": "^22",
+    "@angular/common": "^22",
+    "@angular/core": "^22",
+    "@angular/forms": "^22",
+    "@angular/material": "^22",
+    "@angular/cdk": "^22"
   },
   "dependencies": {
     "tslib": "^2.3.0"
