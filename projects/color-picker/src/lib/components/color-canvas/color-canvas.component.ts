@@ -8,6 +8,7 @@ import {
   OnInit,
   SimpleChanges,
   ViewEncapsulation,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   AbstractControl,
@@ -35,6 +36,7 @@ const RADIUS_NOB = 5;
   host: {
     class: 'ngx-mat-color-canvas',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatFormFieldModule, MatInputModule, NgxMatColorSliderComponent, ReactiveFormsModule],
 })
 export class NgxMatColorCanvasComponent

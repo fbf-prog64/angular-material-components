@@ -12,6 +12,7 @@ import {
   input,
   untracked,
   viewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +40,7 @@ export class NgxMatColorpickerToggleIcon {}
   },
   exportAs: 'ngxMatColorPickerToggle',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, MatIconModule],
 })
 export class NgxMatColorToggleComponent implements AfterContentInit, OnDestroy {

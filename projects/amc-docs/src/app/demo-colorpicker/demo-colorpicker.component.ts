@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormControl,
   FormsModule,
@@ -48,6 +48,7 @@ const CUSTOM_MAT_COLOR_FORMATS: MatColorFormats = {
     NgxMatHighlightDirective,
     ReactiveFormsModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [{ provide: MAT_COLOR_FORMATS, useValue: CUSTOM_MAT_COLOR_FORMATS }],
 })
 export class DemoColorpickerComponent {

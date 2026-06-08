@@ -15,6 +15,7 @@ import {
   OnDestroy,
   viewChild,
   ViewEncapsulation,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { ControlValueAccessor, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,6 +58,7 @@ export class NgxMatFileInputIcon {}
     },
   ],
   exportAs: 'ngx-mat-file-input',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconModule, MatButtonModule],
 })
 export class NgxMatFileInputComponent

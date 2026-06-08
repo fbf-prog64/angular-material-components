@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { MatCard, MatCardContent } from "@angular/material/card";
 import { MatDivider } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
@@ -9,6 +9,7 @@ import { RouterLink } from "@angular/router";
     selector: "ngx-mat-home",
     templateUrl: "./home.component.html",
     styleUrls: ["./home.component.scss"],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatCard,
         MatCardContent,
