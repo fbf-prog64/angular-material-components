@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { MatCardModule } from '@angular/material/card';
     DatePipe,
   ],
   templateUrl: "./demo-datetime-v2.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ["./demo-datetime-v2.component.scss"]
 })
 export class DemoDatetimeV2Component {

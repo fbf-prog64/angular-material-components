@@ -1,4 +1,4 @@
-import { Component, inject, NgZone } from '@angular/core';
+import { Component, inject, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { getColorAtPosition } from '../../../helpers';
 import { Color } from '../../../models';
 import { NgxMatBaseColorCanvas } from '../base-color-canvas';
@@ -6,6 +6,7 @@ import { NgxMatBaseColorCanvas } from '../base-color-canvas';
 @Component({
   selector: 'ngx-mat-color-slider',
   templateUrl: './color-slider.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./color-slider.component.scss'],
 })
 export class NgxMatColorSliderComponent extends NgxMatBaseColorCanvas {
