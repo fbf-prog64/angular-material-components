@@ -37,14 +37,14 @@ jobs:
           fi
 
       - name: Checkout source
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: source
           ref: ${{ steps.vars.outputs.branch }}
 
       - name: Checkout gh-pages
         id: gh-pages-checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: gh-pages

@@ -22,7 +22,7 @@ jobs:
     if: github.event.head_commit.message != 'chore(release):' && !contains(github.event.head_commit.message, '[skip ci]')
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -58,7 +58,7 @@ jobs:
     if: success() && (github.ref_name == 'dev' || github.ref_name == 'nightly')
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Create PR from nightly → dev
         if: github.ref_name == 'nightly'
