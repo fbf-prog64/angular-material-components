@@ -230,8 +230,13 @@ export class NgxMatDatetimePickerContentV2<D> implements OnInit, OnDestroy {
 
   private _combineDateTime(date: D, time: [number, number, number]): D {
     const clonedDate = this._dateAdapter.clone(date);
-    const jsDate = this._dateAdapter.toIso8601(clonedDate);
-    const dateObj = new Date(jsDate);
+    const dateObj = new Date();
+
+    dateObj.setFullYear(
+      this._dateAdapter.getYear(clonedDate),
+      this._dateAdapter.getMonth(clonedDate),
+      this._dateAdapter.getDate(clonedDate)
+    );
 
     dateObj.setHours(time[0] || 0);
     dateObj.setMinutes(time[1] || 0);
