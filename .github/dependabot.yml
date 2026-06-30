@@ -7,6 +7,15 @@ updates:
       cronjob: "0 9 * * 1"
       timezone: "America/Mexico_City"
     target-branch: "dev"
+    
+    groups:
+      angular-normal:
+        patterns:
+          - "@angular/*"
+        update-types:
+          - "patch"
+          - "minor"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
