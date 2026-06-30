@@ -59,7 +59,7 @@
     "@angular-eslint/builder": "^22.0.0",
     "@angular/build": "^22.0.3",
     "@angular/cdk": "^22.0.2",
-    "@angular/cli": "^22.0.3",
+    "@angular/cli": "^22.0.4",
     "@angular/compiler-cli": "^22.0.2",
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.0.0",
