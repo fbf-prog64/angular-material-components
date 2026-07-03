@@ -1,6 +1,6 @@
 {
   "name": "@ngx-mce/file-input",
-  "version": "22.0.3",
+  "version": "22.1.0-next.2",
   "description": "Angular Material File Input",
   "author": "Felipe B.",
   "repository": {
@@ -34,12 +34,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@angular/platform-browser": "^22",
+    "@angular/cdk": "^22",
     "@angular/common": "^22",
     "@angular/core": "^22",
     "@angular/forms": "^22",
     "@angular/material": "^22",
-    "@angular/cdk": "^22"
+    "@angular/platform-browser": "^22"
   },
   "dependencies": {
     "tslib": "^2.3.0"
