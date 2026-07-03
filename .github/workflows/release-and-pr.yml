@@ -37,9 +37,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v6
         with:
