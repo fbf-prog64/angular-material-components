@@ -15,6 +15,21 @@ updates:
         update-types:
           - "patch"
           - "minor"
+      eslint-normal:
+        patterns:
+          - "eslint"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
+        update-types:
+          - "patch"
+          - "minor"
+      vitest-normal:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+        update-types:
+          - "patch"
+          - "minor"
 
   - package-ecosystem: "github-actions"
     directory: "/"
