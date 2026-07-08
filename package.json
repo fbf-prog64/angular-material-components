@@ -47,7 +47,7 @@
     "@angular/compiler": "^22.0.5",
     "@angular/core": "^22.0.5",
     "@angular/forms": "^22.0.5",
-    "@angular/material": "^22.0.3",
+    "@angular/material": "^22.0.4",
     "@angular/platform-browser": "^22.0.5",
     "@angular/platform-browser-dynamic": "^22.0.5",
     "@angular/router": "^22.0.5",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@angular-eslint/builder": "^22.0.0",
     "@angular/build": "^22.0.5",
-    "@angular/cdk": "^22.0.3",
+    "@angular/cdk": "^22.0.4",
     "@angular/cli": "^22.0.5",
     "@angular/compiler-cli": "^22.0.5",
     "@eslint/js": "^10.0.1",
