@@ -38,9 +38,9 @@ import { NgxMatHighlightDirective } from '../shared/NgxMatHighlightDirective';
 })
 export class DemoFileInputComponent implements OnInit {
   color: ThemePalette = 'primary';
-  disabled: boolean = false;
-  multiple: boolean = false;
-  accept: string = "";
+  disabled = false;
+  multiple = false;
+  accept = "";
 
   fileControl: FormControl;
   file2Control: FormControl;
