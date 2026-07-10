@@ -2,7 +2,7 @@ import { Component, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { ThemePalette } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -220,7 +220,7 @@ providers: [
     </ngx-mat-datetime-picker>
   </mat-form-field>`;
 
-  toggleMinDate(evt: any) {
+  toggleMinDate(evt: MatCheckboxChange) {
     if (evt.checked) {
       this._setMinDate();
     } else {
@@ -228,7 +228,7 @@ providers: [
     }
   }
 
-  toggleMaxDate(evt: any) {
+  toggleMaxDate(evt: MatCheckboxChange) {
     if (evt.checked) {
       this._setMaxDate();
     } else {

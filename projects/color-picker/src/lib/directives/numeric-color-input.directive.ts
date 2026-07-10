@@ -6,17 +6,20 @@ import { NUMERIC_REGEX } from '../helpers';
 })
 export class NumericColorInputDirective {
   @HostListener('input', ['$event'])
-  onInput($event: any) {
-    this._formatInput($event.target);
+  onInput($event: InputEvent) {
+    this._formatInput($event.target as HTMLInputElement | null);
   }
 
   /**
    * Format input
    * @param input
    */
-  private _formatInput(input: any) {
+  private _formatInput(input: HTMLInputElement | null) {
+    if (!input)
+      return;
+
     let val = Number(input.value.replace(NUMERIC_REGEX, ''));
     val = isNaN(val) ? 0 : val;
-    input.value = val;
+    input.value = val.toString();
   }
 }

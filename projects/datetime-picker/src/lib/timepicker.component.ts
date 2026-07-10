@@ -69,7 +69,7 @@ export enum MERIDIANS {
 })
 export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  private readonly _dateAdapter: DateAdapter<D> | null = inject(DateAdapter<D>, { optional: true });
 
   readonly disabled = input<boolean>(false);
   readonly showSpinners = input<boolean>(true);
@@ -104,10 +104,10 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     }),
   });
 
-  private _onChange: any = () => {
+  private _onChange = (_: D) => {
     // Intentionally left empty.
   };
-  private _onTouched: any = () => {
+  private _onTouched = () => {
     // Intentionally left empty.
   };
   public readonly value = model<D>();
@@ -160,7 +160,7 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: (_: any) => void): void {
+  registerOnChange(fn: (_: D) => void): void {
     this._onChange = fn;
   }
 
@@ -237,8 +237,8 @@ export class NgxMatTimepickerComponent<D> implements ControlValueAccessor {
     }
 
     const val = this.value();
-    if (val) {
-      let clonedModel = this._dateAdapter?.clone(val);
+    if (val && this._dateAdapter) {
+      let clonedModel: D = this._dateAdapter.clone(val);
       clonedModel = this._dateAdapter?.setTime(clonedModel, _hour, this.minute, this.second);
 
       this.value.set(clonedModel);

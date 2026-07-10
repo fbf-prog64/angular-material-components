@@ -129,7 +129,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
     // Intentionally left empty.
   };
 
-  private _cvaOnChange: (value: any) => void = () => {
+  private _cvaOnChange: (value: D | null) => void = () => {
     // Intentionally left empty.
   };
   private _valueChangesSubscription = Subscription.EMPTY;
@@ -245,7 +245,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   protected _lastValueValid = false;
 
   protected _elementRef = inject(ElementRef<HTMLInputElement>);
-  public _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  public _dateAdapter: DateAdapter<D> | null = inject(DateAdapter<D>, { optional: true });
   protected _dateFormats = inject(MAT_DATE_FORMATS, { optional: true });
 
   constructor() {
@@ -294,7 +294,7 @@ export abstract class NgxMatDatepickerInputBase<S, D = NgxExtractDateTypeFromSel
   }
 
   // Implemented as part of ControlValueAccessor.
-  registerOnChange(fn: (value: any) => void): void {
+  registerOnChange(fn: (value: D | null) => void): void {
     this._cvaOnChange = fn;
   }
 

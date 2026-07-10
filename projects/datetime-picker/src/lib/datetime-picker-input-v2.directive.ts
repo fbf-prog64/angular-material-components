@@ -74,7 +74,7 @@ export class NgxMatDatetimePickerInputV2<D>
     Validator,
     NgxMatDatepickerControl<D>
 {
-  readonly _dateAdapter = inject(DateAdapter<D>, { optional: true });
+  readonly _dateAdapter: DateAdapter<D> | null = inject(DateAdapter<D>, { optional: true });
 
   private readonly _elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
   private readonly _dateFormats = inject(MAT_DATE_FORMATS, { optional: true });
@@ -101,7 +101,7 @@ export class NgxMatDatetimePickerInputV2<D>
     return this._min();
   }
   set min(value: D | null) {
-    const validValue = this._dateAdapter?.getValidDateOrNull(this._dateAdapter.deserialize(value));
+    const validValue = this._dateAdapter?.getValidDateOrNull(this._dateAdapter.deserialize(value)) ?? null;
     this._min.set(validValue);
     this._validatorOnChange();
   }
@@ -113,7 +113,7 @@ export class NgxMatDatetimePickerInputV2<D>
     return this._max();
   }
   set max(value: D | null) {
-    const validValue = this._dateAdapter?.getValidDateOrNull(this._dateAdapter.deserialize(value));
+    const validValue = this._dateAdapter?.getValidDateOrNull(this._dateAdapter.deserialize(value)) ?? null;
     this._max.set(validValue);
     this._validatorOnChange();
   }
@@ -170,7 +170,7 @@ export class NgxMatDatetimePickerInputV2<D>
     // Intentionally left empty.
   };
 
-  private _cvaOnChange: (value: any) => void = () => {
+  private _cvaOnChange: (value: D | null) => void = () => {
     // Intentionally left empty.
   };
   private _valueChangesSubscription = Subscription.EMPTY;
@@ -316,7 +316,7 @@ export class NgxMatDatetimePickerInputV2<D>
     this._assignValue(value);
   }
 
-  registerOnChange(fn: (value: any) => void): void {
+  registerOnChange(fn: (value: D | null) => void): void {
     this._cvaOnChange = fn;
     console.log('CVA registerOnChange called', !!fn);
   }
@@ -340,9 +340,9 @@ export class NgxMatDatetimePickerInputV2<D>
 
   _onInput(event: Event): void {
     const target = event?.target as HTMLInputElement;
-    const parsedDate = this._dateAdapter?.parse(target.value, this._dateFormats!.display.dateInput);
-    this._lastValueValid = this._dateAdapter ? this._dateAdapter.isValid(parsedDate) : false;
-    const date = this._dateAdapter?.getValidDateOrNull(parsedDate);
+    const parsedDate = this._dateAdapter?.parse(target.value, this._dateFormats!.display.dateInput) ?? null;
+    this._lastValueValid = this._dateAdapter ? this._dateAdapter.isValid(parsedDate!) : false;
+    const date = this._dateAdapter?.getValidDateOrNull(parsedDate) ?? null;
 
     // Update internal value
     this._value.set(date);
