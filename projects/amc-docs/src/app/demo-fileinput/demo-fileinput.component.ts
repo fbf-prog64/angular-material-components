@@ -59,7 +59,7 @@ export class DemoFileInputComponent implements OnInit {
     '.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   ];
 
-  public files: any;
+  public files: File[] = [];
 
   code3 = `<mat-form-field>
   <ngx-mat-file-input [formControl]="fileControl" [multiple]="multiple" [accept]="accept" [color]="color">
@@ -110,7 +110,7 @@ export class DemoFileInputComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fileControl.valueChanges.subscribe((files: any) => {
+    this.fileControl.valueChanges.subscribe((files: File | File[]) => {
       if (!Array.isArray(files)) {
         this.files = [files];
       } else {
@@ -118,8 +118,8 @@ export class DemoFileInputComponent implements OnInit {
       }
     });
 
-    this.file3Control.valueChanges.subscribe((files: any) => {
-      let data: any;
+    this.file3Control.valueChanges.subscribe((files: File | File[]) => {
+      let data: File[];
       if (!Array.isArray(files)) {
         data = [files];
       } else {

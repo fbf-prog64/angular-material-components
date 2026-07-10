@@ -38,7 +38,8 @@ module.exports = defineConfig([
           varsIgnorePattern: "^_",
           caughtErrorsIgnorePattern: "^_"
         }
-      ]
+      ],
+      "@angular-eslint/prefer-on-push-component-change-detection": "off"
     },
   },
   {

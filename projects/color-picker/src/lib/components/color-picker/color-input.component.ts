@@ -152,7 +152,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnDestroy, 
     // Intentionally empty.
   };
 
-  private _cvaOnChange: (value: any) => void = () => {
+  private _cvaOnChange: (value: Color | null) => void = () => {
     // Intentionally empty.
   };
 
@@ -220,7 +220,7 @@ export class NgxMatColorPickerInput implements ControlValueAccessor, OnDestroy, 
   }
 
   // Implemented as part of ControlValueAccessor.
-  registerOnChange(fn: (value: any) => void): void {
+  registerOnChange(fn: (value: Color | null) => void): void {
     this._cvaOnChange = fn;
   }
 

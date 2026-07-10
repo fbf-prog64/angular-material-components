@@ -245,9 +245,20 @@ export class NgxMatStartDate<D> extends NgxMatDateRangeInputPartBase<D> {
     if (!super._shouldHandleChangeEvent(change)) {
       return false;
     } else {
-      const fnCompare: (ch: NgxDateSelectionModelChange<NgxDateRange<D>>) => boolean = (this._dateAdapter)
-        ? ch => !!this._dateAdapter!.compareDate(ch.oldValue!.start, ch.selection!.start)
-        : _ => false;
+      let fnCompare: (ch: NgxDateSelectionModelChange<NgxDateRange<D>>) => boolean;
+      if (this._dateAdapter) {
+        fnCompare = ch => {
+          if (!ch.oldValue || !ch.oldValue.start)
+            return false;
+
+          if (!ch.selection || !ch.selection.start)
+            return false;
+          
+          return !!this._dateAdapter!.compareDate(ch.oldValue.start, ch.selection.start);
+        };
+      } else {
+        fnCompare = _ => false;
+      }
 
       return !change.oldValue?.start
         ? !!change.selection!.start
@@ -340,9 +351,20 @@ export class NgxMatEndDate<D> extends NgxMatDateRangeInputPartBase<D> {
     if (!super._shouldHandleChangeEvent(change)) {
       return false;
     } else {
-      const fnCompare: (ch: NgxDateSelectionModelChange<NgxDateRange<D>>) => boolean = (this._dateAdapter)
-        ? ch => !!this._dateAdapter!.compareDate(ch.oldValue!.end, ch.selection!.end)
-        : _ => false;
+      let fnCompare: (ch: NgxDateSelectionModelChange<NgxDateRange<D>>) => boolean;
+      if (this._dateAdapter) {
+        fnCompare = ch => {
+          if (!ch.oldValue || !ch.oldValue.end)
+            return false;
+
+          if (!ch.selection || !ch.selection.end)
+            return false;
+          
+          return !!this._dateAdapter!.compareDate(ch.oldValue.end, ch.selection.end);
+        };
+      } else {
+        fnCompare = _ => false;
+      }
       
       return !change.oldValue?.end
         ? !!change.selection!.end
