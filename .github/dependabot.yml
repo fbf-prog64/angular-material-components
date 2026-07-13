@@ -23,6 +23,13 @@ updates:
         update-types:
           - "patch"
           - "minor"
+      angular-eslint-normal:
+        patterns:
+          - "angular-eslint"
+          - "@angular-eslint/*"
+        update-types:
+          - "patch"
+          - "minor"
       vitest-normal:
         patterns:
           - "vitest"
