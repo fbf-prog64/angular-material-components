@@ -1,6 +1,6 @@
 {
   "name": "@ngx-mce/amc",
-  "version": "22.1.1",
+  "version": "22.1.2-next.3",
   "description": "Angular Material Components Example Application",
   "author": "Felipe B.",
   "repository": {
@@ -56,20 +56,20 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "^22.0.0",
+    "@angular-eslint/builder": "^22.1.0",
     "@angular/build": "^22.0.6",
     "@angular/cdk": "^22.0.4",
     "@angular/cli": "^22.0.6",
     "@angular/compiler-cli": "^22.0.6",
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.1.1",
-    "angular-eslint": "22.0.0",
-    "eslint": "^10.6.0",
+    "angular-eslint": "22.1.0",
+    "eslint": "^10.7.0",
     "jsdom": "^29.1.1",
     "ng-packagr": "^22.0.1",
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.63.0",
+    "typescript-eslint": "^8.64.0",
     "vitest": "^4.1.9"
   }
 }
