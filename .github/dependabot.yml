@@ -9,15 +9,26 @@ updates:
     target-branch: "dev"
     cooldown:
       default-days: 1
+
+    ignore:
+      # Angular 22 does not support Typescript 7.x
+      - dependency-name: "typescript"
+        versions: "^7.0.0"
     
     groups:
-      angular-normal:
+      maint-angular:
         patterns:
           - "@angular/*"
         update-types:
           - "patch"
           - "minor"
-      eslint-normal:
+      break-angular:
+        patterns:
+          - "@angular/*"
+        update-types:
+          - "major"
+      
+      maint-eslint:
         patterns:
           - "eslint"
           - "typescript-eslint"
@@ -25,20 +36,41 @@ updates:
         update-types:
           - "patch"
           - "minor"
-      angular-eslint-normal:
+      break-eslint:
+        patterns:
+          - "eslint"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
+        update-types:
+          - "major"
+
+      maint-angular-eslint:
         patterns:
           - "angular-eslint"
           - "@angular-eslint/*"
         update-types:
           - "patch"
           - "minor"
-      vitest-normal:
+      break-angular-eslint:
+        patterns:
+          - "angular-eslint"
+          - "@angular-eslint/*"
+        update-types:
+          - "major"
+
+      maint-vitest:
         patterns:
           - "vitest"
           - "@vitest/*"
         update-types:
           - "patch"
           - "minor"
+      break-vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+        update-types:
+          - "major"
 
   - package-ecosystem: "github-actions"
     directory: "/"
