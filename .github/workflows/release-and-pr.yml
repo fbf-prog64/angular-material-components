@@ -16,64 +16,30 @@ permissions:
 
 jobs:
   release:
-    name: Deliver Release
-    runs-on: ubuntu-latest
-    environment: deploy-zone
     if: github.event.head_commit.message != 'chore(release):' && !contains(github.event.head_commit.message, '[skip ci]')
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          persist-credentials: false
+    uses: ./.github/workflows/semantic-release-pnpm.yml
+    with:
+      environment: deploy-zone
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v6
-        with:
-          extra_plugins: |
-            conventional-changelog-conventionalcommits
-            @anolilab/semantic-release-pnpm
-            @semantic-release/exec
-            @semantic-release/git
-            @cleyrop-org/semantic-release-backmerge
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  create-pr:
-    name: Create Promotion PR
-    runs-on: ubuntu-latest
+  create-pr-nightly:
     needs: release
-    if: success() && (github.ref_name == 'dev' || github.ref_name == 'nightly')
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+    if: success() && github.ref_name == 'nightly'
+    uses: ./.github/workflows/create-pr.yml
+    with:
+      source-branch: nightly
+      destination-branch: dev
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create PR from nightly → dev
-        if: github.ref_name == 'nightly'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_URL=$(gh pr list --head nightly --base dev --state open --json url --jq '.[0].url')
-          if [ -z "$PR_URL" ]; then
-            gh pr create --base dev --head nightly --title "chore: merge nightly into dev" --body "Automated PR for nightly → dev promotion."
-          fi
+  create-pr-dev:
+    needs: release
+    if: success() && github.ref_name == 'dev'
+    uses: ./.github/workflows/create-pr.yml
+    with:
+      source-branch: dev
+      destination-branch: main
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create PR from dev → main
-        if: github.ref_name == 'dev'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_URL=$(gh pr list --head dev --base main --state open --json url --jq '.[0].url')
-          if [ -z "$PR_URL" ]; then
-            gh pr create --base main --head dev --title "chore: merge dev into main" --body "Automated PR for dev → main promotion."
-          fi

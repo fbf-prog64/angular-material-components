@@ -66,7 +66,7 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: 'pnpm install --frozen-lockfile && pnpm -r run build',
+        prepareCmd: 'pnpm -r run build',
       },
     ],
 

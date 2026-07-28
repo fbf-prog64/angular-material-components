@@ -1,0 +1,36 @@
+name: Make Promotion Pull Request
+
+on:
+  workflow_call:
+    inputs:
+      source-branch:
+        required: true
+        type: string
+      destination-branch:
+        required: true
+        type: string
+
+    secrets:
+      github-token:
+        required: true
+
+jobs:
+  create-pr:
+    name: Create Promotion PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+    
+      - name: Create PR from ${{ inputs.source-branch }} to ${{ inputs.destination-branch }}
+        env:
+          GHB_SRC: ${{ inputs.source-branch }}
+          GHB_DEST: ${{ inputs.destination-branch }}
+          GH_TOKEN: ${{ secrets.github-token }}
+        run: |
+          PR_URL=$(gh pr list --head $GHB_SRC --base $GHB_DEST --state open --json url --jq '.[0].url')
+          if [ -z "$PR_URL" ]; then
+            gh pr create --base $GHB_DEST --head $GHB_SRC --title "chore: merge $GHB_SRC into $GHB_DEST" --body "Automated PR for $GHB_SRC to $GHB_DEST promotion."
+          fi
+

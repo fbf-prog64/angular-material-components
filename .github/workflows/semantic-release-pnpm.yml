@@ -1,0 +1,67 @@
+name: Semantic Release PNPM package to NPM
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      node-version:
+        required: false
+        type: string
+        default: "24"
+      pnpm-version:
+        required: false
+        type: string
+        default: ""
+
+    secrets:
+      github-token:
+        required: true
+
+jobs:
+  semantic-release:
+    name: Build, Release and Publish to NPM
+    runs-on: ubuntu-latest
+
+    environment:
+      name: ${{ inputs.environment }}
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup pnpm with version from package.json
+        if: ${{ inputs.pnpm-version == '' }}
+        uses: pnpm/action-setup@v6
+
+      - name: Setup pnpm with provided version (${{ inputs.pnpm-version }})
+        if: ${{ inputs.pnpm-version != '' }}
+        uses: pnpm/action-setup@v6
+        with:
+          version: ${{ inputs.pnpm-version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.github-token }}
+          GH_TOKEN: ${{ secrets.github-token }}
+        run: pnpm exec semantic-release
+
