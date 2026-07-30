@@ -41,7 +41,7 @@ jobs:
         uses: cycjimmy/semantic-release-action@v6
         with:
           extra_plugins: |
-            conventional-changelog-conventionalcommits
+            conventional-changelog-conventionalcommits@9.3.1
             @anolilab/semantic-release-pnpm
             @semantic-release/exec
             @semantic-release/git
