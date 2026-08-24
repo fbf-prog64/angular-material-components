@@ -3,10 +3,11 @@ const packages = {
   // Root package: version gets bumped, but NOT published
   '.': { publish: false },
   // Published projects
-  'projects/amc-docs': { publish: true },
   'projects/color-picker': { publish: true },
   'projects/datetime-picker': { publish: true },
   'projects/file-input': { publish: true },
+  // The main project is commented because it doesn't have a package.json file.
+  //'projects/amc-docs': { publish: true },
 };
 
 // 2. Generate npm plugin entries dynamically
