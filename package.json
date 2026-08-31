@@ -64,12 +64,12 @@
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.2.0",
     "angular-eslint": "22.1.0",
-    "eslint": "^10.9.0",
+    "eslint": "^10.9.1",
     "jsdom": "^30.0.1",
     "ng-packagr": "^22.1.1",
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.67.0",
+    "typescript-eslint": "^8.68.0",
     "vitest": "^4.1.11"
   }
 }
