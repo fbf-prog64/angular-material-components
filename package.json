@@ -62,7 +62,7 @@
     "@angular/cli": "^22.1.8",
     "@angular/compiler-cli": "^22.1.6",
     "@eslint/js": "^10.0.1",
-    "@types/node": "^26.4.1",
+    "@types/node": "^26.6.2",
     "angular-eslint": "22.5.0",
     "eslint": "^10.11.0",
     "jsdom": "^30.0.1",
