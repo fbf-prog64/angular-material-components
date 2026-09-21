@@ -65,7 +65,7 @@
     "@types/node": "^26.6.2",
     "angular-eslint": "22.5.0",
     "eslint": "^10.11.0",
-    "jsdom": "^30.0.1",
+    "jsdom": "^30.1.0",
     "ng-packagr": "^22.1.1",
     "ts-node": "~10.9.2",
     "typescript": "~6.0.3",
