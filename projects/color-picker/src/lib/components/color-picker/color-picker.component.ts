@@ -11,6 +11,7 @@ import {
 import { ComponentPortal } from '@angular/cdk/portal';
 
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
@@ -18,7 +19,6 @@ import {
   HostBinding,
   InjectionToken,
   Input,
-  NgZone,
   OnDestroy,
   Output,
   ViewContainerRef,
@@ -237,7 +237,6 @@ export class NgxMatColorPickerComponent implements OnDestroy {
 
   private _dialog = inject(MatDialog);
   private _overlay = inject(Overlay);
-  private _zone = inject(NgZone);
   private _adapter = inject(ColorAdapter);
   private _dir = inject(Directionality, { optional: true });
   private _scrollStrategy = inject(NGX_MAT_COLOR_PICKER_SCROLL_STRATEGY);
@@ -349,12 +348,15 @@ export class NgxMatColorPickerComponent implements OnDestroy {
       this._setColor();
 
       // Update the position once the calendar has rendered.
-      this._zone.onStable
-        .asObservable()
-        .pipe(take(1))
-        .subscribe(() => {
-          this._popupRef?.updatePosition();
-        });
+      const popupRef = this._popupRef;
+      afterNextRender(
+        () => {
+          if (popupRef?.hasAttached()) {
+            popupRef.updatePosition();
+          }
+        },
+        { injector: this._viewContainerRef.injector },
+      );
     }
   }
 
