@@ -28,6 +28,7 @@ import {
 import { NgClass } from '@angular/common';
 import {
   AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -38,7 +39,6 @@ import {
   HostBinding,
   InjectionToken,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -708,7 +708,6 @@ export abstract class NgxMatDatepickerBase<
   readonly stateChanges = new Subject<void>();
 
   private _overlay = inject(Overlay);
-  private _ngZone = inject(NgZone);
   private _viewContainerRef = inject(ViewContainerRef);
   private _scrollStrategy = inject(NGX_MAT_DATEPICKER_SCROLL_STRATEGY);
   private _dateAdapter = inject(DateAdapter<D>, { optional: true });
@@ -949,7 +948,14 @@ export abstract class NgxMatDatepickerBase<
 
     // Update the position once the calendar has rendered. Only relevant in dropdown mode.
     if (!isDialog) {
-      this._ngZone.onStable.pipe(take(1)).subscribe(() => overlayRef.updatePosition());
+      afterNextRender(
+        () => {
+          if (overlayRef.hasAttached()) {
+            overlayRef.updatePosition();
+          }
+        },
+        { injector: this._viewContainerRef.injector },
+      );
     }
   }
 

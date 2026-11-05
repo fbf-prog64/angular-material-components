@@ -2,18 +2,19 @@ import { Platform } from '@angular/cdk/platform';
 import { NgClass } from '@angular/common';
 import {
   AfterViewChecked,
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
   inject,
+  Injector,
   input,
   NgZone,
   OnDestroy,
   output,
   ViewEncapsulation,
 } from '@angular/core';
-import { take } from 'rxjs/operators';
 
 /** Extra CSS classes that can be associated with a calendar cell. */
 export type NgxMatCalendarCellCssClasses = string | string[] | Set<string> | Record<string, any>;
@@ -171,6 +172,7 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
 
   private _elementRef = inject(ElementRef<HTMLElement>);
   private _ngZone = inject(NgZone);
+  private _injector = inject(Injector);
 
   constructor() {
     this._ngZone.runOutsideAngular(() => {
@@ -244,25 +246,28 @@ export class NgxMatCalendarBody<D = any> implements OnDestroy, AfterViewChecked 
 
   _focusActiveCell(movePreview = true) {
     this._ngZone.runOutsideAngular(() => {
-      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
-        setTimeout(() => {
-          const activeCell: HTMLElement | null = this._elementRef.nativeElement.querySelector(
-            '.mat-calendar-body-active',
-          );
+      afterNextRender(
+        () => {
+          setTimeout(() => {
+            const activeCell: HTMLElement | null = this._elementRef.nativeElement.querySelector(
+              '.mat-calendar-body-active',
+            );
 
-          if (activeCell) {
-            if (!movePreview) {
-              this._skipNextFocus = true;
+            if (activeCell) {
+              if (!movePreview) {
+                this._skipNextFocus = true;
+              }
+
+              activeCell.focus();
             }
-
-            activeCell.focus();
-          }
-        });
-      });
+          });
+        },
+        { injector: this._injector },
+      );
     });
   }
 
-  /** Focuses the active cell after change detection has run and the microtask queue is empty. */
+  /** Focuses the active cell after the next render. */
   _scheduleFocusActiveCellAfterViewChecked() {
     this._focusActiveCellAfterViewChecked = true;
   }

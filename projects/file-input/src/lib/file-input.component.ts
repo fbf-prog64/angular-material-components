@@ -300,13 +300,21 @@ export class NgxMatFileInputComponent
     this._inputFileRef()!.nativeElement.value = '';
   }
 
+  private _getFileName(file: File): string | null {
+    return file != null && file.name != null ? file.name : null;
+  }
+
   private _updateInputValue(files: FileOrArrayFile) {
-    let text = null;
+    let text: string | null = null;
     if (files) {
       if (Array.isArray(files)) {
-        text = this._multiple ? files.map((x) => x.name).join(this.separator()) : files[0].name;
+        text = this._multiple
+            ? files.map(x => this._getFileName(x))
+                .filter(x => x != null)
+                .join(this.separator())
+            : this._getFileName(files[0]);
       } else {
-        text = files.name != null ? files.name : null;
+        text = this._getFileName(files);
       }
     }
 

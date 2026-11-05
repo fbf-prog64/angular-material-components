@@ -34,6 +34,25 @@ Choose the version corresponding to your Angular version:
 | 15 -- 20 | Please use [GNURub's version](https://github.com/GNURub/angular-material-components) |
 |  7 -- 14 | Please use [h2qutc's version](https://github.com/h2qutc/angular-material-components) |
 
+## Zoneless rendering
+
+The demo enables zoneless change detection. Calendar focus and date/color popup
+positioning use `afterNextRender` rather than `NgZone.onStable`, so they also run
+without ZoneJS. Calendar focus retains its deferred timing and range-preview behavior.
+The demo's breakpoint subscription calls `markForCheck()` after updating its layout,
+so handset and desktop transitions refresh the view without ZoneJS.
+
+Run the zoneless regression tests with:
+
+```sh
+pnpm exec ng test amc-docs --watch=false
+pnpm exec ng test datetime-picker --watch=false
+pnpm exec ng test color-picker --watch=false
+```
+
+The demo and both library test targets use the shared Vitest configuration to keep Angular
+dependencies resolved to this workspace when it is nested inside another workspace.
+
 ## Available components
 
 These are the components included with this project.

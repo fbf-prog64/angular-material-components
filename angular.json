@@ -71,7 +71,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "runnerConfig": "vitest-base.config.mts"
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -106,7 +109,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/color-picker/tsconfig.spec.json"
+            "tsConfig": "projects/color-picker/tsconfig.spec.json",
+            "runnerConfig": "vitest-base.config.mts"
           }
         },
         "lint": {
@@ -142,7 +146,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/datetime-picker/tsconfig.spec.json"
+            "tsConfig": "projects/datetime-picker/tsconfig.spec.json",
+            "runnerConfig": "vitest-base.config.mts"
           }
         },
         "lint": {
