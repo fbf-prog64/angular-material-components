@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,6 +27,7 @@ import { RouterModule } from '@angular/router';
 })
 export class AppComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   public nameApp = 'angular-material-components';
 
@@ -46,6 +47,7 @@ export class AppComponent {
         } else {
           this.activateWebLayout();
         }
+        this.changeDetectorRef.markForCheck();
       });
   }
 

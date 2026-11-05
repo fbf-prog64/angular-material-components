@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   resolve: {
-    // Keep nested workspaces from loading multiple Angular instances in library tests.
+    // Keep nested workspaces from loading multiple Angular instances in tests.
     dedupe: [
       '@angular/core',
       '@angular/common',
