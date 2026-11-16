@@ -56,7 +56,7 @@ export function rgbaToHex(
     pad2(mathRound(r).toString(16)),
     pad2(mathRound(g).toString(16)),
     pad2(mathRound(b).toString(16)),
-    pad2(convertDecimalToHex(a.toString(16))),
+    pad2(convertDecimalToHex(a.toString())),
   ];
 
   // Return a 4 character hex if possible

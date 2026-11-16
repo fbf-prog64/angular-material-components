@@ -20,7 +20,7 @@ export class Color {
     } else {
       this.a = 1;
     }
-    this.roundA = Math.round(this.a);
+    this.roundA = Math.fround(this.a);
     this.hex = rgbToHex(this.r, this.g, this.b);
     this.rgba = this.toRgba();
   }
